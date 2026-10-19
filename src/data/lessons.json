@@ -9,7 +9,7 @@
     "clues": "Pair sums, duplicate detection, counting, or repeated membership checks. Hash keys must represent exactly the property you need.",
     "example": [
       "nums = [2, 7, 11], target = 9",
-      "At index 0, partner 7 is missing. Store 2 \u2192 0.",
+      "At index 0, partner 7 is missing. Store 2 → 0.",
       "At index 1, partner 2 is present. Return [0, 1]."
     ],
     "state": "seen maps a previously visited value to its index.",
@@ -19,7 +19,7 @@
     "space": "O(n) for previously seen values.",
     "pitfalls": "Inserting before checking can reuse the same index. Hash operations are expected O(1), not guaranteed worst-case O(1).",
     "edges": "Duplicate values such as [3,3]; no pair; negative values.",
-    "brute": "Check every pair in O(n\u00b2) time and O(1) space. Sorting permits two pointers but requires keeping original indices.",
+    "brute": "Check every pair in O(n²) time and O(1) space. Sorting permits two pointers but requires keeping original indices.",
     "interview": "I would keep a notebook of values already seen. Before writing down the current value, check whether its partner is in the notebook. The key guarantee is: Every stored index is earlier than the current one, so a value cannot pair with itself.",
     "followup": "Why check before inserting?",
     "simpler": "Keep a notebook of values already seen. Before writing down the current value, check whether its partner is in the notebook.",
@@ -35,15 +35,37 @@
     },
     "cases": [
       {
-        "args": [[2, 7, 11], 9],
-        "expected": [0, 1]
+        "args": [
+          [
+            2,
+            7,
+            11
+          ],
+          9
+        ],
+        "expected": [
+          0,
+          1
+        ]
       },
       {
-        "args": [[3, 3], 6],
-        "expected": [0, 1]
+        "args": [
+          [
+            3,
+            3
+          ],
+          6
+        ],
+        "expected": [
+          0,
+          1
+        ]
       },
       {
-        "args": [[], 4],
+        "args": [
+          [],
+          4
+        ],
         "expected": []
       }
     ]
@@ -68,7 +90,7 @@
     "space": "O(1) auxiliary space.",
     "pitfalls": "Applying this sum rule to unsorted data discards valid pairs. Sorting can lose original indices.",
     "edges": "Empty array, one item, duplicates, no solution.",
-    "brute": "All pairs cost O(n\u00b2). Hashing works without sorting using O(n) space.",
+    "brute": "All pairs cost O(n²). Hashing works without sorting using O(n) space.",
     "interview": "I would start at both ends of a sorted array. If the sum is too small, move the smaller end; if it is too big, move the larger end. The key guarantee is: When the sum is too small, the left value cannot pair with any value at or before right. The symmetric argument removes right when too large.",
     "followup": "Would this movement rule work on [8,1,5,3]?",
     "simpler": "Start at both ends of a sorted array. If the sum is too small, move the smaller end; if it is too big, move the larger end.",
@@ -84,11 +106,27 @@
     },
     "cases": [
       {
-        "args": [[1, 3, 5, 8], 8],
-        "expected": [1, 2]
+        "args": [
+          [
+            1,
+            3,
+            5,
+            8
+          ],
+          8
+        ],
+        "expected": [
+          1,
+          2
+        ]
       },
       {
-        "args": [[1], 2],
+        "args": [
+          [
+            1
+          ],
+          2
+        ],
         "expected": []
       }
     ]
@@ -114,7 +152,7 @@
     "space": "O(min(n, alphabet size)) for the set.",
     "pitfalls": "Use while, not if: removing one character may not remove the duplicate. Sum windows with negatives lack the usual monotonicity.",
     "edges": "Empty string, all identical characters, Unicode, duplicate far from left.",
-    "brute": "Enumerate every start and expand until a duplicate: O(n\u00b2) worst-case.",
+    "brute": "Enumerate every start and expand until a duplicate: O(n²) worst-case.",
     "interview": "I would imagine a frame over a string. Widen it one character at a time; if a character repeats, move the left edge until all characters inside are distinct. The key guarantee is: After shrinking and adding the current character, the window contains each character at most once. All later left boundaries produce no longer window.",
     "followup": "After reading the last b in \"abba\", how far must left move?",
     "simpler": "Imagine a frame over a string. Widen it one character at a time; if a character repeats, move the left edge until all characters inside are distinct.",
@@ -130,15 +168,21 @@
     },
     "cases": [
       {
-        "args": ["abcabcbb"],
+        "args": [
+          "abcabcbb"
+        ],
         "expected": 3
       },
       {
-        "args": ["abba"],
+        "args": [
+          "abba"
+        ],
         "expected": 2
       },
       {
-        "args": [""],
+        "args": [
+          ""
+        ],
         "expected": 0
       }
     ]
@@ -180,15 +224,24 @@
     },
     "cases": [
       {
-        "args": ["AABABBA", 1],
+        "args": [
+          "AABABBA",
+          1
+        ],
         "expected": 4
       },
       {
-        "args": ["ABAB", 2],
+        "args": [
+          "ABAB",
+          2
+        ],
         "expected": 4
       },
       {
-        "args": ["", 0],
+        "args": [
+          "",
+          0
+        ],
         "expected": 0
       }
     ]
@@ -229,11 +282,23 @@
     },
     "cases": [
       {
-        "args": [[2, -1, 4], 1, 3],
+        "args": [
+          [
+            2,
+            -1,
+            4
+          ],
+          1,
+          3
+        ],
         "expected": 3
       },
       {
-        "args": [[], 0, 0],
+        "args": [
+          [],
+          0,
+          0
+        ],
         "expected": 0
       }
     ]
@@ -274,15 +339,32 @@
     },
     "cases": [
       {
-        "args": [[1, 3, 5, 7, 9], 7],
+        "args": [
+          [
+            1,
+            3,
+            5,
+            7,
+            9
+          ],
+          7
+        ],
         "expected": 3
       },
       {
-        "args": [[], 4],
+        "args": [
+          [],
+          4
+        ],
         "expected": -1
       },
       {
-        "args": [[2], 1],
+        "args": [
+          [
+            2
+          ],
+          1
+        ],
         "expected": -1
       }
     ]
@@ -324,11 +406,25 @@
     },
     "cases": [
       {
-        "args": [[3, 6, 7, 11], 8],
+        "args": [
+          [
+            3,
+            6,
+            7,
+            11
+          ],
+          8
+        ],
         "expected": 4
       },
       {
-        "args": [[1, 1], 1],
+        "args": [
+          [
+            1,
+            1
+          ],
+          1
+        ],
         "expected": -1
       }
     ]
@@ -342,10 +438,10 @@
     "intuition": "Turn each arrow around while keeping a bookmark for where to go next.",
     "clues": "In-place list transformations, reversed halves, palindrome checking, and reordering.",
     "example": [
-      "1 \u2192 2 \u2192 3 \u2192 None",
+      "1 → 2 → 3 → None",
       "Save 2; point 1 to None. prev = 1, current = 2.",
       "Save 3; point 2 to 1. Then point 3 to 2.",
-      "Return 3 \u2192 2 \u2192 1 \u2192 None."
+      "Return 3 → 2 → 1 → None."
     ],
     "state": "prev, current, and following.",
     "invariant": "prev is the reversed processed prefix; current begins the unchanged remaining suffix.",
@@ -360,17 +456,33 @@
     "simpler": "Turn each arrow around while keeping a bookmark for where to go next.",
     "quiz": {
       "question": "Which pointer must be saved before redirecting current.next?",
-      "options": ["prev.next", "The original current.next", "The list length"],
+      "options": [
+        "prev.next",
+        "The original current.next",
+        "The list length"
+      ],
       "answer": 1,
       "explanation": "The saved successor is the only path to the unprocessed suffix."
     },
     "cases": [
       {
-        "args": [[1, 2, 3]],
-        "expected": [3, 2, 1]
+        "args": [
+          [
+            1,
+            2,
+            3
+          ]
+        ],
+        "expected": [
+          3,
+          2,
+          1
+        ]
       },
       {
-        "args": [[]],
+        "args": [
+          []
+        ],
         "expected": []
       }
     ]
@@ -394,7 +506,7 @@
     "code": "def solve(root):\n    if root is None:\n        return 0\n    left_height = solve(root[1])\n    right_height = solve(root[2])\n    return 1 + max(left_height, right_height)",
     "time": "O(n): one visit per node.",
     "space": "O(h) call stack, O(n) for a skewed tree.",
-    "pitfalls": "Mixing edge-count and node-count heights. Recomputing subtree heights repeatedly can make balance checks O(n\u00b2).",
+    "pitfalls": "Mixing edge-count and node-count heights. Recomputing subtree heights repeatedly can make balance checks O(n²).",
     "edges": "Empty root; skewed tree; single leaf. Python recursion can overflow for deep trees.",
     "brute": "BFS counts levels using O(width) space. Iterative DFS avoids the interpreter recursion limit.",
     "interview": "I would ask each branch how tall it is. A parent only needs those two answers to describe its own height. The key guarantee is: Each call returns the correct height of its own subtree because it combines correct child heights with one level for itself.",
@@ -402,17 +514,37 @@
     "simpler": "Ask each branch how tall it is. A parent only needs those two answers to describe its own height.",
     "quiz": {
       "question": "What is the height of an empty tree in this node-count convention?",
-      "options": ["-1", "0", "1"],
+      "options": [
+        "-1",
+        "0",
+        "1"
+      ],
       "answer": 1,
       "explanation": "An empty tree contributes zero nodes to a root-to-leaf path."
     },
     "cases": [
       {
-        "args": [null],
+        "args": [
+          null
+        ],
         "expected": 0
       },
       {
-        "args": [[1, [2, null, null], [3, null, null]]],
+        "args": [
+          [
+            1,
+            [
+              2,
+              null,
+              null
+            ],
+            [
+              3,
+              null,
+              null
+            ]
+          ]
+        ],
         "expected": 2
       }
     ]
@@ -427,7 +559,7 @@
     "clues": "Prefix queries, autocomplete, word dictionaries, and grid word search with prefix pruning.",
     "example": [
       "Insert cat and car.",
-      "Both share c \u2192 a; then branch to t or r.",
+      "Both share c → a; then branch to t or r.",
       "Search ca reaches a path but no terminal marker, so it is not a full word."
     ],
     "state": "A dictionary per node and a terminal marker.",
@@ -453,11 +585,23 @@
     },
     "cases": [
       {
-        "args": [["cat", "car"], "ca"],
+        "args": [
+          [
+            "cat",
+            "car"
+          ],
+          "ca"
+        ],
         "expected": false
       },
       {
-        "args": [["cat", "car"], "car"],
+        "args": [
+          [
+            "cat",
+            "car"
+          ],
+          "car"
+        ],
         "expected": true
       }
     ]
@@ -483,7 +627,7 @@
     "space": "O(k).",
     "pitfalls": "Assuming the entire heap array is sorted. Python tuple heap entries compare later fields on ties.",
     "edges": "k = 1; k = n; duplicates count as separate items; invalid k.",
-    "brute": "Sort in O(n log n), or use quickselect for expected O(n) with a worst-case O(n\u00b2) caveat.",
+    "brute": "Sort in O(n log n), or use quickselect for expected O(n) with a worst-case O(n²) caveat.",
     "interview": "I would keep only the k strongest candidates. The weakest candidate sits at the door, ready to leave when a stronger one arrives. The key guarantee is: After each item, the heap contains the k largest values seen so far, or all values if fewer than k have been seen.",
     "followup": "Why use a min heap to keep the k largest values?",
     "simpler": "Keep only the k strongest candidates. The weakest candidate sits at the door, ready to leave when a stronger one arrives.",
@@ -499,11 +643,25 @@
     },
     "cases": [
       {
-        "args": [[3, 1, 5, 2], 2],
+        "args": [
+          [
+            3,
+            1,
+            5,
+            2
+          ],
+          2
+        ],
         "expected": 3
       },
       {
-        "args": [[2, 2], 1],
+        "args": [
+          [
+            2,
+            2
+          ],
+          1
+        ],
         "expected": 2
       }
     ]
@@ -529,14 +687,14 @@
     "space": "O(n) stack plus O(n) output.",
     "pitfalls": "Popping on equality when the question asks for strictly warmer. Storing values loses distance information.",
     "edges": "Equal temperatures; descending sequence; empty input.",
-    "brute": "Scan rightward from each day in O(n\u00b2).",
+    "brute": "Scan rightward from each day in O(n²).",
     "interview": "I would keep a waiting line of unresolved days. A warmer day answers every colder day at the end of the line. The key guarantee is: Unresolved days stay on the stack. When a day is popped, the current day is its first strictly warmer successor.",
     "followup": "What does the nested while loop do to total complexity?",
     "simpler": "Keep a waiting line of unresolved days. A warmer day answers every colder day at the end of the line.",
     "quiz": {
       "question": "What does the nested while loop do to total complexity?",
       "options": [
-        "Makes it O(n\u00b2)",
+        "Makes it O(n²)",
         "Still O(n), since each index is popped once",
         "Makes it O(log n)"
       ],
@@ -545,12 +703,32 @@
     },
     "cases": [
       {
-        "args": [[70, 72, 71, 75]],
-        "expected": [1, 2, 1, 0]
+        "args": [
+          [
+            70,
+            72,
+            71,
+            75
+          ]
+        ],
+        "expected": [
+          1,
+          2,
+          1,
+          0
+        ]
       },
       {
-        "args": [[3, 3]],
-        "expected": [0, 0]
+        "args": [
+          [
+            3,
+            3
+          ]
+        ],
+        "expected": [
+          0,
+          0
+        ]
       }
     ]
   },
@@ -571,8 +749,8 @@
     "state": "path, the next allowed index, and a result list.",
     "invariant": "path contains exactly the choices on the current branch. Starting later indices avoids generating the same index subset twice.",
     "code": "def solve(nums):\n    result, path = [], []\n    def visit(start):\n        result.append(path.copy())\n        for i in range(start, len(nums)):\n            path.append(nums[i])\n            visit(i + 1)\n            path.pop()\n    visit(0)\n    return result",
-    "time": "O(n \u00b7 2^n) including copying all output subsets.",
-    "space": "O(n) recursion/path excluding O(n \u00b7 2^n) output.",
+    "time": "O(n · 2^n) including copying all output subsets.",
+    "space": "O(n) recursion/path excluding O(n · 2^n) output.",
     "pitfalls": "Appending path without copying. Forgetting pop. Duplicate input values require additional duplicate handling.",
     "edges": "Empty input produces [[]]; distinct input assumed; large output.",
     "brute": "Bit masks can enumerate the same subsets. Memoization is useful for repeated states, not automatically for listing distinct paths.",
@@ -591,12 +769,33 @@
     },
     "cases": [
       {
-        "args": [[1, 2]],
-        "expected": [[], [1], [1, 2], [2]]
+        "args": [
+          [
+            1,
+            2
+          ]
+        ],
+        "expected": [
+          [],
+          [
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2
+          ]
+        ]
       },
       {
-        "args": [[]],
-        "expected": [[]]
+        "args": [
+          []
+        ],
+        "expected": [
+          []
+        ]
       }
     ]
   },
@@ -609,7 +808,7 @@
     "intuition": "Spread a wave one edge per round. The first wave to reach a vertex used the fewest edges.",
     "clues": "Unweighted shortest paths, level order, nearest sources, and grid distance where every move has equal cost.",
     "example": [
-      "Edges: 0\u20141, 0\u20142, 1\u20143",
+      "Edges: 0—1, 0—2, 1—3",
       "Start queue [0], distance[0] = 0.",
       "Discover 1 and 2 at distance 1.",
       "Discover 3 through 1 at distance 2."
@@ -637,12 +836,50 @@
     },
     "cases": [
       {
-        "args": [[[1, 2], [0, 3], [0], [1]], 0],
-        "expected": [0, 1, 1, 2]
+        "args": [
+          [
+            [
+              1,
+              2
+            ],
+            [
+              0,
+              3
+            ],
+            [
+              0
+            ],
+            [
+              1
+            ]
+          ],
+          0
+        ],
+        "expected": [
+          0,
+          1,
+          1,
+          2
+        ]
       },
       {
-        "args": [[[1], [0], []], 0],
-        "expected": [0, 1, -1]
+        "args": [
+          [
+            [
+              1
+            ],
+            [
+              0
+            ],
+            []
+          ],
+          0
+        ],
+        "expected": [
+          0,
+          1,
+          -1
+        ]
       }
     ]
   },
@@ -651,11 +888,11 @@
     "title": "Topological sorting",
     "category": "Graphs",
     "level": "Foundational",
-    "summary": "A topological order places prerequisites before dependents in a directed acyclic graph. Kahn\u2019s algorithm repeatedly removes vertices with no remaining prerequisites.",
+    "summary": "A topological order places prerequisites before dependents in a directed acyclic graph. Kahn’s algorithm repeatedly removes vertices with no remaining prerequisites.",
     "intuition": "Schedule whichever tasks are ready. Finishing a task may unlock others. If unfinished tasks remain and none are ready, there is a cycle.",
     "clues": "Dependency ordering, courses, build systems, and DAG dynamic programming. Edges point from prerequisite to dependent.",
     "example": [
-      "0 \u2192 1 \u2192 2",
+      "0 → 1 → 2",
       "Indegrees = [0,1,1], ready = [0].",
       "Remove 0, unlock 1; remove 1, unlock 2.",
       "Order = [0,1,2]."
@@ -686,18 +923,34 @@
         "args": [
           3,
           [
-            [0, 1],
-            [1, 2]
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              2
+            ]
           ]
         ],
-        "expected": [0, 1, 2]
+        "expected": [
+          0,
+          1,
+          2
+        ]
       },
       {
         "args": [
           2,
           [
-            [0, 1],
-            [1, 0]
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              0
+            ]
           ]
         ],
         "expected": []
@@ -711,7 +964,7 @@
     "level": "Foundational",
     "summary": "Union-Find maintains disjoint components under merges. Each component has a representative root; path compression and union by size keep operations fast.",
     "intuition": "Give each group a leader. Joining groups changes one leader pointer, and looking up a leader shortens the route for next time.",
-    "clues": "Incremental undirected connectivity, redundant edges, and Kruskal\u2019s minimum spanning tree. It does not return actual paths.",
+    "clues": "Incremental undirected connectivity, redundant edges, and Kruskal’s minimum spanning tree. It does not return actual paths.",
     "example": [
       "n = 4, edges = [[0,1],[2,3],[1,2]]",
       "First two edges leave two components.",
@@ -720,7 +973,7 @@
     "state": "parent, component sizes, and number of components.",
     "invariant": "Every parent chain ends at the representative of exactly one component. Joining distinct roots merges exactly two components.",
     "code": "def solve(n, edges):\n    parent = list(range(n))\n    size = [1] * n\n    def find(x):\n        while x != parent[x]:\n            parent[x] = parent[parent[x]]\n            x = parent[x]\n        return x\n    components = n\n    for a, b in edges:\n        a, b = find(a), find(b)\n        if a == b:\n            continue\n        if size[a] < size[b]:\n            a, b = b, a\n        parent[b] = a\n        size[a] += size[b]\n        components -= 1\n    return components",
-    "time": "O((V + E) \u03b1(V)) amortized; \u03b1 grows extraordinarily slowly.",
+    "time": "O((V + E) α(V)) amortized; α grows extraordinarily slowly.",
     "space": "O(V).",
     "pitfalls": "Joining arbitrary nodes rather than roots. Using ordinary Union-Find for deletions or directed reachability.",
     "edges": "Repeated edges, isolated vertices, self-loops, n = 0.",
@@ -743,29 +996,41 @@
         "args": [
           4,
           [
-            [0, 1],
-            [2, 3],
-            [1, 2]
+            [
+              0,
+              1
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              2
+            ]
           ]
         ],
         "expected": 1
       },
       {
-        "args": [3, []],
+        "args": [
+          3,
+          []
+        ],
         "expected": 3
       }
     ]
   },
   {
     "id": "dijkstra",
-    "title": "Dijkstra\u2019s shortest paths",
+    "title": "Dijkstra’s shortest paths",
     "category": "Advanced Graphs",
     "level": "Intermediate",
     "summary": "Dijkstra repeatedly expands the unsettled vertex with smallest known distance. Nonnegative weights make that distance final.",
     "intuition": "Always extend the cheapest unfinished route. With no negative edges, a more expensive route cannot come back and improve the cheapest one.",
-    "clues": "Shortest paths with nonnegative edge weights. Use BFS for equal weights, 0\u20131 BFS for weights 0/1, and Bellman\u2013Ford when negatives matter.",
+    "clues": "Shortest paths with nonnegative edge weights. Use BFS for equal weights, 0–1 BFS for weights 0/1, and Bellman–Ford when negatives matter.",
     "example": [
-      "0 \u2192 1 costs 4; 0 \u2192 2 costs 1; 2 \u2192 1 costs 2",
+      "0 → 1 costs 4; 0 → 2 costs 1; 2 → 1 costs 2",
       "Pop (0,0): push (4,1), (1,2).",
       "Pop (1,2): improve distance[1] to 3.",
       "Pop (3,1). Later (4,1) is stale and skipped."
@@ -777,7 +1042,7 @@
     "space": "O(V + E) including stale heap entries, excluding input.",
     "pitfalls": "Negative weights invalidate the finalization proof. Marking visited when pushing can lock in a bad distance.",
     "edges": "Zero-weight edges, unreachable nodes (None here), duplicate edges, source only.",
-    "brute": "Bellman\u2013Ford is O(VE) and supports negative edges with negative-cycle detection.",
+    "brute": "Bellman–Ford is O(VE) and supports negative edges with negative-cycle detection.",
     "interview": "I would always extend the cheapest unfinished route. With no negative edges, a more expensive route cannot come back and improve the cheapest one. The key guarantee is: A non-stale minimum popped distance cannot be improved through an unsettled vertex when all edges are nonnegative.",
     "followup": "Why skip an entry whose cost differs from distance[node]?",
     "simpler": "Always extend the cheapest unfinished route. With no negative edges, a more expensive route cannot come back and improve the cheapest one.",
@@ -796,19 +1061,43 @@
         "args": [
           [
             [
-              [1, 4],
-              [2, 1]
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                1
+              ]
             ],
             [],
-            [[1, 2]]
+            [
+              [
+                1,
+                2
+              ]
+            ]
           ],
           0
         ],
-        "expected": [0, 3, 1]
+        "expected": [
+          0,
+          3,
+          1
+        ]
       },
       {
-        "args": [[[], []], 0],
-        "expected": [0, null]
+        "args": [
+          [
+            [],
+            []
+          ],
+          0
+        ],
+        "expected": [
+          0,
+          null
+        ]
       }
     ]
   },
@@ -817,12 +1106,12 @@
     "title": "Edge-limited relaxation",
     "category": "Advanced Graphs",
     "level": "Intermediate",
-    "summary": "For a path with at most k stops, allow at most k + 1 edges. Relax all edges from the previous round\u2019s distances to enforce this budget.",
-    "intuition": "Give every route one extra ticket per round. Read from yesterday\u2019s notebook and write into a fresh copy, so a new route cannot spend several tickets in one round.",
-    "clues": "Cheapest flights with stop limits, bounded path length, and Bellman\u2013Ford style dynamic programming.",
+    "summary": "For a path with at most k stops, allow at most k + 1 edges. Relax all edges from the previous round’s distances to enforce this budget.",
+    "intuition": "Give every route one extra ticket per round. Read from yesterday’s notebook and write into a fresh copy, so a new route cannot spend several tickets in one round.",
+    "clues": "Cheapest flights with stop limits, bounded path length, and Bellman–Ford style dynamic programming.",
     "example": [
-      "Edges 0\u21921: 1, 1\u21922: 1, 0\u21922: 9; k = 0",
-      "One edge is allowed. Snapshot starts [0,\u221e,\u221e].",
+      "Edges 0→1: 1, 1→2: 1, 0→2: 9; k = 0",
+      "One edge is allowed. Snapshot starts [0,∞,∞].",
       "New distances are [0,1,9], not [0,1,2].",
       "For k = 1, the next round reaches 2 for cost 2."
     ],
@@ -833,10 +1122,10 @@
     "space": "O(V), keeping two distance arrays.",
     "pitfalls": "Updating in place can traverse multiple edges in one round. k stops means k+1 edges. This bounded variant does not detect unbounded negative cycles.",
     "edges": "Direct-only route, unreachable target, source equals target, edge order changes.",
-    "brute": "Ordinary Bellman\u2013Ford uses V\u22121 rounds and an extra pass to detect reachable negative cycles. Dijkstra with only one distance per node does not encode a stop budget.",
-    "interview": "I would give every route one extra ticket per round. Read from yesterday\u2019s notebook and write into a fresh copy, so a new route cannot spend several tickets in one round. The key guarantee is: After r rounds, each distance is the cheapest cost using at most r edges. Reading only the old array prevents accidental extra edges.",
+    "brute": "Ordinary Bellman–Ford uses V−1 rounds and an extra pass to detect reachable negative cycles. Dijkstra with only one distance per node does not encode a stop budget.",
+    "interview": "I would give every route one extra ticket per round. Read from yesterday’s notebook and write into a fresh copy, so a new route cannot spend several tickets in one round. The key guarantee is: After r rounds, each distance is the cheapest cost using at most r edges. Reading only the old array prevents accidental extra edges.",
     "followup": "Why use a snapshot for each round?",
-    "simpler": "Give every route one extra ticket per round. Read from yesterday\u2019s notebook and write into a fresh copy, so a new route cannot spend several tickets in one round.",
+    "simpler": "Give every route one extra ticket per round. Read from yesterday’s notebook and write into a fresh copy, so a new route cannot spend several tickets in one round.",
     "quiz": {
       "question": "Why use a snapshot for each round?",
       "options": [
@@ -852,9 +1141,21 @@
         "args": [
           3,
           [
-            [0, 1, 1],
-            [1, 2, 1],
-            [0, 2, 9]
+            [
+              0,
+              1,
+              1
+            ],
+            [
+              1,
+              2,
+              1
+            ],
+            [
+              0,
+              2,
+              9
+            ]
           ],
           0,
           2,
@@ -866,9 +1167,21 @@
         "args": [
           3,
           [
-            [0, 1, 1],
-            [1, 2, 1],
-            [0, 2, 9]
+            [
+              0,
+              1,
+              1
+            ],
+            [
+              1,
+              2,
+              1
+            ],
+            [
+              0,
+              2,
+              9
+            ]
           ],
           0,
           2,
@@ -884,7 +1197,7 @@
     "category": "1-D Dynamic Programming",
     "level": "Foundational",
     "summary": "Dynamic programming solves overlapping subproblems once. Define the meaning of a state, its base case, and which smaller states it depends on.",
-    "intuition": "For each amount, write down the fewest coins needed. To make amount a, try taking one coin c after an optimal solution for a\u2212c.",
+    "intuition": "For each amount, write down the fewest coins needed. To make amount a, try taking one coin c after an optimal solution for a−c.",
     "clues": "Minimum/maximum/counting problems with reusable subproblems and a state that captures everything affecting future choices.",
     "example": [
       "coins = [1,3,4], amount = 6",
@@ -893,16 +1206,16 @@
       "dp[6] = 2 from 3 + 3; greedy 4 + 1 + 1 uses 3."
     ],
     "state": "dp[a] = minimum coin count for amount a; infinity means unreachable.",
-    "invariant": "When computing a, every dp[a\u2212c] is already optimal because positive c makes a\u2212c smaller. Trying every final coin covers every solution.",
+    "invariant": "When computing a, every dp[a−c] is already optimal because positive c makes a−c smaller. Trying every final coin covers every solution.",
     "code": "def solve(coins, amount):\n    dp = [float(\"inf\")] * (amount + 1)\n    dp[0] = 0\n    for value in range(1, amount + 1):\n        for coin in coins:\n            if coin <= value:\n                dp[value] = min(dp[value], 1 + dp[value - coin])\n    return -1 if dp[amount] == float(\"inf\") else dp[amount]",
-    "time": "O(amount \u00d7 number of coins): one transition per usable coin per state.",
+    "time": "O(amount × number of coins): one transition per usable coin per state.",
     "space": "O(amount) stored answers.",
-    "pitfalls": "Greedy fails for arbitrary denominations. Zero/negative coins break this recurrence\u2019s dependency order; require positive coins and nonnegative amount.",
+    "pitfalls": "Greedy fails for arbitrary denominations. Zero/negative coins break this recurrence’s dependency order; require positive coins and nonnegative amount.",
     "edges": "Amount 0, impossible amount, no coins, denominations larger than amount.",
     "brute": "Uncached recursion repeats subproblems exponentially. Memoization reaches the same states on demand.",
-    "interview": "I would for each amount, write down the fewest coins needed. To make amount a, try taking one coin c after an optimal solution for a\u2212c. The key guarantee is: When computing a, every dp[a\u2212c] is already optimal because positive c makes a\u2212c smaller. Trying every final coin covers every solution.",
+    "interview": "I would for each amount, write down the fewest coins needed. To make amount a, try taking one coin c after an optimal solution for a−c. The key guarantee is: When computing a, every dp[a−c] is already optimal because positive c makes a−c smaller. Trying every final coin covers every solution.",
     "followup": "For coins [1,3,4] and amount 6, why does largest-first fail?",
-    "simpler": "For each amount, write down the fewest coins needed. To make amount a, try taking one coin c after an optimal solution for a\u2212c.",
+    "simpler": "For each amount, write down the fewest coins needed. To make amount a, try taking one coin c after an optimal solution for a−c.",
     "quiz": {
       "question": "For coins [1,3,4] and amount 6, why does largest-first fail?",
       "options": [
@@ -915,15 +1228,32 @@
     },
     "cases": [
       {
-        "args": [[1, 3, 4], 6],
+        "args": [
+          [
+            1,
+            3,
+            4
+          ],
+          6
+        ],
         "expected": 2
       },
       {
-        "args": [[2], 3],
+        "args": [
+          [
+            2
+          ],
+          3
+        ],
         "expected": -1
       },
       {
-        "args": [[1], 0],
+        "args": [
+          [
+            1
+          ],
+          0
+        ],
         "expected": 0
       }
     ]
@@ -945,7 +1275,7 @@
     "state": "dp[i][j] = LCS length of a[i:] and b[j:]. Evaluate from bottom-right to top-left.",
     "invariant": "A match allows 1 + dp[i+1][j+1]. Without a match, at least one first character must be skipped, so take the best of the two possibilities.",
     "code": "def solve(a, b):\n    m, n = len(a), len(b)\n    dp = [[0] * (n + 1) for _ in range(m + 1)]\n    for i in range(m - 1, -1, -1):\n        for j in range(n - 1, -1, -1):\n            if a[i] == b[j]:\n                dp[i][j] = 1 + dp[i + 1][j + 1]\n            else:\n                dp[i][j] = max(dp[i + 1][j], dp[i][j + 1])\n    return dp[0][0]",
-    "time": "O(mn): m \u00d7 n states, constant work per state.",
+    "time": "O(mn): m × n states, constant work per state.",
     "space": "O(mn). Two-row optimization reduces this to O(min(m,n)) if only the length is needed.",
     "pitfalls": "Confusing substring with subsequence. Using [[0]*n]*m shares row objects. Filling before dependencies are ready.",
     "edges": "Empty string, no matches, repeated letters, identical strings.",
@@ -965,11 +1295,17 @@
     },
     "cases": [
       {
-        "args": ["ace", "abcde"],
+        "args": [
+          "ace",
+          "abcde"
+        ],
         "expected": 3
       },
       {
-        "args": ["", "abc"],
+        "args": [
+          "",
+          "abc"
+        ],
         "expected": 0
       }
     ]
@@ -1013,15 +1349,26 @@
       {
         "args": [
           [
-            [1, 3],
-            [2, 4],
-            [3, 5]
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              4
+            ],
+            [
+              3,
+              5
+            ]
           ]
         ],
         "expected": 2
       },
       {
-        "args": [[]],
+        "args": [
+          []
+        ],
         "expected": 0
       }
     ]
@@ -1047,7 +1394,7 @@
     "space": "O(n) for sorted copy and output.",
     "pitfalls": "Replacing end instead of taking max can shrink a containing interval. Closed intervals merge on equality.",
     "edges": "Nested intervals, touching endpoints, empty input, duplicate ranges.",
-    "brute": "Pairwise merging can cost O(n\u00b2) or worse with repeated rescanning. A sweep line handles counts of simultaneous intervals.",
+    "brute": "Pairwise merging can cost O(n²) or worse with repeated rescanning. A sweep line handles counts of simultaneous intervals.",
     "interview": "I would sweep left to right, stretching the current covered segment until the next segment starts beyond its end. The key guarantee is: Output intervals are sorted and disjoint, and their union equals the union of all processed intervals.",
     "followup": "Why use max(current end, next end)?",
     "simpler": "Sweep left to right, stretching the current covered segment until the next segment starts beyond its end.",
@@ -1065,24 +1412,50 @@
       {
         "args": [
           [
-            [1, 3],
-            [2, 6],
-            [8, 10]
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              6
+            ],
+            [
+              8,
+              10
+            ]
           ]
         ],
         "expected": [
-          [1, 6],
-          [8, 10]
+          [
+            1,
+            6
+          ],
+          [
+            8,
+            10
+          ]
         ]
       },
       {
         "args": [
           [
-            [1, 10],
-            [2, 3]
+            [
+              1,
+              10
+            ],
+            [
+              2,
+              3
+            ]
           ]
         ],
-        "expected": [[1, 10]]
+        "expected": [
+          [
+            1,
+            10
+          ]
+        ]
       }
     ]
   },
@@ -1100,41 +1473,55 @@
       "Reverse each row: [[3,1],[4,2]]."
     ],
     "state": "Row and column indices; only swap entries above the main diagonal.",
-    "invariant": "Transposition sends (r,c) to (c,r), then row reversal sends it to (c,n\u22121\u2212r), the clockwise rotation mapping.",
+    "invariant": "Transposition sends (r,c) to (c,r), then row reversal sends it to (c,n−1−r), the clockwise rotation mapping.",
     "code": "def solve(matrix):\n    n = len(matrix)\n    for r in range(n):\n        for c in range(r + 1, n):\n            matrix[r][c], matrix[c][r] = matrix[c][r], matrix[r][c]\n    for row in matrix:\n        row.reverse()\n    return matrix",
-    "time": "O(n\u00b2): every matrix cell is moved a constant number of times.",
+    "time": "O(n²): every matrix cell is moved a constant number of times.",
     "space": "O(1) auxiliary space; mutates the input.",
     "pitfalls": "Swapping both halves transposes twice and cancels the change. This implementation requires a square matrix.",
-    "edges": "Empty matrix, 1\u00d71, repeated values, square shape required.",
-    "brute": "Build a new matrix using rotated coordinates in O(n\u00b2) extra space.",
-    "interview": "I would turn rows into columns, then flip each new row so the original top-left travels to the top-right. The key guarantee is: Transposition sends (r,c) to (c,r), then row reversal sends it to (c,n\u22121\u2212r), the clockwise rotation mapping.",
+    "edges": "Empty matrix, 1×1, repeated values, square shape required.",
+    "brute": "Build a new matrix using rotated coordinates in O(n²) extra space.",
+    "interview": "I would turn rows into columns, then flip each new row so the original top-left travels to the top-right. The key guarantee is: Transposition sends (r,c) to (c,r), then row reversal sends it to (c,n−1−r), the clockwise rotation mapping.",
     "followup": "Where does cell (r,c) move after a clockwise rotation?",
     "simpler": "Turn rows into columns, then flip each new row so the original top-left travels to the top-right.",
     "quiz": {
       "question": "Where does cell (r,c) move after a clockwise rotation?",
       "options": [
-        "(c,n\u22121\u2212r)",
-        "(n\u22121\u2212c,r)",
-        "(r,n\u22121\u2212c)"
+        "(c,n−1−r)",
+        "(n−1−c,r)",
+        "(r,n−1−c)"
       ],
       "answer": 0,
-      "explanation": "Transposition followed by row reversal produces (c,n\u22121\u2212r)."
+      "explanation": "Transposition followed by row reversal produces (c,n−1−r)."
     },
     "cases": [
       {
         "args": [
           [
-            [1, 2],
-            [3, 4]
+            [
+              1,
+              2
+            ],
+            [
+              3,
+              4
+            ]
           ]
         ],
         "expected": [
-          [3, 1],
-          [4, 2]
+          [
+            3,
+            1
+          ],
+          [
+            4,
+            2
+          ]
         ]
       },
       {
-        "args": [[]],
+        "args": [
+          []
+        ],
         "expected": []
       }
     ]
@@ -1175,25 +1562,39 @@
     },
     "cases": [
       {
-        "args": [[4, 1, 2, 1, 2]],
+        "args": [
+          [
+            4,
+            1,
+            2,
+            1,
+            2
+          ]
+        ],
         "expected": 4
       },
       {
-        "args": [[-1, 2, 2]],
+        "args": [
+          [
+            -1,
+            2,
+            2
+          ]
+        ],
         "expected": -1
       }
     ]
   },
   {
     "id": "zero-one-bfs",
-    "title": "0\u20131 BFS",
+    "title": "0–1 BFS",
     "category": "Advanced Graphs",
     "level": "Intermediate",
-    "summary": "When every edge weight is 0 or 1, a deque can replace Dijkstra\u2019s heap. Zero-cost improvements go to the front and one-cost improvements to the back.",
+    "summary": "When every edge weight is 0 or 1, a deque can replace Dijkstra’s heap. Zero-cost improvements go to the front and one-cost improvements to the back.",
     "intuition": "A free move stays in the current wave; a paid move joins the next wave.",
     "clues": "Shortest paths with binary edge costs, such as minimum direction changes. Weights must be exactly 0 or 1.",
     "example": [
-      "0\u21921 costs 1; 0\u21922 costs 0; 2\u21921 costs 0",
+      "0→1 costs 1; 0→2 costs 0; 2→1 costs 0",
       "Start (0,0). Push 1 to back and 2 to front.",
       "Process 2 first, improving 1 to zero.",
       "All distances are zero."
@@ -1211,7 +1612,11 @@
     "simpler": "A free move stays in the current wave; a paid move joins the next wave.",
     "quiz": {
       "question": "Where should a zero-cost improvement enter the deque?",
-      "options": ["Front", "Back", "A random position"],
+      "options": [
+        "Front",
+        "Back",
+        "A random position"
+      ],
       "answer": 0,
       "explanation": "It belongs to the current distance layer, before paths costing one more."
     },
@@ -1220,15 +1625,30 @@
         "args": [
           [
             [
-              [1, 1],
-              [2, 0]
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                0
+              ]
             ],
             [],
-            [[1, 0]]
+            [
+              [
+                1,
+                0
+              ]
+            ]
           ],
           0
         ],
-        "expected": [0, 0, 0]
+        "expected": [
+          0,
+          0,
+          0
+        ]
       }
     ]
   },
@@ -1236,7 +1656,7 @@
     "id": "fenwick",
     "title": "Fenwick tree",
     "category": "Arrays & Hashing",
-    "level": "Advanced \u00b7 optional",
+    "level": "Advanced · optional",
     "summary": "A Fenwick tree supports point additions and prefix sums in logarithmic time. Each cell represents a block whose size is its lowest set bit.",
     "intuition": "Keep overlapping subtotal boxes. Updating one number adjusts only the few boxes containing it.",
     "clues": "Repeated point updates and range-sum queries. For a static array, prefix sums are simpler.",
@@ -1269,9 +1689,1634 @@
     },
     "cases": [
       {
-        "args": [[2, 1, 3, 4], 1, 4],
+        "args": [
+          [
+            2,
+            1,
+            3,
+            4
+          ],
+          1,
+          4
+        ],
         "expected": 8
       }
     ]
+  },
+  {
+    "id": "difference-array",
+    "title": "Difference arrays & range updates",
+    "category": "Arrays & Hashing",
+    "level": "Intermediate",
+    "summary": "Instead of changing every cell in a range, record where the change starts and where it stops. A final running sum spreads those changes across the array.",
+    "intuition": "Instead of changing every cell in a range, record where the change starts and where it stops. A final running sum spreads those changes across the array.",
+    "clues": "Many additive range updates, followed by one final read of all values. For interleaved queries, consider a Fenwick or segment tree.",
+    "state": "A difference array of length n+1 and a running accumulated increment.",
+    "invariant": "Adding delta at left turns the increment on; subtracting it at right+1 turns it off. Prefix summing includes exactly the updates covering each position.",
+    "code": "def solve(n,updates):\n    diff=[0]*(n+1)\n    for left,right,delta in updates:\n        diff[left]+=delta; diff[right+1]-=delta\n    total=0; result=[]\n    for i in range(n):\n        total+=diff[i]; result.append(total)\n    return result",
+    "cases": [
+      {
+        "args": [
+          5,
+          [
+            [
+              1,
+              3,
+              2
+            ],
+            [
+              2,
+              4,
+              3
+            ]
+          ]
+        ],
+        "expected": [
+          0,
+          2,
+          5,
+          5,
+          3
+        ]
+      },
+      {
+        "args": [
+          0,
+          []
+        ],
+        "expected": []
+      }
+    ],
+    "example": [
+      "For [1,3]+=2, write +2 at 1 and -2 at 4.",
+      "For [2,4]+=3, write +3 at 2 and -3 at 5.",
+      "Running sums give [0,2,5,5,3]."
+    ],
+    "time": "O(n+q): two boundary changes per update and one final pass.",
+    "space": "O(n) including the difference array and output.",
+    "pitfalls": "Do not subtract at right when endpoints are inclusive.",
+    "edges": "Check [5, [[1, 3, 2], [2, 4, 3]]]; [0, []]. Explain what each boundary case changes.",
+    "brute": "Touch every cell in every update: O(nq).",
+    "followup": "Can two Fenwick trees support range updates and range-sum queries?",
+    "interview": "I would track a difference array of length n+1 and a running accumulated increment. Adding delta at left turns the increment on; subtracting it at right+1 turns it off. Prefix summing includes exactly the updates covering each position.",
+    "simpler": "Instead of changing every cell in a range, record where the change starts and where it stops. A final running sum spreads those changes across the array.",
+    "quiz": {
+      "question": "When is a plain difference array insufficient?",
+      "options": [
+        "All updates happen before output",
+        "You need an immediate range query after every update",
+        "Some increments are negative"
+      ],
+      "answer": 1,
+      "explanation": "Adding delta at left turns the increment on; subtracting it at right+1 turns it off. Prefix summing includes exactly the updates covering each position."
+    }
+  },
+  {
+    "id": "fixed-window",
+    "title": "Fixed windows, circular arrays & minimum swaps",
+    "category": "Sliding Window",
+    "level": "Foundational",
+    "summary": "A fixed window replaces one outgoing item with one incoming item each step. On a circle, use index modulo n so a window can cross the end without changing its width.",
+    "intuition": "A fixed window replaces one outgoing item with one incoming item each step. On a circle, use index modulo n so a window can cross the end without changing its width.",
+    "clues": "Exactly k adjacent values; grouping all ones with arbitrary pair swaps on a circular binary array.",
+    "state": "Window width equal to total ones, its current number of ones, and the best such count.",
+    "invariant": "A target block must have as many positions as there are ones. Each zero inside it can be exchanged with one outside, so the minimum swaps equals width minus the largest inside-one count.",
+    "code": "def solve(nums):\n    n=len(nums); width=sum(nums)\n    if width==0 or width==n: return 0\n    count=sum(nums[:width]); best=count\n    for start in range(1,n):\n        count+=nums[(start+width-1)%n]-nums[start-1]\n        best=max(best,count)\n    return width-best",
+    "cases": [
+      {
+        "args": [
+          [
+            0,
+            1,
+            0,
+            1,
+            1,
+            0,
+            0
+          ]
+        ],
+        "expected": 1
+      },
+      {
+        "args": [
+          [
+            1,
+            0,
+            1
+          ]
+        ],
+        "expected": 0
+      },
+      {
+        "args": [
+          []
+        ],
+        "expected": 0
+      }
+    ],
+    "example": [
+      "For [1,0,1], there are two ones, so width is 2.",
+      "The ordinary windows each contain one 1.",
+      "The wrapping window [last,first] contains both, requiring zero swaps."
+    ],
+    "time": "O(n): evaluate each circular start once.",
+    "space": "O(1) auxiliary space.",
+    "pitfalls": "This counts arbitrary swaps, not adjacent-swap distance. Do not consider windows longer than n.",
+    "edges": "Check [[0, 1, 0, 1, 1, 0, 0]]; [[1, 0, 1]]; [[]]. Explain what each boundary case changes.",
+    "brute": "Count ones from scratch in each width-k window: O(nk).",
+    "followup": "What if swaps must be adjacent?",
+    "interview": "I would track window width equal to total ones, its current number of ones, and the best such count. A target block must have as many positions as there are ones. Each zero inside it can be exchanged with one outside, so the minimum swaps equals width minus the largest inside-one count.",
+    "simpler": "A fixed window replaces one outgoing item with one incoming item each step. On a circle, use index modulo n so a window can cross the end without changing its width.",
+    "quiz": {
+      "question": "Why is the window width the total number of ones?",
+      "options": [
+        "A final contiguous block must contain every one",
+        "The width is always half the array",
+        "Every window must have exactly one zero"
+      ],
+      "answer": 0,
+      "explanation": "A target block must have as many positions as there are ones. Each zero inside it can be exchanged with one outside, so the minimum swaps equals width minus the largest inside-one count."
+    }
+  },
+  {
+    "id": "suffix-arrays",
+    "title": "Prefix & suffix summaries",
+    "category": "Arrays & Hashing",
+    "level": "Foundational",
+    "summary": "A prefix summarizes everything before a position; a suffix summarizes everything after it. Combine the two when each answer excludes the current item.",
+    "intuition": "A prefix summarizes everything before a position; a suffix summarizes everything after it. Combine the two when each answer excludes the current item.",
+    "clues": "All-except-self queries, left/right maxima, or independent information on both sides.",
+    "state": "Output holding left products and one running product from the right.",
+    "invariant": "Before the reverse pass visits i, the stored output is the product strictly left of i and the running suffix is strictly right. Their product excludes exactly i.",
+    "code": "def solve(nums):\n    out=[1]*len(nums); prefix=1\n    for i,value in enumerate(nums): out[i]=prefix; prefix*=value\n    suffix=1\n    for i in range(len(nums)-1,-1,-1): out[i]*=suffix; suffix*=nums[i]\n    return out",
+    "cases": [
+      {
+        "args": [
+          [
+            1,
+            2,
+            3,
+            4
+          ]
+        ],
+        "expected": [
+          24,
+          12,
+          8,
+          6
+        ]
+      },
+      {
+        "args": [
+          [
+            0,
+            2,
+            0
+          ]
+        ],
+        "expected": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "args": [
+          [
+            5
+          ]
+        ],
+        "expected": [
+          1
+        ]
+      }
+    ],
+    "example": [
+      "For [1,2,3,4], left products are [1,1,2,6].",
+      "Sweep from the right with products 1,4,12,24.",
+      "Multiply to get [24,12,8,6]."
+    ],
+    "time": "O(n) arithmetic operations.",
+    "space": "O(1) extra state excluding output.",
+    "pitfalls": "Include the empty product 1; division fails on zeros.",
+    "edges": "Check [[1, 2, 3, 4]]; [[0, 2, 0]]; [[5]]. Explain what each boundary case changes.",
+    "brute": "Recompute every excluded product in O(n²).",
+    "followup": "Which summaries can be combined when the operation is not invertible?",
+    "interview": "I would track output holding left products and one running product from the right. Before the reverse pass visits i, the stored output is the product strictly left of i and the running suffix is strictly right. Their product excludes exactly i.",
+    "simpler": "A prefix summarizes everything before a position; a suffix summarizes everything after it. Combine the two when each answer excludes the current item.",
+    "quiz": {
+      "question": "Why are prefix/suffix products useful when zeros exist?",
+      "options": [
+        "They avoid dividing by an element",
+        "They remove all zero elements",
+        "They sort the input first"
+      ],
+      "answer": 0,
+      "explanation": "Before the reverse pass visits i, the stored output is the product strictly left of i and the running suffix is strictly right. Their product excludes exactly i."
+    }
+  },
+  {
+    "id": "inversions",
+    "title": "Merge sort & counting inversions",
+    "category": "Arrays & Hashing",
+    "level": "Intermediate",
+    "summary": "An inversion is a pair out of order. During a merge, if the next right value is smaller than the next left value, it is smaller than every unmerged left value.",
+    "intuition": "An inversion is a pair out of order. During a merge, if the next right value is smaller than the next left value, it is smaller than every unmerged left value.",
+    "clues": "Count pairs i<j with a[i]>a[j], rank disagreements, or sort while gathering pair statistics.",
+    "state": "Two sorted halves, merge cursors, and an inversion count.",
+    "invariant": "Every inversion is either inside one half or crosses the split. When right[j]<left[i], exactly len(left)−i crossing inversions are resolved together.",
+    "code": "def solve(nums):\n    def sort(values):\n        if len(values)<2: return values,0\n        mid=len(values)//2; left,a=sort(values[:mid]); right,b=sort(values[mid:])\n        i=j=0; merged=[]; count=a+b\n        while i<len(left) and j<len(right):\n            if left[i]<=right[j]: merged.append(left[i]); i+=1\n            else: merged.append(right[j]); j+=1; count+=len(left)-i\n        return merged+left[i:]+right[j:],count\n    return sort(nums)[1]",
+    "cases": [
+      {
+        "args": [
+          [
+            2,
+            4,
+            1,
+            3,
+            5
+          ]
+        ],
+        "expected": 3
+      },
+      {
+        "args": [
+          [
+            2,
+            2
+          ]
+        ],
+        "expected": 0
+      },
+      {
+        "args": [
+          []
+        ],
+        "expected": 0
+      }
+    ],
+    "example": [
+      "Sorted left [2,4] and right [1,3,5] are merged.",
+      "Taking 1 adds two inversions, with 2 and 4.",
+      "Taking 3 before 4 adds one more, totaling 3."
+    ],
+    "time": "O(n log n), linear merging at each recursion level.",
+    "space": "O(n) peak auxiliary storage.",
+    "pitfalls": "Equal values are not inversions; choose left on ties.",
+    "edges": "Check [[2, 4, 1, 3, 5]]; [[2, 2]]; [[]]. Explain what each boundary case changes.",
+    "brute": "Check all pairs in O(n²).",
+    "followup": "Can coordinate compression plus a Fenwick tree count inversions online?",
+    "interview": "I would track two sorted halves, merge cursors, and an inversion count. Every inversion is either inside one half or crosses the split. When right[j]<left[i], exactly len(left)−i crossing inversions are resolved together.",
+    "simpler": "An inversion is a pair out of order. During a merge, if the next right value is smaller than the next left value, it is smaller than every unmerged left value.",
+    "quiz": {
+      "question": "When right[j] is smaller than left[i], how many cross inversions are added?",
+      "options": [
+        "One",
+        "All unmerged left values",
+        "All original values"
+      ],
+      "answer": 1,
+      "explanation": "Every inversion is either inside one half or crosses the split. When right[j]<left[i], exactly len(left)−i crossing inversions are resolved together."
+    }
+  },
+  {
+    "id": "rolling-hash",
+    "title": "Rolling hash with collision checks",
+    "category": "Arrays & Hashing",
+    "level": "Advanced · optional",
+    "summary": "A rolling hash is a small numeric fingerprint of a moving string window. Update it by removing the outgoing character’s contribution, shifting the remaining digits, and adding the new character.",
+    "intuition": "A rolling hash is a small numeric fingerprint of a moving string window. Update it by removing the outgoing character’s contribution, shifting the remaining digits, and adding the new character.",
+    "clues": "Repeated equal-length substring comparisons; use exact checks or a deterministic algorithm when collision-free correctness is required.",
+    "state": "Pattern/window hashes, the highest base power, and the current window endpoint.",
+    "invariant": "Equal strings have equal polynomial hashes, but unequal strings may collide. Verifying the actual substring on every hash match preserves exact correctness.",
+    "code": "def solve(text,pattern):\n    n,m=len(text),len(pattern)\n    if m==0: return list(range(n+1))\n    if m>n: return []\n    base,mod=257,1000000007; power=pow(base,m-1,mod); wanted=current=0\n    for ch in pattern: wanted=(wanted*base+ord(ch))%mod\n    out=[]\n    for i,ch in enumerate(text):\n        if i>=m: current=(current-ord(text[i-m])*power)%mod\n        current=(current*base+ord(ch))%mod\n        if i>=m-1 and current==wanted and text[i-m+1:i+1]==pattern: out.append(i-m+1)\n    return out",
+    "cases": [
+      {
+        "args": [
+          "ababa",
+          "aba"
+        ],
+        "expected": [
+          0,
+          2
+        ]
+      },
+      {
+        "args": [
+          "abc",
+          ""
+        ],
+        "expected": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "args": [
+          "abc",
+          "d"
+        ],
+        "expected": []
+      }
+    ],
+    "example": [
+      "Hash the first length-3 window aba.",
+      "Remove a’s high-place contribution and append b to get bab.",
+      "The next window aba matches the hash; compare actual characters before accepting."
+    ],
+    "time": "O(n+m) hash work; O(nm) worst-case including exact match verification.",
+    "space": "O(1) auxiliary state excluding results.",
+    "pitfalls": "Never equate a hash match with proof of string equality.",
+    "edges": "Check ['ababa', 'aba']; ['abc', '']; ['abc', 'd']. Explain what each boundary case changes.",
+    "brute": "Compare the pattern at every starting index: O(nm).",
+    "followup": "Why does double hashing reduce risk but not prove equality?",
+    "interview": "I would track pattern/window hashes, the highest base power, and the current window endpoint. Equal strings have equal polynomial hashes, but unequal strings may collide. Verifying the actual substring on every hash match preserves exact correctness.",
+    "simpler": "A rolling hash is a small numeric fingerprint of a moving string window. Update it by removing the outgoing character’s contribution, shifting the remaining digits, and adding the new character.",
+    "quiz": {
+      "question": "What makes this implementation exact despite collisions?",
+      "options": [
+        "A large prime guarantees no collisions",
+        "It compares actual strings on hash matches",
+        "It uses base 257"
+      ],
+      "answer": 1,
+      "explanation": "Equal strings have equal polynomial hashes, but unequal strings may collide. Verifying the actual substring on every hash match preserves exact correctness."
+    }
+  },
+  {
+    "id": "kmp",
+    "title": "String matching with KMP",
+    "category": "Arrays & Hashing",
+    "level": "Intermediate",
+    "summary": "After a mismatch, keep the part of the matched text that could still begin a match. The prefix table tells you the longest reusable suffix, so the text cursor never moves backward.",
+    "intuition": "After a mismatch, keep the part of the matched text that could still begin a match. The prefix table tells you the longest reusable suffix, so the text cursor never moves backward.",
+    "clues": "Find every exact occurrence of a pattern, including overlaps, in deterministic linear time.",
+    "state": "A prefix-function table and the number of pattern characters currently matched.",
+    "invariant": "After matching j characters, a mismatch can only leave a suffix that is also a pattern prefix. Repeated prefix-table fallbacks enumerate those candidates without revisiting text.",
+    "code": "def solve(text,pattern):\n    if not pattern: return list(range(len(text)+1))\n    pi=[0]*len(pattern); j=0\n    for i in range(1,len(pattern)):\n        while j and pattern[i]!=pattern[j]: j=pi[j-1]\n        if pattern[i]==pattern[j]: j+=1\n        pi[i]=j\n    out=[]; j=0\n    for i,ch in enumerate(text):\n        while j and ch!=pattern[j]: j=pi[j-1]\n        if ch==pattern[j]: j+=1\n        if j==len(pattern): out.append(i-j+1); j=pi[j-1]\n    return out",
+    "cases": [
+      {
+        "args": [
+          "ababa",
+          "aba"
+        ],
+        "expected": [
+          0,
+          2
+        ]
+      },
+      {
+        "args": [
+          "aaaa",
+          "aa"
+        ],
+        "expected": [
+          0,
+          1,
+          2
+        ]
+      },
+      {
+        "args": [
+          "abc",
+          "d"
+        ],
+        "expected": []
+      }
+    ],
+    "example": [
+      "Pattern aba has prefix table [0,0,1].",
+      "After matching aba at index 0, retain the final a as a one-character prefix.",
+      "The next b,a complete an overlapping match at index 2."
+    ],
+    "time": "O(n+m); every forward increment pays for at most one later fallback.",
+    "space": "O(m) prefix table plus output.",
+    "pitfalls": "After a full match, fall back instead of resetting to zero or reading past the pattern.",
+    "edges": "Check ['ababa', 'aba']; ['aaaa', 'aa']; ['abc', 'd']. Explain what each boundary case changes.",
+    "brute": "Naive matching compares from scratch at every start.",
+    "followup": "How can KMP search streamed chunks without storing the whole text?",
+    "interview": "I would track a prefix-function table and the number of pattern characters currently matched. After matching j characters, a mismatch can only leave a suffix that is also a pattern prefix. Repeated prefix-table fallbacks enumerate those candidates without revisiting text.",
+    "simpler": "After a mismatch, keep the part of the matched text that could still begin a match. The prefix table tells you the longest reusable suffix, so the text cursor never moves backward.",
+    "quiz": {
+      "question": "After a full match of aba, what prefix can be retained?",
+      "options": [
+        "ab",
+        "a",
+        "Nothing"
+      ],
+      "answer": 1,
+      "explanation": "After matching j characters, a mismatch can only leave a suffix that is also a pattern prefix. Repeated prefix-table fallbacks enumerate those candidates without revisiting text."
+    }
+  },
+  {
+    "id": "quickselect",
+    "title": "Quicksort & quickselect partitions",
+    "category": "Heap / Priority Queue",
+    "level": "Intermediate",
+    "summary": "A pivot splits values into smaller, equal, and larger groups. Sorting visits both sides; selection visits only the side containing the desired rank.",
+    "intuition": "A pivot splits values into smaller, equal, and larger groups. Sorting visits both sides; selection visits only the side containing the desired rank.",
+    "clues": "An order statistic such as k-th smallest; full ordering calls for sorting, often Python’s built-in sort.",
+    "state": "A target zero-based rank and three pivot partitions.",
+    "invariant": "All smaller values precede the equal block in sorted order. Comparing the rank with those block sizes identifies exactly where the answer lies.",
+    "code": "import random\ndef solve(nums,k):\n    values=nums[:]; rank=k-1\n    while values:\n        pivot=random.choice(values)\n        lower=[x for x in values if x<pivot]; equal=[x for x in values if x==pivot]; higher=[x for x in values if x>pivot]\n        if rank<len(lower): values=lower\n        elif rank<len(lower)+len(equal): return pivot\n        else: rank-=len(lower)+len(equal); values=higher",
+    "cases": [
+      {
+        "args": [
+          [
+            3,
+            2,
+            1,
+            5,
+            6,
+            4
+          ],
+          2
+        ],
+        "expected": 2
+      },
+      {
+        "args": [
+          [
+            2,
+            2,
+            2
+          ],
+          2
+        ],
+        "expected": 2
+      }
+    ],
+    "example": [
+      "For [3,2,1,5,6,4], imagine pivot 3.",
+      "The smaller partition [2,1] contains ranks 1 and 2.",
+      "Selection for rank 2 continues only there; quicksort would also sort [5,6,4]."
+    ],
+    "time": "Quickselect expected O(n), worst O(n²); quicksort expected O(n log n), worst O(n²).",
+    "space": "O(n) for these explicit partitions; in-place variants reduce auxiliary storage.",
+    "pitfalls": "Rank is adjusted only when entering the larger partition. Randomization does not remove the worst case.",
+    "edges": "Check [[3, 2, 1, 5, 6, 4], 2]; [[2, 2, 2], 2]. Explain what each boundary case changes.",
+    "brute": "Sort the whole input in O(n log n) to read one rank.",
+    "followup": "How does median-of-medians guarantee linear selection time?",
+    "interview": "I would track a target zero-based rank and three pivot partitions. All smaller values precede the equal block in sorted order. Comparing the rank with those block sizes identifies exactly where the answer lies.",
+    "simpler": "A pivot splits values into smaller, equal, and larger groups. Sorting visits both sides; selection visits only the side containing the desired rank.",
+    "quiz": {
+      "question": "What is the key difference between quicksort and quickselect?",
+      "options": [
+        "Selection recurses into only the rank-containing side",
+        "Selection always uses no extra space",
+        "Quicksort never has quadratic behavior"
+      ],
+      "answer": 0,
+      "explanation": "All smaller values precede the equal block in sorted order. Comparing the rank with those block sizes identifies exactly where the answer lies."
+    }
+  },
+  {
+    "id": "counting-sort",
+    "title": "Counting sort & bounded value ranges",
+    "category": "Arrays & Hashing",
+    "level": "Intermediate",
+    "summary": "When integer values occupy a small range, count each value and emit them in increasing order. The range size, not just the number of values, determines whether this is worthwhile.",
+    "intuition": "When integer values occupy a small range, count each value and emit them in increasing order. The range size, not just the number of values, determines whether this is worthwhile.",
+    "clues": "Integer keys with range U comparable to input size; avoid allocating enormous arrays for sparse large values.",
+    "state": "An offset for the minimum value and one count per possible value.",
+    "invariant": "Counts preserve every input multiplicity. Emitting keys in increasing order therefore produces the sorted multiset.",
+    "code": "def solve(nums):\n    if not nums: return []\n    low,high=min(nums),max(nums); counts=[0]*(high-low+1)\n    for value in nums: counts[value-low]+=1\n    return [i+low for i,count in enumerate(counts) for _ in range(count)]",
+    "cases": [
+      {
+        "args": [
+          [
+            3,
+            -1,
+            2,
+            -1
+          ]
+        ],
+        "expected": [
+          -1,
+          -1,
+          2,
+          3
+        ]
+      },
+      {
+        "args": [
+          []
+        ],
+        "expected": []
+      }
+    ],
+    "example": [
+      "For [3,-1,2,-1], offset all values by -1.",
+      "Count -1 twice, 2 once, 3 once.",
+      "Emit those counts in increasing key order."
+    ],
+    "time": "O(n+U) time for range width U.",
+    "space": "O(U) auxiliary space plus output.",
+    "pitfalls": "This integer-only version is not a stable sort of records; stable record placement needs prefix counts.",
+    "edges": "Check [[3, -1, 2, -1]]; [[]]. Explain what each boundary case changes.",
+    "brute": "Comparison sorting takes O(n log n) independent of numeric range.",
+    "followup": "How can prefix counts place equal-key records stably?",
+    "interview": "I would track an offset for the minimum value and one count per possible value. Counts preserve every input multiplicity. Emitting keys in increasing order therefore produces the sorted multiset.",
+    "simpler": "When integer values occupy a small range, count each value and emit them in increasing order. The range size, not just the number of values, determines whether this is worthwhile.",
+    "quiz": {
+      "question": "Which input is a poor fit?",
+      "options": [
+        "A million values between 0 and 9",
+        "Ten values spread across a trillion possible integers",
+        "Negative values in a small range"
+      ],
+      "answer": 1,
+      "explanation": "Counts preserve every input multiplicity. Emitting keys in increasing order therefore produces the sorted multiset."
+    }
+  },
+  {
+    "id": "sweep-line",
+    "title": "Sweep line & endpoint semantics",
+    "category": "Intervals",
+    "level": "Intermediate",
+    "summary": "Walk through sorted events rather than simulating every moment in time. Each start adds an active interval and each end removes one.",
+    "intuition": "Walk through sorted events rather than simulating every moment in time. Each start adds an active interval and each end removes one.",
+    "clues": "Overlap counts, resource allocation, interval coverage, or geometric events.",
+    "state": "Sorted (time, change) events, the active count, and its maximum.",
+    "invariant": "Between consecutive event times the set of active intervals cannot change, so evaluating all events captures every possible maximum.",
+    "code": "def solve(intervals):\n    events=[]\n    for start,end in intervals:\n        if start<end: events.extend([(start,1),(end,-1)])\n    active=best=0\n    for _,change in sorted(events):\n        active+=change; best=max(best,active)\n    return best",
+    "cases": [
+      {
+        "args": [
+          [
+            [
+              0,
+              10
+            ],
+            [
+              5,
+              15
+            ],
+            [
+              10,
+              20
+            ]
+          ]
+        ],
+        "expected": 2
+      },
+      {
+        "args": [
+          [
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              3
+            ]
+          ]
+        ],
+        "expected": 1
+      },
+      {
+        "args": [
+          []
+        ],
+        "expected": 0
+      }
+    ],
+    "example": [
+      "At time 0, one meeting begins.",
+      "At time 5, active count becomes 2.",
+      "At time 10, process the ending meeting before the starting one, so peak stays 2."
+    ],
+    "time": "O(n log n) sorting, then O(n) event processing.",
+    "space": "O(n) events.",
+    "pitfalls": "Endpoint ties depend on the contract. Half-open intervals process ends before starts; closed intervals may need the opposite.",
+    "edges": "Check [[[0, 10], [5, 15], [10, 20]]]; [[[1, 2], [2, 3]]]; [[]]. Explain what each boundary case changes.",
+    "brute": "Check overlap at every time point or scan all pairs.",
+    "followup": "How would you compute total covered length instead of maximum overlap?",
+    "interview": "I would track sorted (time, change) events, the active count, and its maximum. Between consecutive event times the set of active intervals cannot change, so evaluating all events captures every possible maximum.",
+    "simpler": "Walk through sorted events rather than simulating every moment in time. Each start adds an active interval and each end removes one.",
+    "quiz": {
+      "question": "For [1,2) and [2,3), how many rooms are needed?",
+      "options": [
+        "One",
+        "Two",
+        "It depends on sorting stability"
+      ],
+      "answer": 0,
+      "explanation": "Between consecutive event times the set of active intervals cannot change, so evaluating all events captures every possible maximum."
+    }
+  },
+  {
+    "id": "coordinate-compression",
+    "title": "Coordinate compression",
+    "category": "Arrays & Hashing",
+    "level": "Intermediate",
+    "summary": "Replace large sparse values with their sorted ranks. Comparisons remain meaningful, while array-indexed structures can use compact storage.",
+    "intuition": "Replace large sparse values with their sorted ranks. Comparisons remain meaningful, while array-indexed structures can use compact storage.",
+    "clues": "Fenwick/segment tree queries on large coordinates; offline rank counting.",
+    "state": "Sorted unique values and a map from value to rank.",
+    "invariant": "The rank map preserves equality and ordering because it assigns consecutive indices in sorted order. It does not preserve numeric distances.",
+    "code": "def solve(nums):\n    ordered=sorted(set(nums)); rank={value:i for i,value in enumerate(ordered)}\n    return [rank[value] for value in nums]",
+    "cases": [
+      {
+        "args": [
+          [
+            100,
+            -5,
+            100,
+            999
+          ]
+        ],
+        "expected": [
+          1,
+          0,
+          1,
+          2
+        ]
+      },
+      {
+        "args": [
+          []
+        ],
+        "expected": []
+      }
+    ],
+    "example": [
+      "Unique sorted values are [-5,100,999].",
+      "Assign ranks 0,1,2.",
+      "[100,-5,100,999] becomes [1,0,1,2]."
+    ],
+    "time": "O(n log n) time.",
+    "space": "O(n) mapping and output.",
+    "pitfalls": "A rank gap of 1 does not mean an original coordinate gap of 1.",
+    "edges": "Check [[100, -5, 100, 999]]; [[]]. Explain what each boundary case changes.",
+    "brute": "Allocate by the largest coordinate, which can waste enormous memory.",
+    "followup": "How do you answer queries whose value was not in the original set?",
+    "interview": "I would track sorted unique values and a map from value to rank. The rank map preserves equality and ordering because it assigns consecutive indices in sorted order. It does not preserve numeric distances.",
+    "simpler": "Replace large sparse values with their sorted ranks. Comparisons remain meaningful, while array-indexed structures can use compact storage.",
+    "quiz": {
+      "question": "Which property is not preserved?",
+      "options": [
+        "Equality",
+        "Order",
+        "Numeric distance"
+      ],
+      "answer": 2,
+      "explanation": "The rank map preserves equality and ordering because it assigns consecutive indices in sorted order. It does not preserve numeric distances."
+    }
+  },
+  {
+    "id": "bounds",
+    "title": "Lower bounds, upper bounds & duplicate searches",
+    "category": "Binary Search",
+    "level": "Foundational",
+    "summary": "A lower bound finds the first value at least the target; an upper bound finds the first value greater than it. Their difference counts equal values.",
+    "intuition": "A lower bound finds the first value at least the target; an upper bound finds the first value greater than it. Their difference counts equal values.",
+    "clues": "First/last occurrences, insertion positions, frequency in sorted data, and predecessor queries.",
+    "state": "A half-open search interval [left,right) with a sentinel right=len(nums).",
+    "invariant": "For lower bound, everything left of left is below the target and everything at or after right is at least it. Each comparison preserves that partition until the boundary is found.",
+    "code": "def solve(nums,target):\n    def bound(strict):\n        left,right=0,len(nums)\n        while left<right:\n            mid=(left+right)//2\n            if nums[mid]<target or (strict and nums[mid]==target): left=mid+1\n            else: right=mid\n        return left\n    first,after=bound(False),bound(True)\n    return [first,after-1] if first<after else [-1,-1]",
+    "cases": [
+      {
+        "args": [
+          [
+            1,
+            2,
+            2,
+            2,
+            4
+          ],
+          2
+        ],
+        "expected": [
+          1,
+          3
+        ]
+      },
+      {
+        "args": [
+          [
+            1,
+            3
+          ],
+          2
+        ],
+        "expected": [
+          -1,
+          -1
+        ]
+      },
+      {
+        "args": [
+          [],
+          1
+        ],
+        "expected": [
+          -1,
+          -1
+        ]
+      }
+    ],
+    "example": [
+      "For [1,2,2,2,4], lower bound of 2 is index 1.",
+      "Upper bound is index 4.",
+      "The equal range is [1,4), so first/last are [1,3]."
+    ],
+    "time": "O(log n) time for each boundary.",
+    "space": "O(1) auxiliary space.",
+    "pitfalls": "Do not mix inclusive and half-open updates. The upper bound may equal n.",
+    "edges": "Check [[1, 2, 2, 2, 4], 2]; [[1, 3], 2]; [[], 1]. Explain what each boundary case changes.",
+    "brute": "Scan for the first and last equal positions in O(n).",
+    "followup": "How do bisect_left and bisect_right encode these two predicates?",
+    "interview": "I would track a half-open search interval [left,right) with a sentinel right=len(nums). For lower bound, everything left of left is below the target and everything at or after right is at least it. Each comparison preserves that partition until the boundary is found.",
+    "simpler": "A lower bound finds the first value at least the target; an upper bound finds the first value greater than it. Their difference counts equal values.",
+    "quiz": {
+      "question": "Why can right start at len(nums)?",
+      "options": [
+        "It is a valid array element",
+        "It is an exclusive sentinel boundary",
+        "The list has an extra hidden item"
+      ],
+      "answer": 1,
+      "explanation": "For lower bound, everything left of left is below the target and everything at or after right is at least it. Each comparison preserves that partition until the boundary is found."
+    }
+  },
+  {
+    "id": "segment-tree",
+    "title": "Segment trees: updates & range sums",
+    "category": "Arrays & Hashing",
+    "level": "Advanced · optional",
+    "summary": "A segment tree stores summaries of intervals. Updating one element changes only its ancestors; a range query combines a small collection of complete tree intervals.",
+    "intuition": "A segment tree stores summaries of intervals. Updating one element changes only its ancestors; a range query combines a small collection of complete tree intervals.",
+    "clues": "Many point updates interleaved with range queries. Prefix sums are simpler when values never change.",
+    "state": "Leaves holding values, parent sums, and two query boundaries moving upward.",
+    "invariant": "Every parent equals the sum of its two children. A query consumes disjoint tree intervals whose union is exactly the requested half-open range.",
+    "code": "def solve(nums,operations):\n    n=len(nums); tree=[0]*n+nums[:]\n    for i in range(n-1,0,-1): tree[i]=tree[2*i]+tree[2*i+1]\n    out=[]\n    for op in operations:\n        if op[0]=='set':\n            i=n+op[1]; tree[i]=op[2]\n            while i>1:\n                i//=2; tree[i]=tree[2*i]+tree[2*i+1]\n        else:\n            left,right=n+op[1],n+op[2]; total=0\n            while left<right:\n                if left&1: total+=tree[left]; left+=1\n                if right&1: right-=1; total+=tree[right]\n                left//=2; right//=2\n            out.append(total)\n    return out",
+    "cases": [
+      {
+        "args": [
+          [
+            1,
+            3,
+            5
+          ],
+          [
+            [
+              "sum",
+              0,
+              3
+            ],
+            [
+              "set",
+              1,
+              2
+            ],
+            [
+              "sum",
+              0,
+              3
+            ],
+            [
+              "sum",
+              1,
+              1
+            ]
+          ]
+        ],
+        "expected": [
+          9,
+          8,
+          0
+        ]
+      },
+      {
+        "args": [
+          [
+            7
+          ],
+          [
+            [
+              "sum",
+              0,
+              1
+            ]
+          ]
+        ],
+        "expected": [
+          7
+        ]
+      }
+    ],
+    "example": [
+      "Leaves [1,3,5] summarize to total 9.",
+      "Changing index 1 to 2 updates its ancestors.",
+      "The same range now sums to 8; an empty range sums to 0."
+    ],
+    "time": "O(n) build; O(log n) per update or query.",
+    "space": "O(n) tree storage.",
+    "pitfalls": "Ranges here exclude right. Lazy propagation is needed for efficient range updates, not just point updates.",
+    "edges": "Check [[1, 3, 5], [['sum', 0, 3], ['set', 1, 2], ['sum', 0, 3], ['sum', 1, 1]]]; [[7], [['sum', 0, 1]]]. Explain what each boundary case changes.",
+    "brute": "Scan each query in O(n); prefix sums make reads fast but point changes expensive.",
+    "followup": "How would lazy tags support range addition?",
+    "interview": "I would track leaves holding values, parent sums, and two query boundaries moving upward. Every parent equals the sum of its two children. A query consumes disjoint tree intervals whose union is exactly the requested half-open range.",
+    "simpler": "A segment tree stores summaries of intervals. Updating one element changes only its ancestors; a range query combines a small collection of complete tree intervals.",
+    "quiz": {
+      "question": "Why are only logarithmically many ancestors updated?",
+      "options": [
+        "A balanced tree halves the remaining interval each level",
+        "All leaves change",
+        "The tree always has three levels"
+      ],
+      "answer": 0,
+      "explanation": "Every parent equals the sum of its two children. A query consumes disjoint tree intervals whose union is exactly the requested half-open range."
+    }
+  },
+  {
+    "id": "binary-lifting",
+    "title": "Binary lifting & ancestor queries",
+    "category": "Trees",
+    "level": "Advanced · optional",
+    "summary": "Precompute ancestors at distances 1, 2, 4, 8, and so on. Decompose a requested distance into binary bits and take those jumps.",
+    "intuition": "Precompute ancestors at distances 1, 2, 4, 8, and so on. Decompose a requested distance into binary bits and take those jumps.",
+    "clues": "Many k-th ancestor queries or LCA queries on a fixed rooted tree.",
+    "state": "up[bit][node], the ancestor 2^bit edges above each node; -1 means no ancestor.",
+    "invariant": "Two consecutive 2^(b−1) jumps equal one 2^b jump. Combining the set bits of k climbs exactly k edges.",
+    "code": "def solve(parent,queries):\n    n=len(parent); levels=max(1,n.bit_length()); up=[parent[:]]\n    for bit in range(1,levels):\n        up.append([-1 if up[-1][v]==-1 else up[-1][up[-1][v]] for v in range(n)])\n    out=[]\n    for node,k in queries:\n        if k>=n: out.append(-1); continue\n        bit=0\n        while k and node!=-1:\n            if k&1: node=up[bit][node]\n            k>>=1; bit+=1\n        out.append(node)\n    return out",
+    "cases": [
+      {
+        "args": [
+          [
+            -1,
+            0,
+            0,
+            1,
+            1,
+            2,
+            2
+          ],
+          [
+            [
+              3,
+              1
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              3
+            ],
+            [
+              4,
+              0
+            ]
+          ]
+        ],
+        "expected": [
+          1,
+          0,
+          -1,
+          4
+        ]
+      }
+    ],
+    "example": [
+      "For node 3, its parent is 1 and its two-step ancestor is 0.",
+      "A three-step query uses jumps of 1 and 2.",
+      "The root has no parent, so the result is -1."
+    ],
+    "time": "O(n log n) preprocessing; O(log n) per query.",
+    "space": "O(n log n).",
+    "pitfalls": "Check the -1 sentinel before indexing; Python would interpret it as the final array element.",
+    "edges": "Check [[-1, 0, 0, 1, 1, 2, 2], [[3, 1], [5, 2], [6, 3], [4, 0]]]. Explain what each boundary case changes.",
+    "brute": "Walk one parent edge at a time, O(k) per query.",
+    "followup": "For LCA, how can you first equalize depths then lift both nodes?",
+    "interview": "I would track up[bit][node], the ancestor 2^bit edges above each node; -1 means no ancestor. Two consecutive 2^(b−1) jumps equal one 2^b jump. Combining the set bits of k climbs exactly k edges.",
+    "simpler": "Precompute ancestors at distances 1, 2, 4, 8, and so on. Decompose a requested distance into binary bits and take those jumps.",
+    "quiz": {
+      "question": "How do you climb 13 edges?",
+      "options": [
+        "Jumps of 8, 4, and 1",
+        "Thirteen table columns",
+        "One jump of 13 must be precomputed"
+      ],
+      "answer": 0,
+      "explanation": "Two consecutive 2^(b−1) jumps equal one 2^b jump. Combining the set bits of k climbs exactly k edges."
+    }
+  },
+  {
+    "id": "meet-in-middle",
+    "title": "Meet-in-the-middle subset search",
+    "category": "Backtracking",
+    "level": "Advanced · optional",
+    "summary": "When a full subset search is too large but half-size searches fit, split the items in two. Enumerate both halves, then match complementary results.",
+    "intuition": "When a full subset search is too large but half-size searches fit, split the items in two. Enumerate both halves, then match complementary results.",
+    "clues": "Roughly 30–40 items with large or signed values, where sum-indexed DP is too large.",
+    "state": "All subset sums of each half and a set for complement lookup.",
+    "invariant": "Every subset decomposes uniquely into a subset of the left half and one of the right. A target is reachable exactly when two half sums add to it.",
+    "code": "def solve(nums,target):\n    def sums(values):\n        out=[0]\n        for value in values: out += [total+value for total in out]\n        return out\n    mid=len(nums)//2; left=set(sums(nums[:mid]))\n    return any(target-total in left for total in sums(nums[mid:]))",
+    "cases": [
+      {
+        "args": [
+          [
+            3,
+            -2,
+            7,
+            1
+          ],
+          5
+        ],
+        "expected": true
+      },
+      {
+        "args": [
+          [
+            2,
+            4
+          ],
+          3
+        ],
+        "expected": false
+      },
+      {
+        "args": [
+          [],
+          0
+        ],
+        "expected": true
+      }
+    ],
+    "example": [
+      "Split [3,-2] and [7,1].",
+      "Left sums include -2; right sums include 7.",
+      "Their sum 5 proves a matching subset exists."
+    ],
+    "time": "O(2^(n/2)) expected hashing work, ignoring integer bit costs.",
+    "space": "O(2^(n/2)).",
+    "pitfalls": "The empty subset contributes sum 0. Negative values invalidate pruning based only on exceeding the target.",
+    "edges": "Check [[3, -2, 7, 1], 5]; [[2, 4], 3]; [[], 0]. Explain what each boundary case changes.",
+    "brute": "Enumerate all 2ⁿ subsets; small nonnegative sums may favor knapsack DP.",
+    "followup": "How would you count matching subsets rather than test existence?",
+    "interview": "I would track all subset sums of each half and a set for complement lookup. Every subset decomposes uniquely into a subset of the left half and one of the right. A target is reachable exactly when two half sums add to it.",
+    "simpler": "When a full subset search is too large but half-size searches fit, split the items in two. Enumerate both halves, then match complementary results.",
+    "quiz": {
+      "question": "Why does splitting help?",
+      "options": [
+        "It changes exponential work from 2ⁿ to roughly 2^(n/2)",
+        "It makes all subset problems polynomial",
+        "It requires all values to be positive"
+      ],
+      "answer": 0,
+      "explanation": "Every subset decomposes uniquely into a subset of the left half and one of the right. A target is reachable exactly when two half sums add to it."
+    }
+  },
+  {
+    "id": "reservoir-sampling",
+    "title": "Reservoir sampling",
+    "category": "Math & Geometry",
+    "level": "Advanced · optional",
+    "summary": "Keep a uniform random sample while reading a stream whose length you do not know. Each new item gets a chance to replace a retained item.",
+    "intuition": "Keep a uniform random sample while reading a stream whose length you do not know. Each new item gets a chance to replace a retained item.",
+    "clues": "Uniform sampling with bounded memory and one pass over an unknown-length stream.",
+    "state": "A reservoir of k items and the number of items seen.",
+    "invariant": "At step i, the new item is retained with probability k/i. An earlier retained item survives with probability (i−1)/i, keeping every seen item’s inclusion probability at k/i.",
+    "code": "import random\ndef solve(stream,k,seed):\n    rng=random.Random(seed); reservoir=[]\n    for i,value in enumerate(stream):\n        if i<k: reservoir.append(value)\n        else:\n            j=rng.randrange(i+1)\n            if j<k: reservoir[j]=value\n    return reservoir",
+    "cases": [
+      {
+        "args": [
+          [
+            1,
+            2,
+            3
+          ],
+          3,
+          7
+        ],
+        "expected": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "args": [
+          [
+            1,
+            2,
+            3
+          ],
+          0,
+          7
+        ],
+        "expected": []
+      },
+      {
+        "args": [
+          [],
+          2,
+          7
+        ],
+        "expected": []
+      }
+    ],
+    "example": [
+      "For a sample of size 1, keep the first item.",
+      "Replace it with the second with probability 1/2.",
+      "At the third item, replace with probability 1/3; each of the three now has probability 1/3."
+    ],
+    "time": "O(n) stream processing.",
+    "space": "O(k) reservoir.",
+    "pitfalls": "Use a uniform integer in 0..i, not a fixed 50% replacement probability. A seeded example is reproducible, not evidence of statistical uniformity.",
+    "edges": "Check [[1, 2, 3], 3, 7]; [[1, 2, 3], 0, 7]; [[], 2, 7]. Explain what each boundary case changes.",
+    "brute": "Store the entire stream and sample afterward using O(n) memory.",
+    "followup": "How would you sample with unequal item weights?",
+    "interview": "I would track a reservoir of k items and the number of items seen. At step i, the new item is retained with probability k/i. An earlier retained item survives with probability (i−1)/i, keeping every seen item’s inclusion probability at k/i.",
+    "simpler": "Keep a uniform random sample while reading a stream whose length you do not know. Each new item gets a chance to replace a retained item.",
+    "quiz": {
+      "question": "What is the inclusion probability after i≥k items?",
+      "options": [
+        "1/2",
+        "k/i",
+        "1/k"
+      ],
+      "answer": 1,
+      "explanation": "At step i, the new item is retained with probability k/i. An earlier retained item survives with probability (i−1)/i, keeping every seen item’s inclusion probability at k/i."
+    }
+  },
+  {
+    "id": "bellman-ford-general",
+    "title": "Bellman–Ford & negative cycles",
+    "category": "Advanced Graphs",
+    "level": "Intermediate",
+    "summary": "Relax every edge repeatedly so paths can gain one more edge each round. Unlike Dijkstra, this works with negative edges; a further improvement after V−1 rounds exposes a reachable negative cycle.",
+    "intuition": "Relax every edge repeatedly so paths can gain one more edge each round. Unlike Dijkstra, this works with negative edges; a further improvement after V−1 rounds exposes a reachable negative cycle.",
+    "clues": "Single-source shortest paths with negative edges, or detecting reachable negative cycles.",
+    "state": "Distances initialized to infinity except the source, and a fresh distance snapshot for each round.",
+    "invariant": "After k rounds, distances cover all routes with at most k edges. Without a reachable negative cycle, a shortest route can be simple and uses at most V−1 edges.",
+    "code": "def solve(n,edges,source):\n    dist=[float('inf')]*n; dist[source]=0\n    for _ in range(n-1):\n        nxt=dist[:]\n        for a,b,w in edges: nxt[b]=min(nxt[b],dist[a]+w)\n        if nxt==dist: break\n        dist=nxt\n    if any(dist[a]+w<dist[b] for a,b,w in edges): return 'negative cycle'\n    return [None if x==float('inf') else x for x in dist]",
+    "cases": [
+      {
+        "args": [
+          3,
+          [
+            [
+              0,
+              1,
+              4
+            ],
+            [
+              0,
+              2,
+              5
+            ],
+            [
+              1,
+              2,
+              -2
+            ]
+          ],
+          0
+        ],
+        "expected": [
+          0,
+          4,
+          2
+        ]
+      },
+      {
+        "args": [
+          3,
+          [
+            [
+              0,
+              1,
+              1
+            ],
+            [
+              1,
+              2,
+              -2
+            ],
+            [
+              2,
+              1,
+              0
+            ]
+          ],
+          0
+        ],
+        "expected": "negative cycle"
+      },
+      {
+        "args": [
+          3,
+          [
+            [
+              1,
+              2,
+              -1
+            ],
+            [
+              2,
+              1,
+              -1
+            ]
+          ],
+          0
+        ],
+        "expected": [
+          0,
+          null,
+          null
+        ]
+      }
+    ],
+    "example": [
+      "Initially only source 0 has distance 0.",
+      "One round finds distances 4 to 1 and 5 to 2.",
+      "The next round uses 0→1→2 to improve distance 2 to 2."
+    ],
+    "time": "O(VE + V²) with copied arrays; the conventional in-place form is O(VE).",
+    "space": "O(V) distance snapshots.",
+    "pitfalls": "An unreachable negative cycle does not affect source distances. A reachable negative cycle has no finite shortest distances for downstream vertices.",
+    "edges": "Check [3, [[0, 1, 4], [0, 2, 5], [1, 2, -2]], 0]; [3, [[0, 1, 1], [1, 2, -2], [2, 1, 0]], 0]; [3, [[1, 2, -1], [2, 1, -1]], 0]. Explain what each boundary case changes.",
+    "brute": "Enumerate simple paths, exponential work. Dijkstra is faster when all weights are nonnegative.",
+    "followup": "How would you mark exactly which vertices have distance negative infinity?",
+    "interview": "I would track distances initialized to infinity except the source, and a fresh distance snapshot for each round. After k rounds, distances cover all routes with at most k edges. Without a reachable negative cycle, a shortest route can be simple and uses at most V−1 edges.",
+    "simpler": "Relax every edge repeatedly so paths can gain one more edge each round. Unlike Dijkstra, this works with negative edges; a further improvement after V−1 rounds exposes a reachable negative cycle.",
+    "quiz": {
+      "question": "Which improvement proves a reachable negative cycle?",
+      "options": [
+        "Any improvement in round 1",
+        "An improvement after V−1 full rounds",
+        "An unreachable edge with negative weight"
+      ],
+      "answer": 1,
+      "explanation": "After k rounds, distances cover all routes with at most k edges. Without a reachable negative cycle, a shortest route can be simple and uses at most V−1 edges."
+    }
+  },
+  {
+    "id": "floyd-warshall",
+    "title": "Floyd–Warshall: all-pairs shortest paths",
+    "category": "Advanced Graphs",
+    "level": "Intermediate",
+    "summary": "Allow one more vertex as an intermediate stop at each stage. A route either avoids that vertex or goes through it, splitting into two already solved routes.",
+    "intuition": "Allow one more vertex as an intermediate stop at each stage. A route either avoids that vertex or goes through it, splitting into two already solved routes.",
+    "clues": "All-pairs distances on a small dense graph; negative edges are allowed if no relevant negative cycle exists.",
+    "state": "A V×V distance matrix and the set of permitted intermediate vertices.",
+    "invariant": "After stage k, dist[i][j] is the cheapest path whose intermediate vertices are among 0..k. The recurrence compares avoiding k with passing through k.",
+    "code": "def solve(n,edges):\n    dist=[[float('inf')]*n for _ in range(n)]\n    for i in range(n): dist[i][i]=0\n    for a,b,w in edges: dist[a][b]=min(dist[a][b],w)\n    for k in range(n):\n        for i in range(n):\n            for j in range(n): dist[i][j]=min(dist[i][j],dist[i][k]+dist[k][j])\n    if any(dist[i][i]<0 for i in range(n)): return 'negative cycle'\n    return [[None if x==float('inf') else x for x in row] for row in dist]",
+    "cases": [
+      {
+        "args": [
+          3,
+          [
+            [
+              0,
+              1,
+              2
+            ],
+            [
+              1,
+              2,
+              3
+            ],
+            [
+              0,
+              2,
+              9
+            ]
+          ]
+        ],
+        "expected": [
+          [
+            0,
+            2,
+            5
+          ],
+          [
+            null,
+            0,
+            3
+          ],
+          [
+            null,
+            null,
+            0
+          ]
+        ]
+      },
+      {
+        "args": [
+          1,
+          [
+            [
+              0,
+              0,
+              -1
+            ]
+          ]
+        ],
+        "expected": "negative cycle"
+      }
+    ],
+    "example": [
+      "Initial edge 0→2 costs 9.",
+      "When intermediate vertex 1 is allowed, compare 9 with 2+3.",
+      "Update 0→2 to 5."
+    ],
+    "time": "O(V³), three nested vertex loops.",
+    "space": "O(V²) distances.",
+    "pitfalls": "The intermediate-vertex loop must be outermost for this recurrence. Preserve a negative self-loop instead of overwriting it with zero.",
+    "edges": "Check [3, [[0, 1, 2], [1, 2, 3], [0, 2, 9]]]; [1, [[0, 0, -1]]]. Explain what each boundary case changes.",
+    "brute": "Run a single-source shortest-path algorithm from each vertex; preferable for many sparse graphs.",
+    "followup": "How would a next-hop matrix reconstruct actual paths?",
+    "interview": "I would track a V×V distance matrix and the set of permitted intermediate vertices. After stage k, dist[i][j] is the cheapest path whose intermediate vertices are among 0..k. The recurrence compares avoiding k with passing through k.",
+    "simpler": "Allow one more vertex as an intermediate stop at each stage. A route either avoids that vertex or goes through it, splitting into two already solved routes.",
+    "quiz": {
+      "question": "Why is k the outer loop?",
+      "options": [
+        "It defines the completed intermediate-vertex stage",
+        "It is faster to type",
+        "The order does not matter"
+      ],
+      "answer": 0,
+      "explanation": "After stage k, dist[i][j] is the cheapest path whose intermediate vertices are among 0..k. The recurrence compares avoiding k with passing through k."
+    }
+  },
+  {
+    "id": "kruskal",
+    "title": "Minimum spanning trees: Kruskal & Prim",
+    "category": "Advanced Graphs",
+    "level": "Intermediate",
+    "summary": "A minimum spanning tree connects every vertex using the least total edge cost. Kruskal takes safe edges from cheapest upward; Prim grows one connected tree using its cheapest outgoing edge.",
+    "intuition": "A minimum spanning tree connects every vertex using the least total edge cost. Kruskal takes safe edges from cheapest upward; Prim grows one connected tree using its cheapest outgoing edge.",
+    "clues": "Connect all locations cheaply, rather than minimize a route from one source. The graph is undirected.",
+    "state": "Sorted edges, disjoint-set components, selected edge count, and total cost.",
+    "invariant": "The cheapest edge joining two current components is safe by the cut property. Rejecting edges within a component prevents cycles.",
+    "code": "def solve(n,edges):\n    parent=list(range(n)); size=[1]*n\n    def find(x):\n        while parent[x]!=x:\n            parent[x]=parent[parent[x]]; x=parent[x]\n        return x\n    total=used=0\n    for a,b,w in sorted(edges,key=lambda e:e[2]):\n        a,b=find(a),find(b)\n        if a==b: continue\n        if size[a]<size[b]: a,b=b,a\n        parent[b]=a; size[a]+=size[b]; total+=w; used+=1\n    return total if used==max(0,n-1) else None",
+    "cases": [
+      {
+        "args": [
+          3,
+          [
+            [
+              0,
+              1,
+              1
+            ],
+            [
+              1,
+              2,
+              2
+            ],
+            [
+              0,
+              2,
+              5
+            ]
+          ]
+        ],
+        "expected": 3
+      },
+      {
+        "args": [
+          3,
+          [
+            [
+              0,
+              1,
+              1
+            ]
+          ]
+        ],
+        "expected": null
+      },
+      {
+        "args": [
+          1,
+          []
+        ],
+        "expected": 0
+      }
+    ],
+    "example": [
+      "Take edge 0–1 costing 1.",
+      "Take edge 1–2 costing 2.",
+      "Reject 0–2 because it would make a cycle; total is 3."
+    ],
+    "time": "O(E log E) sorting plus almost-linear unions. Prim with a heap is O((V+E) log V) with a decrease-key heap.",
+    "space": "O(V+E) including sorted edges.",
+    "pitfalls": "A disconnected graph has a minimum spanning forest, not a spanning tree. Negative weights are fine for MSTs.",
+    "edges": "Check [3, [[0, 1, 1], [1, 2, 2], [0, 2, 5]]]; [3, [[0, 1, 1]]]; [1, []]. Explain what each boundary case changes.",
+    "brute": "Enumerate all n−1-edge subsets and test which are trees.",
+    "followup": "When is dense O(V²) Prim preferable to sorting all edges?",
+    "interview": "I would track sorted edges, disjoint-set components, selected edge count, and total cost. The cheapest edge joining two current components is safe by the cut property. Rejecting edges within a component prevents cycles.",
+    "simpler": "A minimum spanning tree connects every vertex using the least total edge cost. Kruskal takes safe edges from cheapest upward; Prim grows one connected tree using its cheapest outgoing edge.",
+    "quiz": {
+      "question": "Does an MST minimize every source-to-node path?",
+      "options": [
+        "Yes",
+        "No; it minimizes total tree weight",
+        "Only when weights are positive"
+      ],
+      "answer": 1,
+      "explanation": "The cheapest edge joining two current components is safe by the cut property. Rejecting edges within a component prevents cycles."
+    }
+  },
+  {
+    "id": "bitmask-dp",
+    "title": "Bitmask DP & assignment states",
+    "category": "2-D Dynamic Programming",
+    "level": "Advanced · optional",
+    "summary": "When a small set of choices matters, encode the chosen subset as bits. Different orderings that leave the same assigned set can share one subproblem.",
+    "intuition": "When a small set of choices matters, encode the chosen subset as bits. Different orderings that leave the same assigned set can share one subproblem.",
+    "clues": "Assignment or subset-routing problems with around 15–22 items, where 2ⁿ states are feasible.",
+    "state": "dp[mask], the cheapest assignment of the first popcount(mask) workers to exactly the jobs in mask.",
+    "invariant": "The number of assigned jobs determines the next worker. Adding each unassigned job covers every assignment once through its final transition, while taking minima merges equivalent states.",
+    "code": "def solve(cost):\n    n=len(cost); dp=[float('inf')]*(1<<n); dp[0]=0\n    for mask in range(1<<n):\n        worker=mask.bit_count()\n        if worker==n: continue\n        for job in range(n):\n            if not mask&(1<<job):\n                nxt=mask|(1<<job); dp[nxt]=min(dp[nxt],dp[mask]+cost[worker][job])\n    return dp[-1]",
+    "cases": [
+      {
+        "args": [
+          [
+            [
+              9,
+              2
+            ],
+            [
+              3,
+              8
+            ]
+          ]
+        ],
+        "expected": 5
+      },
+      {
+        "args": [
+          []
+        ],
+        "expected": 0
+      }
+    ],
+    "example": [
+      "With two workers, mask 00 costs 0.",
+      "Assign worker 0 to job 1 for cost 2, reaching mask 10.",
+      "Assign worker 1 to job 0 for 3 more, total 5."
+    ],
+    "time": "O(n·2ⁿ) transitions.",
+    "space": "O(2ⁿ) DP states.",
+    "pitfalls": "A mask alone is sufficient here because its bit count determines the next worker; route problems often also need the last vertex.",
+    "edges": "Check [[[9, 2], [3, 8]]]; [[]]. Explain what each boundary case changes.",
+    "brute": "Enumerate all n! job permutations.",
+    "followup": "Why does traveling-salesperson DP additionally need the last visited vertex?",
+    "interview": "I would track dp[mask], the cheapest assignment of the first popcount(mask) workers to exactly the jobs in mask. The number of assigned jobs determines the next worker. Adding each unassigned job covers every assignment once through its final transition, while taking minima merges equivalent states.",
+    "simpler": "When a small set of choices matters, encode the chosen subset as bits. Different orderings that leave the same assigned set can share one subproblem.",
+    "quiz": {
+      "question": "What information identifies the next worker?",
+      "options": [
+        "The largest set bit",
+        "The number of set bits",
+        "The total cost"
+      ],
+      "answer": 1,
+      "explanation": "The number of assigned jobs determines the next worker. Adding each unassigned job covers every assignment once through its final transition, while taking minima merges equivalent states."
+    }
+  },
+  {
+    "id": "tree-dp",
+    "title": "Tree DP: choosing compatible nodes",
+    "category": "Trees",
+    "level": "Intermediate",
+    "summary": "Have each subtree return the answers its parent needs. If adjacent nodes cannot both be selected, return two values: the best score when taking the root and when skipping it.",
+    "intuition": "Have each subtree return the answers its parent needs. If adjacent nodes cannot both be selected, return two values: the best score when taking the root and when skipping it.",
+    "clues": "Optimization over a tree with local parent-child constraints; recursive return-value design.",
+    "state": "Two scores per node: take and skip; parent ordering for bottom-up processing.",
+    "invariant": "Taking a node forces every child to be skipped. Skipping it permits the better child state independently, because distinct subtrees share no edges.",
+    "code": "def solve(weights,edges):\n    n=len(weights)\n    if not n: return 0\n    graph=[[] for _ in range(n)]\n    for a,b in edges: graph[a].append(b); graph[b].append(a)\n    parent=[-1]*n; order=[0]\n    for node in order:\n        for child in graph[node]:\n            if child!=parent[node]: parent[child]=node; order.append(child)\n    take=weights[:]; skip=[0]*n\n    for node in reversed(order):\n        for child in graph[node]:\n            if parent[child]==node:\n                take[node]+=skip[child]; skip[node]+=max(take[child],skip[child])\n    return max(take[0],skip[0])",
+    "cases": [
+      {
+        "args": [
+          [
+            3,
+            4,
+            5
+          ],
+          [
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              2
+            ]
+          ]
+        ],
+        "expected": 9
+      },
+      {
+        "args": [
+          [
+            -3
+          ],
+          []
+        ],
+        "expected": 0
+      },
+      {
+        "args": [
+          [],
+          []
+        ],
+        "expected": 0
+      }
+    ],
+    "example": [
+      "Leaves with weights 4 and 5 return (take=weight, skip=0).",
+      "Taking root 3 forces both leaves skipped, score 3.",
+      "Skipping root allows both leaves, score 9."
+    ],
+    "time": "O(V+E) for a tree.",
+    "space": "O(V) ordering and state arrays.",
+    "pitfalls": "The input must be a tree. Reusing this traversal on a cyclic graph would invalidate independence and traversal logic.",
+    "edges": "Check [[3, 4, 5], [[0, 1], [0, 2]]]; [[-3], []]; [[], []]. Explain what each boundary case changes.",
+    "brute": "Enumerate every node subset and reject adjacent selected pairs.",
+    "followup": "What extra state would enforce selecting exactly k nodes?",
+    "interview": "I would track two scores per node: take and skip; parent ordering for bottom-up processing. Taking a node forces every child to be skipped. Skipping it permits the better child state independently, because distinct subtrees share no edges.",
+    "simpler": "Have each subtree return the answers its parent needs. If adjacent nodes cannot both be selected, return two values: the best score when taking the root and when skipping it.",
+    "quiz": {
+      "question": "If the parent is taken, which child state is legal?",
+      "options": [
+        "take",
+        "skip",
+        "Either"
+      ],
+      "answer": 1,
+      "explanation": "Taking a node forces every child to be skipped. Skipping it permits the better child state independently, because distinct subtrees share no edges."
+    }
+  },
+  {
+    "id": "knapsack",
+    "title": "0/1 knapsack & limited-use transitions",
+    "category": "1-D Dynamic Programming",
+    "level": "Intermediate",
+    "summary": "For each item, choose whether to spend some capacity on it. A descending capacity loop keeps each item from being reused during its own update.",
+    "intuition": "For each item, choose whether to spend some capacity on it. A descending capacity loop keeps each item from being reused during its own update.",
+    "clues": "Maximize value under a capacity budget when each item is available once; capacity-indexed DP is pseudo-polynomial.",
+    "state": "dp[c], the best value using processed items within capacity c.",
+    "invariant": "Descending updates read dp[c−weight] from the previous item stage, so taking an item combines it only with earlier items.",
+    "code": "def solve(weights,values,capacity):\n    dp=[0]*(capacity+1)\n    for weight,value in zip(weights,values):\n        for c in range(capacity,weight-1,-1): dp[c]=max(dp[c],dp[c-weight]+value)\n    return dp[-1]",
+    "cases": [
+      {
+        "args": [
+          [
+            2,
+            3,
+            4
+          ],
+          [
+            4,
+            5,
+            7
+          ],
+          5
+        ],
+        "expected": 9
+      },
+      {
+        "args": [
+          [
+            2
+          ],
+          [
+            3
+          ],
+          4
+        ],
+        "expected": 3
+      },
+      {
+        "args": [
+          [],
+          [],
+          0
+        ],
+        "expected": 0
+      }
+    ],
+    "example": [
+      "An item of weight 2 and value 4 improves capacities 2 and above.",
+      "The next item of weight 3 can combine with the earlier weight-2 item.",
+      "Capacity 5 reaches value 9."
+    ],
+    "time": "O(nC), where C is numeric capacity, not its bit length.",
+    "space": "O(C) rolling storage.",
+    "pitfalls": "Ascending capacity would allow unlimited reuse. An exact-fill version needs unreachable states, not all zeros.",
+    "edges": "Check [[2, 3, 4], [4, 5, 7], 5]; [[2], [3], 4]; [[], [], 0]. Explain what each boundary case changes.",
+    "brute": "Enumerate 2ⁿ subsets; meet-in-the-middle suits large weights and small n.",
+    "followup": "What changes for unlimited copies or a bounded item count?",
+    "interview": "I would track dp[c], the best value using processed items within capacity c. Descending updates read dp[c−weight] from the previous item stage, so taking an item combines it only with earlier items.",
+    "simpler": "For each item, choose whether to spend some capacity on it. A descending capacity loop keeps each item from being reused during its own update.",
+    "quiz": {
+      "question": "Why does one weight-2, value-3 item at capacity 4 return 3?",
+      "options": [
+        "The item may be used only once",
+        "Capacity must be filled exactly",
+        "The value is divided by weight"
+      ],
+      "answer": 0,
+      "explanation": "Descending updates read dp[c−weight] from the previous item stage, so taking an item combines it only with earlier items."
+    }
+  },
+  {
+    "id": "bipartite",
+    "title": "Graph coloring & bipartite checks",
+    "category": "Graphs",
+    "level": "Intermediate",
+    "summary": "Try to place adjacent vertices in opposite groups. A conflict proves an odd cycle; otherwise each connected component can be colored independently.",
+    "intuition": "Try to place adjacent vertices in opposite groups. A conflict proves an odd cycle; otherwise each connected component can be colored independently.",
+    "clues": "Two-team constraints, parity relationships, or checking whether a graph has an odd cycle.",
+    "state": "A color per vertex, initially unassigned, and a BFS queue for each component.",
+    "invariant": "Every explored edge must join opposite colors. BFS assigns colors by distance parity; an edge joining equal parity closes an odd cycle.",
+    "code": "from collections import deque\ndef solve(graph):\n    color=[-1]*len(graph)\n    for start in range(len(graph)):\n        if color[start]!=-1: continue\n        color[start]=0; queue=deque([start])\n        while queue:\n            node=queue.popleft()\n            for nxt in graph[node]:\n                if color[nxt]==-1: color[nxt]=1-color[node]; queue.append(nxt)\n                elif color[nxt]==color[node]: return False\n    return True",
+    "cases": [
+      {
+        "args": [
+          [
+            [
+              1,
+              3
+            ],
+            [
+              0,
+              2
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              0,
+              2
+            ]
+          ]
+        ],
+        "expected": true
+      },
+      {
+        "args": [
+          [
+            [
+              1,
+              2
+            ],
+            [
+              0,
+              2
+            ],
+            [
+              0,
+              1
+            ]
+          ]
+        ],
+        "expected": false
+      },
+      {
+        "args": [
+          [
+            [],
+            []
+          ]
+        ],
+        "expected": true
+      }
+    ],
+    "example": [
+      "A square alternates colors 0,1,0,1 consistently.",
+      "A triangle requires its third vertex to differ from both ends of an edge.",
+      "That conflict reveals an odd cycle."
+    ],
+    "time": "O(V+E).",
+    "space": "O(V) colors and queue.",
+    "pitfalls": "Check every component, and treat a self-loop as an immediate conflict.",
+    "edges": "Check [[[1, 3], [0, 2], [1, 3], [0, 2]]]; [[[1, 2], [0, 2], [0, 1]]]; [[[], []]]. Explain what each boundary case changes.",
+    "brute": "Try all 2^V group assignments.",
+    "followup": "How could you reconstruct the odd cycle from BFS parents?",
+    "interview": "I would track a color per vertex, initially unassigned, and a BFS queue for each component. Every explored edge must join opposite colors. BFS assigns colors by distance parity; an edge joining equal parity closes an odd cycle.",
+    "simpler": "Try to place adjacent vertices in opposite groups. A conflict proves an odd cycle; otherwise each connected component can be colored independently.",
+    "quiz": {
+      "question": "Does every cycle make a graph non-bipartite?",
+      "options": [
+        "Yes",
+        "Only odd cycles do",
+        "Only even cycles do"
+      ],
+      "answer": 1,
+      "explanation": "Every explored edge must join opposite colors. BFS assigns colors by distance parity; an edge joining equal parity closes an odd cycle."
+    }
   }
 ]
