@@ -163,7 +163,7 @@
   {
     "id": "generate-parentheses",
     "name": "Generate Parentheses",
-    "category": "Stack",
+    "category": "Backtracking",
     "difficulty": "Medium",
     "url": "https://leetcode.com/problems/generate-parentheses/"
   },

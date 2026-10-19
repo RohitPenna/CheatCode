@@ -1,0 +1,902 @@
+{
+  "contains-duplicate": {
+    "goal": "Determine whether any value occurs more than once.",
+    "approach": "Insert values into a set; encountering a value already present proves a duplicate. A sorted scan is an alternative.",
+    "complexity": "O(n) expected time, O(n) space.",
+    "edge": "Empty input and duplicates far apart."
+  },
+  "valid-anagram": {
+    "goal": "Check whether two strings have the same character multiset.",
+    "approach": "Count characters and compare frequencies after checking equal lengths. For lowercase English, use 26 counters.",
+    "complexity": "O(n) time, O(alphabet) space.",
+    "edge": "Repeated letters and differing lengths."
+  },
+  "two-sum": {
+    "goal": "Return distinct indices whose values add to a target.",
+    "approach": "For each value, look for target minus value in a map of earlier indices. Check before inserting to prevent using one index twice.",
+    "complexity": "O(n) expected time, O(n) space.",
+    "edge": "[3,3] with target 6."
+  },
+  "group-anagrams": {
+    "goal": "Group words with identical character multisets.",
+    "approach": "Use a 26-count tuple as the key for lowercase words, or a sorted-character key for general strings.",
+    "complexity": "Counting: O(total characters + 26 \u00d7 words), plus output and keys.",
+    "edge": "Empty strings and duplicate words."
+  },
+  "top-k-frequent-elements": {
+    "goal": "Find the k values with greatest frequency.",
+    "approach": "Count frequencies, then bucket values by count and scan buckets from high to low. A size-k heap is an alternative.",
+    "complexity": "O(n) expected time and O(n) space with buckets.",
+    "edge": "Ties and k equal to the number of distinct values."
+  },
+  "product-of-array-except-self": {
+    "goal": "Compute each position\u2019s product of all other elements without division.",
+    "approach": "Write prefix products into output, then multiply by a running suffix product. Each answer combines the parts before and after its position.",
+    "complexity": "O(n) time, O(1) auxiliary space excluding output.",
+    "edge": "One zero, multiple zeros, and negative values."
+  },
+  "valid-sudoku": {
+    "goal": "Check whether filled Sudoku cells violate row, column, or box uniqueness.",
+    "approach": "Track seen digits separately for each row, column, and box. The box index is (row//3, column//3). This checks validity, not solvability.",
+    "complexity": "O(1) for a fixed 9\u00d79 board; generalized O(cells) time and space.",
+    "edge": "Ignore empty cells; box duplicates can occur across different rows."
+  },
+  "encode-and-decode-strings": {
+    "goal": "Encode a string list so every possible character can be decoded unambiguously.",
+    "approach": "Prefix each string with its length and a separator. Decode the numeric length, then consume exactly that many characters.",
+    "complexity": "O(total payload length + length headers) time and output space.",
+    "edge": "Empty strings, digits, and separator characters inside a string."
+  },
+  "longest-consecutive-sequence": {
+    "goal": "Find the longest run of consecutive integer values, regardless of input order.",
+    "approach": "Build a set. Start extending only at numbers whose predecessor is absent; each run is scanned once.",
+    "complexity": "O(n) expected time, O(n) space.",
+    "edge": "Duplicates must not cause repeated run scans."
+  },
+  "valid-palindrome": {
+    "goal": "Check whether alphanumeric characters form a palindrome ignoring case.",
+    "approach": "Move inward from both ends, skipping non-alphanumeric characters, and compare normalized characters.",
+    "complexity": "O(n) time, O(1) auxiliary space for index-based scanning.",
+    "edge": "Punctuation-only input and mixed case."
+  },
+  "two-sum-ii-input-array-is-sorted": {
+    "goal": "Find two indices in a sorted array whose sum matches a target.",
+    "approach": "Compare the end pair. A low sum rules out the left value; a high sum rules out the right value. Convert to the required one-based indices.",
+    "complexity": "O(n) time, O(1) auxiliary space.",
+    "edge": "Distinct indices and duplicate values."
+  },
+  "3sum": {
+    "goal": "List distinct value triplets whose sum is zero.",
+    "approach": "Sort, fix one element, and use two pointers on the suffix. Skip repeated fixed values and repeated matched pointer values.",
+    "complexity": "O(n\u00b2) time; sorting uses O(n) auxiliary space in Python, plus output.",
+    "edge": "[0,0,0,0] must yield only one triplet."
+  },
+  "container-with-most-water": {
+    "goal": "Choose two vertical lines enclosing the most water.",
+    "approach": "Start at both ends. Move the shorter line: reducing width while keeping that limiting height cannot improve area.",
+    "complexity": "O(n) time, O(1) space.",
+    "edge": "Equal heights and only two lines."
+  },
+  "trapping-rain-water": {
+    "goal": "Compute water trapped between elevation bars.",
+    "approach": "Use two pointers with left and right maxima. Resolve the side with the smaller known maximum, whose water bound is already determined.",
+    "complexity": "O(n) time, O(1) space.",
+    "edge": "Monotonic heights trap nothing; interior dips can span many bars."
+  },
+  "best-time-to-buy-and-sell-stock": {
+    "goal": "Maximize profit with one buy followed by one later sell.",
+    "approach": "Maintain the minimum price seen before or at the current day and the best nonnegative profit. Evaluate each sell against that minimum.",
+    "complexity": "O(n) time, O(1) space.",
+    "edge": "Strictly decreasing prices yield zero profit."
+  },
+  "longest-substring-without-repeating-characters": {
+    "goal": "Find the longest contiguous substring with all distinct characters.",
+    "approach": "Maintain a window and last-seen indices; jump left past a repeat, using max so left never moves backward.",
+    "complexity": "O(n) expected time, O(alphabet) space.",
+    "edge": "abba exposes a backward-left-boundary bug."
+  },
+  "longest-repeating-character-replacement": {
+    "goal": "Find the longest substring made uniform with at most k character replacements.",
+    "approach": "Track counts, window boundaries, and historical max frequency. Shrink when window length minus maxfreq exceeds k; stale maxfreq preserves the best length but not every window\u2019s validity.",
+    "complexity": "O(n) expected time, O(alphabet) space.",
+    "edge": "k=0 and windows whose historical dominant count becomes stale."
+  },
+  "permutation-in-string": {
+    "goal": "Check whether a string contains a permutation of another as a substring.",
+    "approach": "Maintain character counts in a fixed-size window equal to the pattern length. Compare with required frequencies, or track the number of matching counts.",
+    "complexity": "O(n + m) for a fixed alphabet; O(alphabet) space.",
+    "edge": "Pattern longer than text and repeated letters."
+  },
+  "minimum-window-substring": {
+    "goal": "Find the shortest substring covering every required character with multiplicity.",
+    "approach": "Expand counts until all required frequencies are satisfied, then shrink while valid and update the best range. Track satisfied distinct requirements carefully.",
+    "complexity": "O(n + m) expected time, O(alphabet) space.",
+    "edge": "Repeated requirements such as AABC; no valid window."
+  },
+  "sliding-window-maximum": {
+    "goal": "Return the maximum in every fixed-width window.",
+    "approach": "Use a deque of indices with decreasing values. Evict expired front indices and remove smaller or equal values from the back before adding the new index.",
+    "complexity": "O(n) time, O(k) auxiliary space.",
+    "edge": "Expired maxima, equal values, and k=1."
+  },
+  "valid-parentheses": {
+    "goal": "Check that bracket types are correctly matched and nested.",
+    "approach": "Push opening brackets. Every closing bracket must match the stack\u2019s most recent opening bracket; the stack must be empty at the end.",
+    "complexity": "O(n) time, O(n) space.",
+    "edge": "A closing bracket with an empty stack; leftover openings."
+  },
+  "min-stack": {
+    "goal": "Support stack operations and minimum lookup in constant time.",
+    "approach": "Store each value together with the minimum up to that stack position. Popping restores the previous minimum automatically.",
+    "complexity": "O(1) per operation, O(n) stored entries.",
+    "edge": "Repeated minimum values."
+  },
+  "evaluate-reverse-polish-notation": {
+    "goal": "Evaluate arithmetic written in postfix order.",
+    "approach": "Push operands. On an operator, pop right operand then left operand and push the result. Division must truncate toward zero.",
+    "complexity": "O(n) arithmetic operations, O(n) stack space.",
+    "edge": "Subtraction operand order and negative division."
+  },
+  "generate-parentheses": {
+    "goal": "Generate all well-formed strings of n parenthesis pairs.",
+    "approach": "Backtrack with counts of opens and closes. Add an opening if opens<n, and a closing only if closes<opens.",
+    "complexity": "O(n \u00d7 Cn) output work, O(n) auxiliary depth, where Cn is the nth Catalan number.",
+    "edge": "Never allow a prefix with more closes than opens."
+  },
+  "daily-temperatures": {
+    "goal": "For every day, find the wait until a strictly warmer day.",
+    "approach": "Keep unresolved day indices in a nonincreasing-temperature stack. A warmer day resolves every colder index popped from the stack.",
+    "complexity": "O(n) time and O(n) space.",
+    "edge": "Equal temperatures are not warmer."
+  },
+  "car-fleet": {
+    "goal": "Count groups of cars reaching a target without passing.",
+    "approach": "Sort cars from closest to farthest from the target. A farther car joins the fleet ahead if its arrival time is no larger; otherwise it starts a new fleet.",
+    "complexity": "O(n log n) time, O(n) sorting storage.",
+    "edge": "Equal arrival times form one fleet."
+  },
+  "largest-rectangle-in-histogram": {
+    "goal": "Find the maximum rectangle under contiguous histogram bars.",
+    "approach": "Keep increasing heights with their earliest possible start indices. A shorter bar finalizes popped heights; carry their earliest start forward, and flush at the end.",
+    "complexity": "O(n) time and O(n) stack space.",
+    "edge": "Equal heights, zero bars, and a rectangle ending at the final bar."
+  },
+  "binary-search": {
+    "goal": "Find a target index in ascending sorted values.",
+    "approach": "Maintain an inclusive candidate interval, compare its midpoint, and discard mid with the impossible half. Return -1 after the interval becomes empty.",
+    "complexity": "O(log n) time, O(1) space.",
+    "edge": "Empty input and a single candidate."
+  },
+  "search-a-2d-matrix": {
+    "goal": "Find a target in a matrix whose row ranges are globally sorted.",
+    "approach": "Treat the matrix as one sorted array. Map flat midpoint m to row m//columns and column m%columns.",
+    "complexity": "O(log(rows \u00d7 columns)) time, O(1) space.",
+    "edge": "This does not apply to matrices with only independently sorted rows."
+  },
+  "koko-eating-bananas": {
+    "goal": "Find the slowest integer eating speed finishing within h hours.",
+    "approach": "Binary search the first feasible speed. Feasibility sums ceiling divisions for each positive pile; faster speeds cannot increase needed hours.",
+    "complexity": "O(n log M) time with maximum pile M; O(1) space.",
+    "edge": "Use ceiling division; h cannot be smaller than the number of positive piles."
+  },
+  "find-minimum-in-rotated-sorted-array": {
+    "goal": "Find the minimum in a rotated ascending array with distinct values.",
+    "approach": "Compare mid with right. If mid is larger, the minimum is strictly to its right; otherwise retain mid as the right boundary.",
+    "complexity": "O(log n) time, O(1) space.",
+    "edge": "Already sorted input and a single element."
+  },
+  "search-in-rotated-sorted-array": {
+    "goal": "Find a target in a rotated ascending array with distinct values.",
+    "approach": "At least one half is sorted. Check whether the target lies within that half\u2019s value bounds, then keep the appropriate half.",
+    "complexity": "O(log n) time, O(1) space.",
+    "edge": "Duplicates invalidate the simple distinct-value partition argument."
+  },
+  "time-based-key-value-store": {
+    "goal": "Retrieve the most recent value for a key at or before a query time.",
+    "approach": "Store each key\u2019s increasing timestamp/value pairs. Binary search for the rightmost timestamp no greater than the query.",
+    "complexity": "Set O(1) amortized; get O(log entries for key); O(total entries) space.",
+    "edge": "A query before the first timestamp and a missing key."
+  },
+  "median-of-two-sorted-arrays": {
+    "goal": "Find the median of two sorted arrays without merging all values.",
+    "approach": "Binary search a partition of the shorter array, choosing the other partition so the left side has half the total elements. Require both left maxima \u2264 opposite right minima.",
+    "complexity": "O(log min(m,n)) time, O(1) space.",
+    "edge": "One empty array, odd/even total length, and partitions at array ends."
+  },
+  "reverse-linked-list": {
+    "goal": "Reverse every next pointer and return the new head.",
+    "approach": "Save current.next, redirect current to prev, then advance both pointers. prev is always the reversed processed prefix.",
+    "complexity": "O(n) time, O(1) auxiliary space.",
+    "edge": "Save the successor before overwriting the link."
+  },
+  "merge-two-sorted-lists": {
+    "goal": "Merge two sorted linked lists into one sorted list.",
+    "approach": "Attach the smaller current node to a dummy-headed result and advance that source pointer. Attach the remaining suffix when one input ends.",
+    "complexity": "O(n+m) time, O(1) auxiliary space when reusing nodes.",
+    "edge": "Empty lists and equal values."
+  },
+  "reorder-list": {
+    "goal": "Interleave a list\u2019s front and back nodes in place.",
+    "approach": "Find the midpoint, split the list, reverse the second half, then alternately weave nodes from both halves.",
+    "complexity": "O(n) time, O(1) auxiliary space.",
+    "edge": "Odd length; split the original link to prevent cycles."
+  },
+  "remove-nth-node-from-end-of-list": {
+    "goal": "Remove the nth node measured from the tail.",
+    "approach": "Use a dummy head and pointers separated by n nodes. When the leading pointer reaches the end, the trailing pointer identifies the predecessor to bypass.",
+    "complexity": "O(n) time, O(1) space.",
+    "edge": "Removing the head and a one-node list."
+  },
+  "copy-list-with-random-pointer": {
+    "goal": "Deep-copy a list containing next and arbitrary random pointers.",
+    "approach": "Map each original node to its clone, then connect cloned next and random references in a second pass.",
+    "complexity": "O(n) time and O(n) map space, plus output.",
+    "edge": "Random pointers to self, earlier nodes, or null."
+  },
+  "add-two-numbers": {
+    "goal": "Add two reversed-digit linked-list numbers.",
+    "approach": "Walk both lists with a carry. Emit total%10 and update carry=total//10 until both lists and carry are exhausted.",
+    "complexity": "O(max(m,n)) time and output space, O(1) extra state.",
+    "edge": "Different lengths and a final carry."
+  },
+  "linked-list-cycle": {
+    "goal": "Determine whether following next pointers eventually loops.",
+    "approach": "Move slow one step and fast two steps. In a cycle their relative offset eventually reaches zero; otherwise fast reaches null.",
+    "complexity": "O(n) time, O(1) space.",
+    "edge": "Check fast and fast.next before advancing twice."
+  },
+  "find-the-duplicate-number": {
+    "goal": "Find a repeated number among n+1 values in the range 1..n without modifying input.",
+    "approach": "Treat values as next indices. Floyd\u2019s cycle algorithm locates the cycle entrance, which corresponds to the duplicate.",
+    "complexity": "O(n) time, O(1) space.",
+    "edge": "The proof relies on the 1..n value range and duplicate-number contract."
+  },
+  "lru-cache": {
+    "goal": "Support constant-time lookup and least-recently-used eviction.",
+    "approach": "Combine a key\u2192node map with a doubly linked recency list. Move accessed nodes to the recent end and evict from the other end.",
+    "complexity": "Expected O(1) get/put, O(capacity) space.",
+    "edge": "Updating an existing key must also refresh recency."
+  },
+  "merge-k-sorted-lists": {
+    "goal": "Merge k sorted linked lists.",
+    "approach": "Put each list\u2019s head into a min heap. Repeatedly remove the smallest node and insert its successor, using a tie-breaker for equal values.",
+    "complexity": "O(N log k) time, O(k) auxiliary space for N total nodes.",
+    "edge": "Empty lists and equal values with non-comparable node objects."
+  },
+  "reverse-nodes-in-k-group": {
+    "goal": "Reverse complete groups of k nodes while leaving an incomplete final group unchanged.",
+    "approach": "Check that a full group exists, reverse exactly that segment using its following node as the initial previous pointer, then reconnect both ends.",
+    "complexity": "O(n) time, O(1) auxiliary space.",
+    "edge": "k=1 and a final group shorter than k."
+  },
+  "invert-binary-tree": {
+    "goal": "Swap the left and right children throughout a binary tree.",
+    "approach": "At each node, swap children and recursively invert both subtrees. Null nodes require no work.",
+    "complexity": "O(n) time, O(h) recursion space.",
+    "edge": "Empty and skewed trees."
+  },
+  "maximum-depth-of-binary-tree": {
+    "goal": "Find the number of nodes on the longest root-to-leaf path.",
+    "approach": "Return zero for null and 1+max(left depth,right depth) for each nonempty node.",
+    "complexity": "O(n) time, O(h) call stack.",
+    "edge": "Node-count depth differs from edge-count height."
+  },
+  "diameter-of-binary-tree": {
+    "goal": "Find the longest path between any two tree nodes, measured in edges.",
+    "approach": "Postorder returns subtree height. At each node, left height plus right height is a path through it; update a separate global best.",
+    "complexity": "O(n) time, O(h) recursion space.",
+    "edge": "The longest path may not pass through the root."
+  },
+  "balanced-binary-tree": {
+    "goal": "Check whether every node\u2019s subtree heights differ by at most one.",
+    "approach": "Postorder returns height or an unbalanced sentinel. Propagate failure immediately instead of recomputing heights separately for every node.",
+    "complexity": "O(n) time, O(h) stack.",
+    "edge": "A deep imbalance can exist even if root heights differ by one."
+  },
+  "same-tree": {
+    "goal": "Check whether two trees have identical shape and values.",
+    "approach": "Pair nodes recursively: two nulls match, exactly one null fails, and nonnull nodes need equal values and both child pairs to match.",
+    "complexity": "O(min(n,m)) visited pairs until mismatch, O(h) stack.",
+    "edge": "Same values with different shape."
+  },
+  "subtree-of-another-tree": {
+    "goal": "Determine whether a complete subtree matches another tree.",
+    "approach": "At each candidate root, compare structure and values recursively. Serialization with unambiguous null tokens and linear matching is a more advanced alternative.",
+    "complexity": "Simple approach O(nm) worst-case, O(hn+hm) stack.",
+    "edge": "Matching root values alone is insufficient."
+  },
+  "lowest-common-ancestor-of-a-binary-search-tree": {
+    "goal": "Find the lowest node containing two targets below it in a BST.",
+    "approach": "If both targets are smaller, go left; if both larger, go right. The first split or target match is their lowest common ancestor.",
+    "complexity": "O(h) time, O(1) with iteration.",
+    "edge": "A target node can be the ancestor of the other."
+  },
+  "binary-tree-level-order-traversal": {
+    "goal": "Group tree values by depth from the root.",
+    "approach": "Use BFS, processing exactly the queue size recorded at the start of each level before appending the next level\u2019s children.",
+    "complexity": "O(n) time, O(width) queue plus output.",
+    "edge": "Do not let newly appended children extend the current level\u2019s loop."
+  },
+  "binary-tree-right-side-view": {
+    "goal": "Return the visible value at every depth when looking from the right.",
+    "approach": "BFS by level and record the last node in each level, or use right-first DFS and record the first node at each depth.",
+    "complexity": "O(n) time, O(width) BFS queue or O(h) DFS stack.",
+    "edge": "A left subtree can extend deeper than the right subtree."
+  },
+  "count-good-nodes-in-binary-tree": {
+    "goal": "Count nodes at least as large as every ancestor on their root path.",
+    "approach": "DFS carries the maximum value seen on the current root-to-node path. Count before updating the maximum for children.",
+    "complexity": "O(n) time, O(h) stack.",
+    "edge": "Negative node values; initialize path maximum appropriately."
+  },
+  "validate-binary-search-tree": {
+    "goal": "Verify strict BST ordering across whole subtrees.",
+    "approach": "Carry lower and upper bounds down recursion. A node must lie strictly between them; each child inherits and tightens one bound.",
+    "complexity": "O(n) time, O(h) stack.",
+    "edge": "A node can satisfy its parent comparison but violate a distant ancestor\u2019s bound."
+  },
+  "kth-smallest-element-in-a-bst": {
+    "goal": "Return the kth smallest BST value.",
+    "approach": "Inorder traversal visits values in sorted order. Use an explicit stack and stop after popping k nodes.",
+    "complexity": "O(h+k) time, O(h) space.",
+    "edge": "A skewed BST has h=n; k is one-based."
+  },
+  "construct-binary-tree-from-preorder-and-inorder-traversal": {
+    "goal": "Reconstruct a tree from unique-value preorder and inorder traversals.",
+    "approach": "Preorder gives each subtree root. A value\u2192inorder-index map splits left and right ranges; recurse using index bounds instead of slicing.",
+    "complexity": "O(n) time and O(n) map/stack space.",
+    "edge": "Unique values are needed for this reconstruction rule."
+  },
+  "binary-tree-maximum-path-sum": {
+    "goal": "Find the maximum sum of any nonempty simple path in a tree.",
+    "approach": "Each node returns its best single downward branch. Update the global answer with node plus positive contributions from both children.",
+    "complexity": "O(n) time, O(h) stack.",
+    "edge": "All-negative trees require initializing the answer below every value."
+  },
+  "serialize-and-deserialize-binary-tree": {
+    "goal": "Encode a tree so its exact shape and values can be recovered.",
+    "approach": "Preorder serialization includes a null marker for every missing child. Deserialization consumes tokens recursively in the same order.",
+    "complexity": "O(n) time and serialized space, O(h) recursion.",
+    "edge": "Omitting null markers loses structure."
+  },
+  "implement-trie-prefix-tree": {
+    "goal": "Support inserting words, exact search, and prefix search.",
+    "approach": "Store one character per edge and a terminal marker per complete word. Exact search checks the marker; prefix search only requires a valid path.",
+    "complexity": "O(word length) expected per operation, O(total characters) space.",
+    "edge": "A word can also be another word\u2019s prefix."
+  },
+  "design-add-and-search-words-data-structure": {
+    "goal": "Search a word dictionary with a wildcard matching any one character.",
+    "approach": "Insert words into a trie. Search follows one edge for a literal and recursively tries all children for a wildcard.",
+    "complexity": "Literal search O(L); wildcard search visits matching trie branches, potentially exponential in L.",
+    "edge": "A wildcard matches exactly one character, and the ending node must be terminal."
+  },
+  "word-search-ii": {
+    "goal": "Find dictionary words formed by adjacent grid cells without reusing a cell in one path.",
+    "approach": "Build a trie and backtrack from each board cell, pruning when the path is not a prefix. Mark cells on the current path and restore them afterward.",
+    "complexity": "Loose bound O(RC \u00d7 4^L + total word characters), O(trie + L) auxiliary space.",
+    "edge": "Deduplicate found words; restore cells for later starting points."
+  },
+  "kth-largest-element-in-a-stream": {
+    "goal": "Maintain the kth largest value as values arrive.",
+    "approach": "Keep a min heap of at most k values. Discard the smallest whenever size exceeds k; the root is the kth largest once k values exist.",
+    "complexity": "O(log k) per insertion, O(k) space.",
+    "edge": "Duplicates count separately; fewer than k initial values."
+  },
+  "last-stone-weight": {
+    "goal": "Repeatedly smash the two largest stones until at most one remains.",
+    "approach": "Use a max heap via negated weights. Pop two, and push their positive difference if unequal.",
+    "complexity": "O(n log n) time, O(n) space.",
+    "edge": "Equal stones both disappear; no stones returns zero."
+  },
+  "k-closest-points-to-origin": {
+    "goal": "Return k points minimizing squared distance to the origin.",
+    "approach": "Keep a max heap of size k keyed by squared distance, or quickselect. Square roots are unnecessary because they preserve distance order.",
+    "complexity": "Heap O(n log k) time, O(k) auxiliary space plus output.",
+    "edge": "Equal distances and negative coordinates."
+  },
+  "kth-largest-element-in-an-array": {
+    "goal": "Find the kth largest element including duplicate occurrences.",
+    "approach": "Quickselect partitions around a pivot and keeps only the side containing index n\u2212k. A size-k min heap is a predictable alternative.",
+    "complexity": "Quickselect expected O(n), worst O(n\u00b2); heap O(n log k).",
+    "edge": "Randomize pivots or account for adversarial ordering."
+  },
+  "task-scheduler": {
+    "goal": "Find the shortest schedule with a cooldown between equal tasks.",
+    "approach": "For unit tasks with a fixed cooldown, compare total tasks with the frame bound (maxfreq\u22121)\u00d7(cooldown+1)+number tied at maxfreq.",
+    "complexity": "O(n) time for a fixed alphabet, O(alphabet) space.",
+    "edge": "Cooldown zero and many task types filling all idle slots."
+  },
+  "design-twitter": {
+    "goal": "Return recent posts from a user and followed users.",
+    "approach": "Store timestamped posts per user. Merge followed users\u2019 reverse chronological post streams with a heap, stopping after the feed limit.",
+    "complexity": "O(F + K log F) feed time with heapify for F followed streams and K results; storage grows with posts.",
+    "edge": "Include the user\u2019s own posts; following/unfollowing must not duplicate streams."
+  },
+  "find-median-from-data-stream": {
+    "goal": "Maintain the median after each inserted number.",
+    "approach": "Use a max heap for the lower half and min heap for the upper half. Maintain size difference at most one and all lower values \u2264 all upper values.",
+    "complexity": "O(log n) insertion, O(1) median, O(n) space.",
+    "edge": "Negative values, equal values, and averaging for even size."
+  },
+  "subsets": {
+    "goal": "Generate all subsets of distinct values.",
+    "approach": "Record the current path, then choose each later index in turn. Copy the path when storing it and undo each choice afterward.",
+    "complexity": "O(n2^n) output work, O(n) auxiliary depth.",
+    "edge": "The empty subset must be included."
+  },
+  "combination-sum": {
+    "goal": "List combinations of positive candidates summing to a target, allowing reuse.",
+    "approach": "Backtrack with a starting candidate index and remaining target. Reusing keeps the same index; advancing indices avoids permutation duplicates.",
+    "complexity": "Exponential search/output, depth up to target/minimum candidate.",
+    "edge": "Candidates must be positive; stop or prune when the remaining target becomes negative."
+  },
+  "permutations": {
+    "goal": "Generate all orderings of distinct values.",
+    "approach": "Choose any unused index, recurse, then restore its used flag and path. A complete length-n path is one permutation.",
+    "complexity": "O(n\u00b7n!) output work, O(n) auxiliary depth/state.",
+    "edge": "Restore the used marker after returning."
+  },
+  "subsets-ii": {
+    "goal": "Generate unique subsets when the input may contain duplicates.",
+    "approach": "Sort first. At a fixed recursion depth, skip a value equal to the previous candidate, while allowing equal values at deeper levels.",
+    "complexity": "O(n2^n) upper bound including output, O(n) depth plus sorting.",
+    "edge": "Skipping duplicates globally would wrongly omit subsets containing two copies."
+  },
+  "combination-sum-ii": {
+    "goal": "List unique target-sum combinations when each input item can be used at most once.",
+    "approach": "Sort, skip equal sibling choices, and recurse from i+1 after taking item i. With positive values, stop when a candidate exceeds the remaining target.",
+    "complexity": "Exponential search/output, O(n) auxiliary depth plus sorting.",
+    "edge": "Duplicate values can be used when they come from different indices, but duplicate result lists must be avoided."
+  },
+  "word-search": {
+    "goal": "Check whether a word can be formed by adjacent grid cells without reusing a cell.",
+    "approach": "Backtrack over cell and word index. Mark the cell only for the active path, then restore it before exploring other branches.",
+    "complexity": "O(RC\u00b74^L) loose upper bound, O(L) recursion space.",
+    "edge": "Reusing the same cell is forbidden even if the letter matches."
+  },
+  "palindrome-partitioning": {
+    "goal": "List all partitions of a string into palindromic pieces.",
+    "approach": "Backtrack over the next cut, accepting only palindromic pieces. Precomputing palindrome ranges avoids repeated checks.",
+    "complexity": "O(n\u00b2 + n2^n) upper bound including output with preprocessing; O(n\u00b2) table.",
+    "edge": "Every single character is a valid palindrome; include the full remaining palindrome when valid."
+  },
+  "letter-combinations-of-a-phone-number": {
+    "goal": "Generate all letter strings represented by phone digits.",
+    "approach": "Backtrack one digit at a time using its letter choices, appending a result only after every digit is used.",
+    "complexity": "O(L\u00b74^L) upper bound including output, O(L) depth.",
+    "edge": "Empty digit input returns no combinations under the original problem contract."
+  },
+  "n-queens": {
+    "goal": "Place n queens on an n\u00d7n board without shared rows, columns, or diagonals.",
+    "approach": "Place one queen per row. Track used columns, row\u2212column diagonals, and row+column diagonals, restoring each on backtrack.",
+    "complexity": "Exponential search, commonly bounded by O(n!) placements plus board output; O(n) tracking.",
+    "edge": "Diagonal identifiers can be negative; n=2 and n=3 have no solutions."
+  },
+  "number-of-islands": {
+    "goal": "Count connected components of land in a grid.",
+    "approach": "Scan cells; on unseen land, increment the count and flood-fill its entire four-direction component.",
+    "complexity": "O(RC) time and O(RC) visited/stack in the worst case.",
+    "edge": "Diagonal contact does not connect islands; mark on discovery."
+  },
+  "clone-graph": {
+    "goal": "Deep-copy a connected graph while preserving cycles and shared neighbors.",
+    "approach": "Map original node identity to its clone before recursing into neighbors. Reuse mapped clones whenever a node is encountered again.",
+    "complexity": "O(V+E) time and O(V) map space plus output.",
+    "edge": "Self-loops and equal node values require identity-based mapping."
+  },
+  "max-area-of-island": {
+    "goal": "Find the largest connected land component by cell count.",
+    "approach": "Flood-fill every unseen land component, count its cells, and keep the maximum.",
+    "complexity": "O(RC) time, O(RC) worst-case auxiliary space.",
+    "edge": "All water gives zero; four-direction adjacency only."
+  },
+  "pacific-atlantic-water-flow": {
+    "goal": "Find cells from which water can reach both sets of ocean boundaries.",
+    "approach": "Reverse the flow: start at each ocean\u2019s border and traverse to equal or higher neighboring cells. Intersect the two reachable sets.",
+    "complexity": "O(RC) time and space.",
+    "edge": "Equal heights allow flow; reverse traversal must go uphill, not downhill."
+  },
+  "surrounded-regions": {
+    "goal": "Capture O regions that are not connected to the border.",
+    "approach": "First mark all O cells reachable from any border. Flip only unmarked O cells, then restore the border-connected marks.",
+    "complexity": "O(RC) time and worst-case auxiliary space.",
+    "edge": "A region connected by a narrow path to the border must remain unchanged."
+  },
+  "rotting-oranges": {
+    "goal": "Find the minutes until all fresh oranges rot, or report impossibility.",
+    "approach": "Multi-source BFS starts with every rotten orange at time zero. Each layer rots adjacent fresh cells; count remaining fresh cells.",
+    "complexity": "O(RC) time and space.",
+    "edge": "No fresh oranges means zero; unreachable fresh oranges mean -1."
+  },
+  "walls-and-gates": {
+    "goal": "Fill each empty room with its distance to the nearest gate.",
+    "approach": "Run one multi-source BFS from all gates. The first visit assigns the shortest distance; walls block edges.",
+    "complexity": "O(RC) time and O(RC) queue space.",
+    "edge": "Do not run a separate full BFS from every room."
+  },
+  "course-schedule": {
+    "goal": "Determine whether directed prerequisites permit completing all courses.",
+    "approach": "Use topological sorting and check whether all vertices are processed, or use DFS with visiting/done states to detect directed cycles.",
+    "complexity": "O(V+E) time and space.",
+    "edge": "A visited set alone cannot distinguish a current-path cycle from a finished vertex."
+  },
+  "course-schedule-ii": {
+    "goal": "Return a valid order respecting all course prerequisites.",
+    "approach": "Build edges from prerequisite to dependent. Kahn\u2019s algorithm outputs zero-indegree vertices; if fewer than all courses are output, return no order.",
+    "complexity": "O(V+E) time and space.",
+    "edge": "Include courses with no edges and reject a partial cyclic order."
+  },
+  "redundant-connection": {
+    "goal": "Find the edge creating a cycle in an otherwise tree-like undirected graph.",
+    "approach": "Use Union-Find; the first edge whose endpoints already share a root closes a cycle.",
+    "complexity": "O(E \u03b1(V)) amortized time, O(V) space.",
+    "edge": "Labels may be one-based; allocate or normalize accordingly."
+  },
+  "number-of-connected-components-in-an-undirected-graph": {
+    "goal": "Count connected groups including isolated vertices.",
+    "approach": "Flood-fill from every unvisited vertex, or start with n components and decrement on each successful Union-Find merge.",
+    "complexity": "DFS/BFS O(V+E); Union-Find O((V+E)\u03b1(V)); O(V) extra storage.",
+    "edge": "Isolated vertices each count as a component."
+  },
+  "graph-valid-tree": {
+    "goal": "Check whether an undirected graph is a single tree.",
+    "approach": "Require n\u22121 edges and connectivity. A traversal or Union-Find can verify connectivity; alternatively detect cycles explicitly and check all nodes reached.",
+    "complexity": "O(V+E) traversal time, O(V) extra storage.",
+    "edge": "Acyclic but disconnected is a forest, not a tree."
+  },
+  "word-ladder": {
+    "goal": "Find the shortest sequence of single-letter changes through allowed words.",
+    "approach": "BFS over words, generating one-character replacements and checking a word set. Mark discovered words immediately; bidirectional BFS can reduce exploration.",
+    "complexity": "With alphabet A and length L, O(N\u00b7A\u00b7L\u00b2) using copied strings; storage O(NL).",
+    "edge": "The end word must be reachable through the dictionary; count words, not just transformations, per prompt."
+  },
+  "reconstruct-itinerary": {
+    "goal": "Use every directed flight exactly once in a lexicographically smallest valid itinerary from JFK.",
+    "approach": "Sort destinations in reverse lexical order and apply Hierholzer\u2019s algorithm: remove the smallest unused edge, then append airports on backtracking and reverse the result.",
+    "complexity": "O(E log E) sorting time, O(E) storage.",
+    "edge": "Greedily appending the smallest destination can strand unused flights; postorder is essential."
+  },
+  "min-cost-to-connect-all-points": {
+    "goal": "Connect all points with minimum total Manhattan distance.",
+    "approach": "Use Prim\u2019s MST algorithm with an array of best connection costs. Each iteration picks the cheapest unused point and relaxes all remaining points.",
+    "complexity": "O(n\u00b2) time, O(n) auxiliary space without building every edge.",
+    "edge": "The cheapest edge from each point independently does not guarantee a connected minimum tree."
+  },
+  "network-delay-time": {
+    "goal": "Find when every vertex receives a signal through nonnegative weighted directed edges.",
+    "approach": "Run Dijkstra from the source. Return the maximum shortest distance, or -1 if any vertex is unreachable.",
+    "complexity": "O((V+E) log(E+1)) with a lazy heap; O(V+E) storage.",
+    "edge": "Skip stale heap entries; a first discovered route need not be shortest."
+  },
+  "swim-in-rising-water": {
+    "goal": "Minimize the highest elevation encountered on a grid path.",
+    "approach": "Use Dijkstra with path cost max(current cost,next elevation), or binary search water level with reachability checks.",
+    "complexity": "Heap approach O(RC log(RC)) time, O(RC) space.",
+    "edge": "This is a bottleneck cost, not the sum of elevations."
+  },
+  "alien-dictionary": {
+    "goal": "Infer a character order consistent with lexicographically sorted words.",
+    "approach": "Compare adjacent words and add an edge at their first differing character. Include every character, reject an invalid prefix order, then topologically sort.",
+    "complexity": "O(total characters + unique edges) with Kahn\u2019s algorithm; O(V+E) graph space.",
+    "edge": "A longer word before its exact prefix is invalid; deduplicate edges before incrementing indegree."
+  },
+  "cheapest-flights-within-k-stops": {
+    "goal": "Find a minimum-price route using at most k intermediate stops.",
+    "approach": "Perform k+1 relaxation rounds, each reading only the previous distance array and writing into a copy. The snapshot enforces the edge budget.",
+    "complexity": "O((k+1)(V+E)) including copies, O(V) space.",
+    "edge": "In-place updates can silently traverse multiple edges in a single round."
+  },
+  "climbing-stairs": {
+    "goal": "Count ways to reach stair n with steps of one or two.",
+    "approach": "ways[i]=ways[i\u22121]+ways[i\u22122]. Define base cases consistently; keeping only the last two values gives constant auxiliary space.",
+    "complexity": "O(n) time, O(1) auxiliary space for fixed-width counts.",
+    "edge": "One stair and the chosen interpretation of zero stairs."
+  },
+  "min-cost-climbing-stairs": {
+    "goal": "Reach the top with minimum paid step cost, starting at step 0 or 1.",
+    "approach": "Let dp[i] be minimum cost to reach position i. Transition from i\u22121 paying cost[i\u22121] or i\u22122 paying cost[i\u22122]; dp[0]=dp[1]=0.",
+    "complexity": "O(n) time, O(1) space with two rolling values.",
+    "edge": "The top is beyond the last array index and has no extra cost."
+  },
+  "house-robber": {
+    "goal": "Maximize the sum of selected values with no adjacent selections.",
+    "approach": "For each house, compare skipping it with taking it plus the best value two houses earlier. Maintain the previous two DP results.",
+    "complexity": "O(n) time, O(1) space.",
+    "edge": "Single house and a tempting large value surrounded by valuable neighbors."
+  },
+  "house-robber-ii": {
+    "goal": "Maximize nonadjacent selections when first and last houses are adjacent.",
+    "approach": "Solve two linear cases: exclude the first house or exclude the last. Take the larger result; handle a singleton separately.",
+    "complexity": "O(n) time, O(1) auxiliary space if using index ranges.",
+    "edge": "Taking both endpoints violates the circular constraint."
+  },
+  "longest-palindromic-substring": {
+    "goal": "Find the longest contiguous palindrome.",
+    "approach": "Expand around each character and each gap between characters. Every palindrome has one of these odd/even centers.",
+    "complexity": "O(n\u00b2) time, O(1) auxiliary space excluding returned substring.",
+    "edge": "Even-length palindromes and empty input."
+  },
+  "palindromic-substrings": {
+    "goal": "Count all palindromic substring occurrences.",
+    "approach": "Expand around each odd and even center, incrementing the count for each matching expansion.",
+    "complexity": "O(n\u00b2) time, O(1) auxiliary space.",
+    "edge": "Equal-valued substrings at different positions count separately."
+  },
+  "decode-ways": {
+    "goal": "Count valid ways to interpret digits as values 1 through 26.",
+    "approach": "A state at i sums one-digit and valid two-digit continuations. A leading zero contributes zero; the empty suffix contributes one completed decoding.",
+    "complexity": "O(n) time, O(1) rolling space or O(n) table.",
+    "edge": "0 cannot decode alone; 10 is valid, 06 is not."
+  },
+  "coin-change": {
+    "goal": "Find the fewest reusable positive coins making an exact amount.",
+    "approach": "dp[0]=0; for each amount, try one coin plus the optimal smaller remainder. Unreachable states stay infinite.",
+    "complexity": "O(amount \u00d7 coin types) time, O(amount) space.",
+    "edge": "Greedy fails for [1,3,4] and amount 6."
+  },
+  "maximum-product-subarray": {
+    "goal": "Find the greatest product of a nonempty contiguous subarray.",
+    "approach": "Maintain both maximum and minimum products ending here, since a negative multiplier swaps their roles. Include starting fresh at the current value.",
+    "complexity": "O(n) arithmetic operations, O(1) space.",
+    "edge": "Zeros reset products; two negatives can form the maximum."
+  },
+  "word-break": {
+    "goal": "Check whether a string can be segmented into dictionary words.",
+    "approach": "dp[i] marks whether prefix s[:i] is segmentable. For each endpoint, check dictionary words or valid earlier split positions.",
+    "complexity": "With word-length matching: O(n \u00d7 sum of tested word lengths) worst-case; O(n) DP plus dictionary.",
+    "edge": "A valid short prefix may lead to a dead end; do not commit greedily."
+  },
+  "longest-increasing-subsequence": {
+    "goal": "Find the longest strictly increasing subsequence length.",
+    "approach": "Maintain tails[len\u22121], the smallest possible ending value for an increasing subsequence of that length. Replace using lower_bound, or append if larger than all tails.",
+    "complexity": "O(n log n) time, O(n) space.",
+    "edge": "Equal values replace rather than extend; tails itself is not necessarily the final subsequence."
+  },
+  "partition-equal-subset-sum": {
+    "goal": "Determine whether values split into two equal-sum subsets.",
+    "approach": "If the total is odd, fail. Otherwise solve 0/1 subset-sum for half the total, updating reachable sums downward so each item is used once.",
+    "complexity": "O(n \u00d7 total sum) time, O(total sum) space.",
+    "edge": "Forward in-place updates would reuse an item multiple times."
+  },
+  "unique-paths": {
+    "goal": "Count right/down paths from the top-left to bottom-right of a grid.",
+    "approach": "Each cell receives ways from above plus left. Initialize the first row/column to one, or use a rolling row.",
+    "complexity": "O(RC) time, O(C) auxiliary space with rolling DP.",
+    "edge": "One row or one column has exactly one path."
+  },
+  "longest-common-subsequence": {
+    "goal": "Find the longest order-preserving common subsequence of two strings.",
+    "approach": "State (i,j) represents remaining suffixes. Equal characters contribute 1+diagonal; otherwise skip either character and take the maximum.",
+    "complexity": "O(mn) time and O(mn) table space; rows can be compressed.",
+    "edge": "Subsequence allows gaps; substring does not."
+  },
+  "best-time-to-buy-and-sell-stock-with-cooldown": {
+    "goal": "Maximize stock profit with a one-day cooldown after selling.",
+    "approach": "Track holding, just-sold, and resting states. Buy only from the previous resting state, so yesterday\u2019s sale cannot fund today\u2019s purchase.",
+    "complexity": "O(n) time, O(1) rolling state space.",
+    "edge": "Compute all new states from old snapshots, not partially updated values."
+  },
+  "coin-change-ii": {
+    "goal": "Count unordered combinations of reusable coins forming an amount.",
+    "approach": "Initialize ways[0]=1. Loop coin types outside and amounts upward inside, adding ways[a\u2212coin] to ways[a].",
+    "complexity": "O(amount \u00d7 coin types) time, O(amount) space.",
+    "edge": "Reversing the loop roles can count permutations instead of combinations."
+  },
+  "target-sum": {
+    "goal": "Count sign assignments producing a target sum.",
+    "approach": "Memoize (index,current sum), exploring plus and minus for each value. A subset-sum transformation is also possible when parity and range conditions hold.",
+    "complexity": "O(nS) time for reachable sum range S, O(nS) memo space.",
+    "edge": "Zero values produce two distinct sign choices even though sums are equal."
+  },
+  "interleaving-string": {
+    "goal": "Check whether two strings interleave to form a third while preserving each source\u2019s order.",
+    "approach": "After a length check, DP over consumed counts (i,j); next target index is i+j, and either source may supply the next matching character.",
+    "complexity": "O(mn) time, O(mn) space or O(min(m,n)) rolling space.",
+    "edge": "Identical next characters require exploring both possibilities."
+  },
+  "longest-increasing-path-in-a-matrix": {
+    "goal": "Find the longest strictly increasing orthogonal grid path.",
+    "approach": "Memoize the longest path starting at each cell. Only traverse to strictly larger neighbors; this makes the implicit graph acyclic.",
+    "complexity": "O(RC) time and space.",
+    "edge": "No global visited prohibition is needed across independent starts; cache results instead."
+  },
+  "distinct-subsequences": {
+    "goal": "Count subsequences of a source string equal to a target string.",
+    "approach": "DP tracks source and target positions. Skip the source character, and also match it when equal. An empty target has one matching subsequence.",
+    "complexity": "O(mn) time; O(n) rolling space with backward target updates.",
+    "edge": "A source shorter than target cannot match; repeated letters create multiple index choices."
+  },
+  "edit-distance": {
+    "goal": "Find minimum insertions, deletions, and replacements transforming one string into another.",
+    "approach": "State (i,j) represents remaining suffixes. Equal characters advance both; otherwise add one to the minimum of insert, delete, and replace transitions.",
+    "complexity": "O(mn) time and O(mn) space, reducible to rolling rows.",
+    "edge": "Empty suffix cost is the remaining opposite length."
+  },
+  "burst-balloons": {
+    "goal": "Maximize coins from removing balloons whose current neighbors determine reward.",
+    "approach": "Add boundary 1s and use interval DP. Choose which balloon is removed last inside each interval, leaving its outside neighbors fixed.",
+    "complexity": "O(n\u00b3) time, O(n\u00b2) space.",
+    "edge": "Choosing the first balloon leaves changing neighbors; choosing the last makes subproblems independent."
+  },
+  "regular-expression-matching": {
+    "goal": "Match a whole string against a pattern with dot and star operators.",
+    "approach": "Memoize (text index,pattern index). For x*, either skip the pair or consume one matching character while keeping the same pattern position.",
+    "complexity": "O(mn) time and space.",
+    "edge": "Star modifies its preceding token; this is not shell-glob matching."
+  },
+  "maximum-subarray": {
+    "goal": "Find the maximum sum of a nonempty contiguous subarray.",
+    "approach": "Kadane\u2019s algorithm chooses whether to extend the best subarray ending previously or restart at the current value. Track the best ending anywhere.",
+    "complexity": "O(n) time, O(1) space.",
+    "edge": "All-negative input must return the largest element, not zero."
+  },
+  "jump-game": {
+    "goal": "Determine whether forward jumps can reach the last index.",
+    "approach": "Maintain the farthest reachable index. If the scan reaches an index beyond it, progress is impossible; otherwise extend reach from that position.",
+    "complexity": "O(n) time, O(1) space.",
+    "edge": "Zeros can create an unreachable gap."
+  },
+  "jump-game-ii": {
+    "goal": "Find the minimum number of jumps to reach the final index.",
+    "approach": "Treat reachable indices as BFS layers represented by ranges. Scan one range to find the next farthest boundary, then increment the jump count.",
+    "complexity": "O(n) time, O(1) space.",
+    "edge": "Do not add an extra jump when already at the last index; original inputs guarantee reachability."
+  },
+  "gas-station": {
+    "goal": "Find a starting station that can complete a circular route, if one exists.",
+    "approach": "If total gas minus cost is negative, fail. When a running segment balance goes negative, no start inside that segment can work; reset to the next station.",
+    "complexity": "O(n) time, O(1) space.",
+    "edge": "The candidate must still satisfy the total-balance check."
+  },
+  "hand-of-straights": {
+    "goal": "Partition cards into equal-sized groups of consecutive values.",
+    "approach": "Count cards and process values in ascending order. Every remaining smallest card must start a group; consume one count at each next required value.",
+    "complexity": "O(n log n) time and O(n) space with sorted keys/counts.",
+    "edge": "Total card count must be divisible by group size; duplicates require multiple groups."
+  },
+  "merge-triplets-to-form-target-triplet": {
+    "goal": "Check whether componentwise maxima of chosen triplets can equal a target.",
+    "approach": "Ignore triplets exceeding the target in any coordinate. Among the remaining triplets, record which target coordinates are matched exactly.",
+    "complexity": "O(n) time, O(1) space for three coordinates.",
+    "edge": "One too-large coordinate makes that entire triplet unusable."
+  },
+  "partition-labels": {
+    "goal": "Split a string into the most parts so each character appears in only one part.",
+    "approach": "Record each character\u2019s last position. Scan and extend the current partition end to all encountered last positions; close when the scan reaches that end.",
+    "complexity": "O(n) time, O(alphabet) space.",
+    "edge": "A character seen early may force a much later boundary."
+  },
+  "valid-parenthesis-string": {
+    "goal": "Determine whether parentheses and wildcard stars can form a balanced sequence.",
+    "approach": "Track minimum and maximum possible unmatched opens. Update both for each character, clamp minimum to zero, and fail if maximum goes negative.",
+    "complexity": "O(n) time, O(1) space.",
+    "edge": "A star may be empty, opening, or closing; final minimum must be zero."
+  },
+  "insert-interval": {
+    "goal": "Insert a new interval into sorted nonoverlapping intervals and merge overlap.",
+    "approach": "Copy intervals ending before the new start, merge all touching intervals into the new range, then append the untouched suffix.",
+    "complexity": "O(n) time, O(n) output space.",
+    "edge": "New interval before all, after all, or containing many intervals."
+  },
+  "merge-intervals": {
+    "goal": "Return the union of possibly overlapping closed intervals.",
+    "approach": "Sort by start; merge into the last output range when the next start is at most its end. Extend by max of ends.",
+    "complexity": "O(n log n) time, O(n) sorting/output space.",
+    "edge": "Contained intervals must not shrink the merged end."
+  },
+  "non-overlapping-intervals": {
+    "goal": "Remove the fewest intervals so the remaining intervals do not overlap.",
+    "approach": "Maximize retained intervals by earliest finish time, then subtract that count from n. An exchange argument justifies taking the earliest-finishing compatible interval.",
+    "complexity": "O(n log n) time, O(n) sorting storage.",
+    "edge": "Touching endpoints are compatible under the usual prompt convention."
+  },
+  "meeting-rooms": {
+    "goal": "Check whether one person can attend every meeting.",
+    "approach": "Sort by start and check each start against the previous end. Any strict overlap proves a conflict.",
+    "complexity": "O(n log n) time, O(n) sorting storage.",
+    "edge": "A meeting starting exactly when another ends is allowed."
+  },
+  "meeting-rooms-ii": {
+    "goal": "Find the minimum number of rooms needed for all meetings.",
+    "approach": "Sort starts and ends separately or maintain a min heap of active end times. The answer is the maximum number of simultaneous meetings.",
+    "complexity": "O(n log n) time, O(n) space.",
+    "edge": "Process an ending before a starting event at the same time."
+  },
+  "minimum-interval-to-include-each-query": {
+    "goal": "For each query value, find the shortest closed interval containing it.",
+    "approach": "Sort intervals by start and queries by value. Add eligible intervals to a min heap keyed by length; discard expired heap roots before answering.",
+    "complexity": "O((n+q) log n + q log q) time, O(n+q) space.",
+    "edge": "Restore original query order; inclusive interval length is end\u2212start+1."
+  },
+  "rotate-image": {
+    "goal": "Rotate a square matrix 90 degrees clockwise in place.",
+    "approach": "Transpose across the main diagonal once, then reverse each row. The coordinate mapping is (r,c)\u2192(c,n\u22121\u2212r).",
+    "complexity": "O(n\u00b2) time, O(1) auxiliary space.",
+    "edge": "Swapping both diagonal halves cancels the transpose."
+  },
+  "spiral-matrix": {
+    "goal": "List matrix values in clockwise spiral order.",
+    "approach": "Maintain top, bottom, left, and right boundaries. Consume one side at a time and shrink its boundary, checking bounds before opposite sides.",
+    "complexity": "O(RC) time, O(1) auxiliary space excluding output.",
+    "edge": "A remaining single row or column must not be read twice."
+  },
+  "set-matrix-zeroes": {
+    "goal": "Zero every row and column containing an original zero.",
+    "approach": "Use the first row and column as markers, with separate flags for whether those first boundaries originally contained zero. Apply markers only after scanning.",
+    "complexity": "O(RC) time, O(1) auxiliary space.",
+    "edge": "Writing zeros during initial scanning can create false markers."
+  },
+  "happy-number": {
+    "goal": "Determine whether repeated sums of squared digits eventually reach 1.",
+    "approach": "Treat each number as a node pointing to its digit-square sum. Detect a cycle with a set or Floyd\u2019s fast/slow pointers.",
+    "complexity": "Each transform costs O(number of digits); the sequence quickly enters a bounded range. Floyd uses O(1) state.",
+    "edge": "A cycle excluding 1 means the number is not happy."
+  },
+  "plus-one": {
+    "goal": "Increment a nonnegative integer stored as decimal digits.",
+    "approach": "Scan from the last digit. If it is below 9, increment and return; otherwise write zero and carry. Prepend one if all digits were 9.",
+    "complexity": "O(n) time, O(1) auxiliary space excluding possible output growth.",
+    "edge": "[9,9] becomes [1,0,0]."
+  },
+  "powx-n": {
+    "goal": "Compute x raised to an integer exponent efficiently.",
+    "approach": "Use exponentiation by squaring. Multiply the result for set exponent bits, square the base, and halve the exponent. Invert the base for negative exponents.",
+    "complexity": "O(log abs(n)) multiplications, O(1) iterative space.",
+    "edge": "n=0; negative exponents; zero base with negative exponent is undefined."
+  },
+  "multiply-strings": {
+    "goal": "Multiply two nonnegative decimal strings without converting whole strings to integers.",
+    "approach": "Accumulate each digit-pair product at positions i+j and i+j+1, propagate carries, and strip leading zeros.",
+    "complexity": "O(mn) time, O(m+n) space.",
+    "edge": "Any zero input must produce exactly \"0\"."
+  },
+  "detect-squares": {
+    "goal": "Count axis-aligned squares formed with a query point and stored points.",
+    "approach": "Count point multiplicities. For each stored point diagonally opposite the query with equal nonzero horizontal and vertical offsets, multiply counts of the other two corners and the diagonal point.",
+    "complexity": "Add expected O(1); query O(number of distinct stored points); O(distinct points) space.",
+    "edge": "Repeated points multiply the number of squares; zero side length is invalid."
+  },
+  "single-number": {
+    "goal": "Find the unique value when every other value occurs exactly twice.",
+    "approach": "XOR all values: associativity and commutativity allow equal pairs to cancel, leaving the singleton.",
+    "complexity": "O(n) fixed-width operations, O(1) auxiliary space.",
+    "edge": "The cancellation rule changes if other values occur three times."
+  },
+  "number-of-1-bits": {
+    "goal": "Count set bits in an unsigned fixed-width integer.",
+    "approach": "Repeatedly clear the lowest set bit with n &= n\u22121 and count iterations.",
+    "complexity": "O(number of set bits) time, O(1) fixed-width space.",
+    "edge": "Python negative integers need masking before using this unsigned-bit method."
+  },
+  "counting-bits": {
+    "goal": "Return the number of set bits for each integer from zero through n.",
+    "approach": "bits[i]=bits[i>>1]+(i&1). Each number reuses the count of its right-shifted smaller value.",
+    "complexity": "O(n) time, O(n) output space.",
+    "edge": "The base case bits[0] is zero."
+  },
+  "reverse-bits": {
+    "goal": "Reverse all bits of a fixed-width unsigned integer.",
+    "approach": "Repeat exactly 32 times: shift the result left, append the current low bit, and shift the input right.",
+    "complexity": "O(32) time, O(1) space under the 32-bit contract.",
+    "edge": "Leading zeros must be processed; stopping when n becomes zero is wrong."
+  },
+  "missing-number": {
+    "goal": "Find the absent value from distinct values covering 0..n except one.",
+    "approach": "XOR all expected indices 0..n and all present values, or subtract the actual sum from n(n+1)/2.",
+    "complexity": "O(n) time, O(1) auxiliary space.",
+    "edge": "The missing value may be zero or n."
+  },
+  "sum-of-two-integers": {
+    "goal": "Add signed integers using bit operations rather than arithmetic addition.",
+    "approach": "XOR computes sum without carry; AND then left-shift computes carry. Repeat with a fixed-width mask and convert the final bit pattern to a signed value.",
+    "complexity": "O(word width) worst-case iterations, O(1) fixed-width space.",
+    "edge": "Python\u2019s unbounded negative integers require explicit masking and signed conversion."
+  },
+  "reverse-integer": {
+    "goal": "Reverse decimal digits of a signed 32-bit integer, returning zero on overflow.",
+    "approach": "Separate the sign, repeatedly extract digits, and check against the signed 32-bit bound before appending each digit. Restore the sign afterward.",
+    "complexity": "O(decimal digits) time, O(1) fixed-width space.",
+    "edge": "Trailing zeros disappear; the negative bound has magnitude 2^31, one greater than the positive bound."
+  }
+}
