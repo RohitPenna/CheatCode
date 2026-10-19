@@ -35,37 +35,15 @@
     },
     "cases": [
       {
-        "args": [
-          [
-            2,
-            7,
-            11
-          ],
-          9
-        ],
-        "expected": [
-          0,
-          1
-        ]
+        "args": [[2, 7, 11], 9],
+        "expected": [0, 1]
       },
       {
-        "args": [
-          [
-            3,
-            3
-          ],
-          6
-        ],
-        "expected": [
-          0,
-          1
-        ]
+        "args": [[3, 3], 6],
+        "expected": [0, 1]
       },
       {
-        "args": [
-          [],
-          4
-        ],
+        "args": [[], 4],
         "expected": []
       }
     ]
@@ -106,27 +84,11 @@
     },
     "cases": [
       {
-        "args": [
-          [
-            1,
-            3,
-            5,
-            8
-          ],
-          8
-        ],
-        "expected": [
-          1,
-          2
-        ]
+        "args": [[1, 3, 5, 8], 8],
+        "expected": [1, 2]
       },
       {
-        "args": [
-          [
-            1
-          ],
-          2
-        ],
+        "args": [[1], 2],
         "expected": []
       }
     ]
@@ -168,21 +130,15 @@
     },
     "cases": [
       {
-        "args": [
-          "abcabcbb"
-        ],
+        "args": ["abcabcbb"],
         "expected": 3
       },
       {
-        "args": [
-          "abba"
-        ],
+        "args": ["abba"],
         "expected": 2
       },
       {
-        "args": [
-          ""
-        ],
+        "args": [""],
         "expected": 0
       }
     ]
@@ -224,24 +180,15 @@
     },
     "cases": [
       {
-        "args": [
-          "AABABBA",
-          1
-        ],
+        "args": ["AABABBA", 1],
         "expected": 4
       },
       {
-        "args": [
-          "ABAB",
-          2
-        ],
+        "args": ["ABAB", 2],
         "expected": 4
       },
       {
-        "args": [
-          "",
-          0
-        ],
+        "args": ["", 0],
         "expected": 0
       }
     ]
@@ -282,23 +229,11 @@
     },
     "cases": [
       {
-        "args": [
-          [
-            2,
-            -1,
-            4
-          ],
-          1,
-          3
-        ],
+        "args": [[2, -1, 4], 1, 3],
         "expected": 3
       },
       {
-        "args": [
-          [],
-          0,
-          0
-        ],
+        "args": [[], 0, 0],
         "expected": 0
       }
     ]
@@ -339,32 +274,15 @@
     },
     "cases": [
       {
-        "args": [
-          [
-            1,
-            3,
-            5,
-            7,
-            9
-          ],
-          7
-        ],
+        "args": [[1, 3, 5, 7, 9], 7],
         "expected": 3
       },
       {
-        "args": [
-          [],
-          4
-        ],
+        "args": [[], 4],
         "expected": -1
       },
       {
-        "args": [
-          [
-            2
-          ],
-          1
-        ],
+        "args": [[2], 1],
         "expected": -1
       }
     ]
@@ -406,25 +324,11 @@
     },
     "cases": [
       {
-        "args": [
-          [
-            3,
-            6,
-            7,
-            11
-          ],
-          8
-        ],
+        "args": [[3, 6, 7, 11], 8],
         "expected": 4
       },
       {
-        "args": [
-          [
-            1,
-            1
-          ],
-          1
-        ],
+        "args": [[1, 1], 1],
         "expected": -1
       }
     ]
@@ -456,33 +360,17 @@
     "simpler": "Turn each arrow around while keeping a bookmark for where to go next.",
     "quiz": {
       "question": "Which pointer must be saved before redirecting current.next?",
-      "options": [
-        "prev.next",
-        "The original current.next",
-        "The list length"
-      ],
+      "options": ["prev.next", "The original current.next", "The list length"],
       "answer": 1,
       "explanation": "The saved successor is the only path to the unprocessed suffix."
     },
     "cases": [
       {
-        "args": [
-          [
-            1,
-            2,
-            3
-          ]
-        ],
-        "expected": [
-          3,
-          2,
-          1
-        ]
+        "args": [[1, 2, 3]],
+        "expected": [3, 2, 1]
       },
       {
-        "args": [
-          []
-        ],
+        "args": [[]],
         "expected": []
       }
     ]
@@ -514,37 +402,17 @@
     "simpler": "Ask each branch how tall it is. A parent only needs those two answers to describe its own height.",
     "quiz": {
       "question": "What is the height of an empty tree in this node-count convention?",
-      "options": [
-        "-1",
-        "0",
-        "1"
-      ],
+      "options": ["-1", "0", "1"],
       "answer": 1,
       "explanation": "An empty tree contributes zero nodes to a root-to-leaf path."
     },
     "cases": [
       {
-        "args": [
-          null
-        ],
+        "args": [null],
         "expected": 0
       },
       {
-        "args": [
-          [
-            1,
-            [
-              2,
-              null,
-              null
-            ],
-            [
-              3,
-              null,
-              null
-            ]
-          ]
-        ],
+        "args": [[1, [2, null, null], [3, null, null]]],
         "expected": 2
       }
     ]
@@ -585,23 +453,11 @@
     },
     "cases": [
       {
-        "args": [
-          [
-            "cat",
-            "car"
-          ],
-          "ca"
-        ],
+        "args": [["cat", "car"], "ca"],
         "expected": false
       },
       {
-        "args": [
-          [
-            "cat",
-            "car"
-          ],
-          "car"
-        ],
+        "args": [["cat", "car"], "car"],
         "expected": true
       }
     ]
@@ -643,25 +499,11 @@
     },
     "cases": [
       {
-        "args": [
-          [
-            3,
-            1,
-            5,
-            2
-          ],
-          2
-        ],
+        "args": [[3, 1, 5, 2], 2],
         "expected": 3
       },
       {
-        "args": [
-          [
-            2,
-            2
-          ],
-          1
-        ],
+        "args": [[2, 2], 1],
         "expected": 2
       }
     ]
@@ -703,32 +545,12 @@
     },
     "cases": [
       {
-        "args": [
-          [
-            70,
-            72,
-            71,
-            75
-          ]
-        ],
-        "expected": [
-          1,
-          2,
-          1,
-          0
-        ]
+        "args": [[70, 72, 71, 75]],
+        "expected": [1, 2, 1, 0]
       },
       {
-        "args": [
-          [
-            3,
-            3
-          ]
-        ],
-        "expected": [
-          0,
-          0
-        ]
+        "args": [[3, 3]],
+        "expected": [0, 0]
       }
     ]
   },
@@ -769,33 +591,12 @@
     },
     "cases": [
       {
-        "args": [
-          [
-            1,
-            2
-          ]
-        ],
-        "expected": [
-          [],
-          [
-            1
-          ],
-          [
-            1,
-            2
-          ],
-          [
-            2
-          ]
-        ]
+        "args": [[1, 2]],
+        "expected": [[], [1], [1, 2], [2]]
       },
       {
-        "args": [
-          []
-        ],
-        "expected": [
-          []
-        ]
+        "args": [[]],
+        "expected": [[]]
       }
     ]
   },
@@ -836,50 +637,12 @@
     },
     "cases": [
       {
-        "args": [
-          [
-            [
-              1,
-              2
-            ],
-            [
-              0,
-              3
-            ],
-            [
-              0
-            ],
-            [
-              1
-            ]
-          ],
-          0
-        ],
-        "expected": [
-          0,
-          1,
-          1,
-          2
-        ]
+        "args": [[[1, 2], [0, 3], [0], [1]], 0],
+        "expected": [0, 1, 1, 2]
       },
       {
-        "args": [
-          [
-            [
-              1
-            ],
-            [
-              0
-            ],
-            []
-          ],
-          0
-        ],
-        "expected": [
-          0,
-          1,
-          -1
-        ]
+        "args": [[[1], [0], []], 0],
+        "expected": [0, 1, -1]
       }
     ]
   },
@@ -923,34 +686,18 @@
         "args": [
           3,
           [
-            [
-              0,
-              1
-            ],
-            [
-              1,
-              2
-            ]
+            [0, 1],
+            [1, 2]
           ]
         ],
-        "expected": [
-          0,
-          1,
-          2
-        ]
+        "expected": [0, 1, 2]
       },
       {
         "args": [
           2,
           [
-            [
-              0,
-              1
-            ],
-            [
-              1,
-              0
-            ]
+            [0, 1],
+            [1, 0]
           ]
         ],
         "expected": []
@@ -996,27 +743,15 @@
         "args": [
           4,
           [
-            [
-              0,
-              1
-            ],
-            [
-              2,
-              3
-            ],
-            [
-              1,
-              2
-            ]
+            [0, 1],
+            [2, 3],
+            [1, 2]
           ]
         ],
         "expected": 1
       },
       {
-        "args": [
-          3,
-          []
-        ],
+        "args": [3, []],
         "expected": 3
       }
     ]
@@ -1061,43 +796,19 @@
         "args": [
           [
             [
-              [
-                1,
-                4
-              ],
-              [
-                2,
-                1
-              ]
+              [1, 4],
+              [2, 1]
             ],
             [],
-            [
-              [
-                1,
-                2
-              ]
-            ]
+            [[1, 2]]
           ],
           0
         ],
-        "expected": [
-          0,
-          3,
-          1
-        ]
+        "expected": [0, 3, 1]
       },
       {
-        "args": [
-          [
-            [],
-            []
-          ],
-          0
-        ],
-        "expected": [
-          0,
-          null
-        ]
+        "args": [[[], []], 0],
+        "expected": [0, null]
       }
     ]
   },
@@ -1141,21 +852,9 @@
         "args": [
           3,
           [
-            [
-              0,
-              1,
-              1
-            ],
-            [
-              1,
-              2,
-              1
-            ],
-            [
-              0,
-              2,
-              9
-            ]
+            [0, 1, 1],
+            [1, 2, 1],
+            [0, 2, 9]
           ],
           0,
           2,
@@ -1167,21 +866,9 @@
         "args": [
           3,
           [
-            [
-              0,
-              1,
-              1
-            ],
-            [
-              1,
-              2,
-              1
-            ],
-            [
-              0,
-              2,
-              9
-            ]
+            [0, 1, 1],
+            [1, 2, 1],
+            [0, 2, 9]
           ],
           0,
           2,
@@ -1228,32 +915,15 @@
     },
     "cases": [
       {
-        "args": [
-          [
-            1,
-            3,
-            4
-          ],
-          6
-        ],
+        "args": [[1, 3, 4], 6],
         "expected": 2
       },
       {
-        "args": [
-          [
-            2
-          ],
-          3
-        ],
+        "args": [[2], 3],
         "expected": -1
       },
       {
-        "args": [
-          [
-            1
-          ],
-          0
-        ],
+        "args": [[1], 0],
         "expected": 0
       }
     ]
@@ -1295,17 +965,11 @@
     },
     "cases": [
       {
-        "args": [
-          "ace",
-          "abcde"
-        ],
+        "args": ["ace", "abcde"],
         "expected": 3
       },
       {
-        "args": [
-          "",
-          "abc"
-        ],
+        "args": ["", "abc"],
         "expected": 0
       }
     ]
@@ -1349,26 +1013,15 @@
       {
         "args": [
           [
-            [
-              1,
-              3
-            ],
-            [
-              2,
-              4
-            ],
-            [
-              3,
-              5
-            ]
+            [1, 3],
+            [2, 4],
+            [3, 5]
           ]
         ],
         "expected": 2
       },
       {
-        "args": [
-          []
-        ],
+        "args": [[]],
         "expected": 0
       }
     ]
@@ -1412,50 +1065,24 @@
       {
         "args": [
           [
-            [
-              1,
-              3
-            ],
-            [
-              2,
-              6
-            ],
-            [
-              8,
-              10
-            ]
+            [1, 3],
+            [2, 6],
+            [8, 10]
           ]
         ],
         "expected": [
-          [
-            1,
-            6
-          ],
-          [
-            8,
-            10
-          ]
+          [1, 6],
+          [8, 10]
         ]
       },
       {
         "args": [
           [
-            [
-              1,
-              10
-            ],
-            [
-              2,
-              3
-            ]
+            [1, 10],
+            [2, 3]
           ]
         ],
-        "expected": [
-          [
-            1,
-            10
-          ]
-        ]
+        "expected": [[1, 10]]
       }
     ]
   },
@@ -1497,31 +1124,17 @@
       {
         "args": [
           [
-            [
-              1,
-              2
-            ],
-            [
-              3,
-              4
-            ]
+            [1, 2],
+            [3, 4]
           ]
         ],
         "expected": [
-          [
-            3,
-            1
-          ],
-          [
-            4,
-            2
-          ]
+          [3, 1],
+          [4, 2]
         ]
       },
       {
-        "args": [
-          []
-        ],
+        "args": [[]],
         "expected": []
       }
     ]
@@ -1562,25 +1175,11 @@
     },
     "cases": [
       {
-        "args": [
-          [
-            4,
-            1,
-            2,
-            1,
-            2
-          ]
-        ],
+        "args": [[4, 1, 2, 1, 2]],
         "expected": 4
       },
       {
-        "args": [
-          [
-            -1,
-            2,
-            2
-          ]
-        ],
+        "args": [[-1, 2, 2]],
         "expected": -1
       }
     ]
@@ -1612,11 +1211,7 @@
     "simpler": "A free move stays in the current wave; a paid move joins the next wave.",
     "quiz": {
       "question": "Where should a zero-cost improvement enter the deque?",
-      "options": [
-        "Front",
-        "Back",
-        "A random position"
-      ],
+      "options": ["Front", "Back", "A random position"],
       "answer": 0,
       "explanation": "It belongs to the current distance layer, before paths costing one more."
     },
@@ -1625,30 +1220,15 @@
         "args": [
           [
             [
-              [
-                1,
-                1
-              ],
-              [
-                2,
-                0
-              ]
+              [1, 1],
+              [2, 0]
             ],
             [],
-            [
-              [
-                1,
-                0
-              ]
-            ]
+            [[1, 0]]
           ],
           0
         ],
-        "expected": [
-          0,
-          0,
-          0
-        ]
+        "expected": [0, 0, 0]
       }
     ]
   },
@@ -1689,16 +1269,7 @@
     },
     "cases": [
       {
-        "args": [
-          [
-            2,
-            1,
-            3,
-            4
-          ],
-          1,
-          4
-        ],
+        "args": [[2, 1, 3, 4], 1, 4],
         "expected": 8
       }
     ]

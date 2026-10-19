@@ -1,9 +1,381 @@
-import { useMemo, useState } from 'react';
-import { ArrowRight, Bookmark, ChevronLeft, Search } from 'lucide-react';
-import { categories, lessons, primaryLesson, problems } from '../data';
-import { useStudy, blankProgress } from '../lib/store';
-import { Card, Code, Empty, External, Link, PageTitle, ProgressBar, ProgressControls, Tag } from '../components/ui';
-import briefs from '../data/briefs.json';
-const studyBriefs=briefs as Record<string,{goal:string;approach:string;complexity:string;edge:string}>;
-export function Problems(){const {state,updateProgress}=useStudy();const [query,setQuery]=useState('');const [category,setCategory]=useState('All topics');const [difficulty,setDifficulty]=useState('All difficulties');const [status,setStatus]=useState('All statuses');const [confidence,setConfidence]=useState('All confidence');const [bookmarks,setBookmarks]=useState(false);const selected=useMemo(()=>problems.filter(p=>{const pr=state.problems[p.id]??blankProgress();return p.name.toLowerCase().includes(query.toLowerCase())&&(category==='All topics'||p.category===category)&&(difficulty==='All difficulties'||p.difficulty===difficulty)&&(status==='All statuses'||status===pr.status||(status==='Completed'&&pr.completed))&&(confidence==='All confidence'||(confidence==='Not rated'?pr.confidence===0:confidence==='Low (1–2)'?pr.confidence>0&&pr.confidence<=2:pr.confidence>=3))&&(!bookmarks||pr.bookmarked);}),[state,query,category,difficulty,status,confidence,bookmarks]);const count=problems.filter(p=>state.problems[p.id]?.completed).length;return <><PageTitle eyebrow="A STRUCTURED PATH" title="NeetCode 150" description="150 problems. 18 patterns. Build understanding one deliberate attempt at a time." action={<External href="https://neetcode.io/practice/practice/neetcode150">Official checklist</External>}/><Card className="tracker-summary"><div><strong>{count} <span>/ 150</span></strong><p>problems completed</p></div><ProgressBar value={count/150*100}/><Tag tone="green">{Math.round(count/150*100)}% complete</Tag></Card><div className="toolbar filters"><div className="input-icon"><Search size={17}/><input aria-label="Search problems" placeholder="Search problems…" value={query} onChange={e=>setQuery(e.target.value)}/></div>{[[category,setCategory,['All topics',...categories]],[difficulty,setDifficulty,['All difficulties','Easy','Medium','Hard']],[status,setStatus,['All statuses','Not Started','Learning','Practicing','Mastered','Completed']],[confidence,setConfidence,['All confidence','Not rated','Low (1–2)','Confident (3–5)']]].map(([value,setter,options],i)=><select key={i} aria-label={['Filter by category','Filter by difficulty','Filter by status','Filter by confidence'][i]} value={value as string} onChange={e=>(setter as (s:string)=>void)(e.target.value)}>{(options as string[]).map(x=><option key={x}>{x}</option>)}</select>)}<button className={'button '+(bookmarks?'selected':'')} onClick={()=>setBookmarks(!bookmarks)} aria-pressed={bookmarks}><Bookmark size={16}/>Saved</button></div><div className="row between"><small className="muted">{selected.length} problems shown</small><small className="muted">✓ = completed · confidence tracked separately</small></div><Card className="problem-list">{selected.length?selected.map((p,i)=>{const pr=state.problems[p.id]??blankProgress();return <div className="problem-row" key={p.id}><input aria-label={'Complete '+p.name} type="checkbox" checked={pr.completed} onChange={e=>updateProgress('problems',p.id,{completed:e.target.checked},`${e.target.checked?'Completed':'Reopened'} ${p.name}`)}/><span className="problem-index">{String(i+1).padStart(2,'0')}</span><Link to={'/problem/'+p.id} className="problem-name"><strong>{p.name}</strong><small>{p.category}</small></Link><Tag tone={p.difficulty.toLowerCase()}>{p.difficulty}</Tag><span className="problem-status">{pr.status}</span><span className="confidence-dots" title={`Confidence ${pr.confidence}/5`}>{Array.from({length:5},(_,j)=><i key={j} className={j<pr.confidence?'filled':''}/>)}</span><Link to={'/problem/'+p.id} aria-label={'Open '+p.name}><ArrowRight size={17}/></Link></div>}):<Empty title="No matching problems">Try widening your filters or searching another name.</Empty>}</Card><p className="footer-note">Checklist metadata verified against <External href="https://github.com/neetcode-gh/leetcode/blob/main/.problemSiteData.json">NeetCode’s source checklist</External> on October 18, 2026. Study briefs are original. Detailed Python examples live in the linked pattern lessons.</p></>;}
-export function ProblemPage({id}:{id:string}){const p=problems.find(p=>p.id===id);const [reveal,setReveal]=useState(false);if(!p)return <Empty title="Problem not found"><Link to="/problems">Open the tracker</Link></Empty>;const l=lessons.find(l=>l.id===primaryLesson[p.category])!;const b=studyBriefs[id];return <><Link to="/problems" className="back"><ChevronLeft size={16}/>NeetCode 150</Link><PageTitle eyebrow={p.category.toUpperCase()} title={p.name} description={b?.goal??'Open the original prompt, clarify the constraints, and derive an approach before reviewing the category lesson.'} action={<Tag tone={p.difficulty.toLowerCase()}>{p.difficulty}</Tag>}/><div className="lesson-layout"><div className="stack"><Card><h2>Start with the problem</h2><p>Read the complete constraints and examples, then write a brute-force solution in your notes before revealing the study brief.</p><External href={p.url}>Open original problem</External><div className="callout"><div><strong>Your reasoning checklist</strong><p>What are the inputs and output? Which constraints matter? What does the simplest correct approach repeat? What state could remove that repeated work?</p></div></div><button className="button primary" onClick={()=>setReveal(!reveal)}>{reveal?'Hide study brief':'Reveal study brief'}<ArrowRight size={16}/></button></Card>{reveal&&<><Card><Tag tone="blue">Concise study brief</Tag><h2>A route to the solution</h2><p>{b?.approach??l.clues}</p><h3>Complexity</h3><p>{b?.complexity??'Consult the original problem and linked lesson; complexity depends on the exact chosen approach.'}</p><h3>Test this boundary</h3><p>{b?.edge??l.edges}</p><small className="muted">This is a focused guide, not a complete problem-specific editorial. The template below teaches the category’s core pattern; it is not necessarily this problem’s solution.</small></Card><Card><h2>Related pattern: {l.title}</h2><p>{l.intuition}</p><Link to={'/lesson/'+l.id} className="text-link">Study the full lesson<ArrowRight size={16}/></Link><details><summary>Show the category’s Python template</summary><Code code={l.code}/></details></Card></>}<Card><h2>Change one constraint</h2><p>Would your approach still work if duplicates were allowed, values could be negative, or the input arrived as a stream? Pick one meaningful change and explain which assumption in your proof changes.</p><Link to="/lab" className="text-link">Work through the reasoning framework<ArrowRight size={16}/></Link></Card></div><aside><Card><h3>Your progress & notes</h3><ProgressControls kind="problems" id={id} label={p.name}/></Card><Card className="mt"><h3>Related problems</h3>{problems.filter(x=>x.category===p.category&&x.id!==id).slice(0,5).map(x=><Link className="list-link" key={x.id} to={'/problem/'+x.id}>{x.name}<ArrowRight size={14}/></Link>)}</Card></aside></div></>;}
+import { useMemo, useState } from "react";
+import { ArrowRight, Bookmark, ChevronLeft, Search } from "lucide-react";
+import { categories, lessons, primaryLesson, problems } from "../data";
+import { useStudy, blankProgress } from "../lib/store";
+import {
+  Card,
+  Code,
+  Empty,
+  External,
+  Link,
+  PageTitle,
+  ProgressBar,
+  ProgressControls,
+  Tag,
+} from "../components/ui";
+import briefs from "../data/briefs.json";
+import solutions from "../data/solutions.json";
+interface Solution {
+  code: string;
+  cases: { args: unknown[]; expected: unknown }[];
+  invariant: string;
+  brute: string;
+  example: string[];
+  state: string;
+  lesson: string;
+  contract: string;
+}
+const workedSolutions = solutions as Record<string, Solution>;
+const studyBriefs = briefs as Record<
+  string,
+  { goal: string; approach: string; complexity: string; edge: string }
+>;
+export function Problems() {
+  const { state, updateProgress } = useStudy();
+  const [query, setQuery] = useState("");
+  const [category, setCategory] = useState("All topics");
+  const [difficulty, setDifficulty] = useState("All difficulties");
+  const [status, setStatus] = useState("All statuses");
+  const [confidence, setConfidence] = useState("All confidence");
+  const [bookmarks, setBookmarks] = useState(false);
+  const selected = useMemo(
+    () =>
+      problems.filter((p) => {
+        const pr = state.problems[p.id] ?? blankProgress();
+        return (
+          p.name.toLowerCase().includes(query.toLowerCase()) &&
+          (category === "All topics" || p.category === category) &&
+          (difficulty === "All difficulties" || p.difficulty === difficulty) &&
+          (status === "All statuses" ||
+            status === pr.status ||
+            (status === "Completed" && pr.completed)) &&
+          (confidence === "All confidence" ||
+            (confidence === "Not rated"
+              ? pr.confidence === 0
+              : confidence === "Low (1–2)"
+                ? pr.confidence > 0 && pr.confidence <= 2
+                : pr.confidence >= 3)) &&
+          (!bookmarks || pr.bookmarked)
+        );
+      }),
+    [state, query, category, difficulty, status, confidence, bookmarks],
+  );
+  const count = problems.filter((p) => state.problems[p.id]?.completed).length;
+  return (
+    <>
+      <PageTitle
+        eyebrow="A STRUCTURED PATH"
+        title="NeetCode 150"
+        description="150 problems. 18 patterns. Build understanding one deliberate attempt at a time."
+        action={
+          <External href="https://neetcode.io/practice/practice/neetcode150">
+            Official checklist
+          </External>
+        }
+      />
+      <Card className="tracker-summary">
+        <div>
+          <strong>
+            {count} <span>/ 150</span>
+          </strong>
+          <p>problems completed</p>
+        </div>
+        <ProgressBar value={(count / 150) * 100} />
+        <Tag tone="green">{Math.round((count / 150) * 100)}% complete</Tag>
+      </Card>
+      <div className="toolbar filters">
+        <div className="input-icon">
+          <Search size={17} />
+          <input
+            aria-label="Search problems"
+            placeholder="Search problems…"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </div>
+        {[
+          [category, setCategory, ["All topics", ...categories]],
+          [
+            difficulty,
+            setDifficulty,
+            ["All difficulties", "Easy", "Medium", "Hard"],
+          ],
+          [
+            status,
+            setStatus,
+            [
+              "All statuses",
+              "Not Started",
+              "Learning",
+              "Practicing",
+              "Mastered",
+              "Completed",
+            ],
+          ],
+          [
+            confidence,
+            setConfidence,
+            ["All confidence", "Not rated", "Low (1–2)", "Confident (3–5)"],
+          ],
+        ].map(([value, setter, options], i) => (
+          <select
+            key={i}
+            aria-label={
+              [
+                "Filter by category",
+                "Filter by difficulty",
+                "Filter by status",
+                "Filter by confidence",
+              ][i]
+            }
+            value={value as string}
+            onChange={(e) => (setter as (s: string) => void)(e.target.value)}
+          >
+            {(options as string[]).map((x) => (
+              <option key={x}>{x}</option>
+            ))}
+          </select>
+        ))}
+        <button
+          className={"button " + (bookmarks ? "selected" : "")}
+          onClick={() => setBookmarks(!bookmarks)}
+          aria-pressed={bookmarks}
+        >
+          <Bookmark size={16} />
+          Saved
+        </button>
+      </div>
+      <div className="row between">
+        <small className="muted">{selected.length} problems shown</small>
+        <small className="muted">
+          ✓ = completed · confidence tracked separately
+        </small>
+      </div>
+      <Card className="problem-list">
+        {selected.length ? (
+          selected.map((p, i) => {
+            const pr = state.problems[p.id] ?? blankProgress();
+            return (
+              <div className="problem-row" key={p.id}>
+                <input
+                  aria-label={"Complete " + p.name}
+                  type="checkbox"
+                  checked={pr.completed}
+                  onChange={(e) =>
+                    updateProgress(
+                      "problems",
+                      p.id,
+                      { completed: e.target.checked },
+                      `${e.target.checked ? "Completed" : "Reopened"} ${p.name}`,
+                    )
+                  }
+                />
+                <span className="problem-index">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <Link to={"/problem/" + p.id} className="problem-name">
+                  <strong>{p.name}</strong>
+                  <small>{p.category}</small>
+                </Link>
+                <Tag tone={p.difficulty.toLowerCase()}>{p.difficulty}</Tag>
+                <span className="problem-status">{pr.status}</span>
+                <span
+                  className="confidence-dots"
+                  title={`Confidence ${pr.confidence}/5`}
+                >
+                  {Array.from({ length: 5 }, (_, j) => (
+                    <i key={j} className={j < pr.confidence ? "filled" : ""} />
+                  ))}
+                </span>
+                <Link to={"/problem/" + p.id} aria-label={"Open " + p.name}>
+                  <ArrowRight size={17} />
+                </Link>
+              </div>
+            );
+          })
+        ) : (
+          <Empty title="No matching problems">
+            Try widening your filters or searching another name.
+          </Empty>
+        )}
+      </Card>
+      <p className="footer-note">
+        Checklist metadata verified against{" "}
+        <External href="https://github.com/neetcode-gh/leetcode/blob/main/.problemSiteData.json">
+          NeetCode’s source checklist
+        </External>{" "}
+        on October 18, 2026. Study briefs are original. Detailed Python examples
+        live in the linked pattern lessons.
+      </p>
+    </>
+  );
+}
+export function ProblemPage({ id }: { id: string }) {
+  const p = problems.find((p) => p.id === id);
+  const [reveal, setReveal] = useState(false);
+  if (!p)
+    return (
+      <Empty title="Problem not found">
+        <Link to="/problems">Open the tracker</Link>
+      </Empty>
+    );
+  const l = lessons.find((l) => l.id === primaryLesson[p.category])!;
+  const b = studyBriefs[id];
+  const solution = workedSolutions[id];
+  return (
+    <>
+      <Link to="/problems" className="back">
+        <ChevronLeft size={16} />
+        NeetCode 150
+      </Link>
+      <PageTitle
+        eyebrow={p.category.toUpperCase()}
+        title={p.name}
+        description={
+          b?.goal ??
+          "Open the original prompt, clarify the constraints, and derive an approach before reviewing the category lesson."
+        }
+        action={<Tag tone={p.difficulty.toLowerCase()}>{p.difficulty}</Tag>}
+      />
+      <div className="lesson-layout">
+        <div className="stack">
+          <Card>
+            <h2>Start with the problem</h2>
+            <p>
+              Read the complete constraints and examples, then write a
+              brute-force solution in your notes before revealing the study
+              brief.
+            </p>
+            <External href={p.url}>Open original problem</External>
+            {solution && (
+              <div className="sample">
+                <small>STANDALONE EXAMPLE · ARGUMENTS → RESULT</small>
+                {JSON.stringify(solution.cases[0].args)} →{" "}
+                {JSON.stringify(solution.cases[0].expected)}
+              </div>
+            )}
+            <div className="callout">
+              <div>
+                <strong>Your reasoning checklist</strong>
+                <p>
+                  What are the inputs and output? Which constraints matter? What
+                  does the simplest correct approach repeat? What state could
+                  remove that repeated work?
+                </p>
+              </div>
+            </div>
+            <button
+              className="button primary"
+              onClick={() => setReveal(!reveal)}
+            >
+              {reveal ? "Hide study brief" : "Reveal study brief"}
+              <ArrowRight size={16} />
+            </button>
+          </Card>
+          {reveal && (
+            <>
+              <Card>
+                <Tag tone="blue">
+                  {solution
+                    ? "Worked solution available"
+                    : "Concise study brief"}
+                </Tag>
+                <h2>A route to the solution</h2>
+                <p>{b?.approach ?? l.clues}</p>
+                <h3>Complexity</h3>
+                <p>
+                  {b?.complexity ??
+                    "Consult the original problem and linked lesson; complexity depends on the exact chosen approach."}
+                </p>
+                <h3>Test this boundary</h3>
+                <p>{b?.edge ?? l.edges}</p>
+                {!solution && (
+                  <small className="muted">
+                    This is a focused guide, not a complete problem-specific
+                    editorial. The template below teaches the category’s core
+                    pattern; it is not necessarily this problem’s solution.
+                  </small>
+                )}
+              </Card>
+              {solution && (
+                <Card>
+                  <h2>Derive the solution</h2>
+                  <h3>Start with brute force</h3>
+                  <p>{solution.brute}</p>
+                  <h3>Define the state</h3>
+                  <p>{solution.state}</p>
+                  <ol className="steps">
+                    {solution.example.map((x, i) => (
+                      <li key={i}>
+                        <span>{i + 1}</span>
+                        <p>{x}</p>
+                      </li>
+                    ))}
+                  </ol>
+                  <h3>Python implementation</h3>
+                  <p className="muted">{solution.contract}</p>
+                  <Code code={solution.code} />
+                  <h3>Why it works</h3>
+                  <p>{solution.invariant}</p>
+                  <h3>Test cases</h3>
+                  {solution.cases.map((c, i) => (
+                    <div className="sample" key={i}>
+                      {JSON.stringify(c.args)} → {JSON.stringify(c.expected)}
+                    </div>
+                  ))}
+                  <Link to={"/lesson/" + solution.lesson} className="text-link">
+                    Explore the related concept
+                    <ArrowRight size={15} />
+                  </Link>
+                </Card>
+              )}
+              <Card>
+                <h2>Related pattern: {l.title}</h2>
+                <p>{l.intuition}</p>
+                <Link to={"/lesson/" + l.id} className="text-link">
+                  Study the full lesson
+                  <ArrowRight size={16} />
+                </Link>
+                <details>
+                  <summary>Show the category’s Python template</summary>
+                  <Code code={l.code} />
+                </details>
+              </Card>
+            </>
+          )}
+          <Card>
+            <h2>Change one constraint</h2>
+            <p>
+              Would your approach still work if duplicates were allowed, values
+              could be negative, or the input arrived as a stream? Pick one
+              meaningful change and explain which assumption in your proof
+              changes.
+            </p>
+            <Link to="/lab" className="text-link">
+              Work through the reasoning framework
+              <ArrowRight size={16} />
+            </Link>
+          </Card>
+        </div>
+        <aside>
+          <Card>
+            <h3>Your progress & notes</h3>
+            <ProgressControls kind="problems" id={id} label={p.name} />
+          </Card>
+          <Card className="mt">
+            <h3>Related problems</h3>
+            {problems
+              .filter((x) => x.category === p.category && x.id !== id)
+              .slice(0, 5)
+              .map((x) => (
+                <Link className="list-link" key={x.id} to={"/problem/" + x.id}>
+                  {x.name}
+                  <ArrowRight size={14} />
+                </Link>
+              ))}
+          </Card>
+        </aside>
+      </div>
+    </>
+  );
+}

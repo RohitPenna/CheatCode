@@ -1,14 +1,458 @@
-import { useState } from 'react';
-import { ArrowRight, Bookmark, ChevronLeft, CheckCircle2, Lightbulb } from 'lucide-react';
-import { categories, categoryDescription, lessons, lessonById, primaryLesson, problems } from '../data';
-import { useStudy } from '../lib/store';
-import { visualAlgorithms } from '../lib/traces';
-import { Card, Code, Empty, Link, PageTitle, ProgressBar, ProgressControls, Tag } from '../components/ui';
-export function Learn(){const [query,setQuery]=useState('');const {state}=useStudy();return <><PageTitle eyebrow="THE CURRICULUM" title="Learn the idea behind the algorithm." description="Intuition first. Then examples, code, and the reasoning that makes it work."/><div className="toolbar"><input aria-label="Search curriculum" placeholder="Search topics, patterns, or lessons…" value={query} onChange={e=>setQuery(e.target.value)}/><Tag tone="neutral">{lessons.length} original lessons</Tag></div><div className="category-grid">{categories.filter(c=>(c+' '+lessons.filter(l=>l.category===c).map(l=>l.title+' '+l.clues).join(' ')).toLowerCase().includes(query.toLowerCase())).map((c,i)=>{const ps=problems.filter(p=>p.category===c);const done=ps.filter(p=>state.problems[p.id]?.completed).length;return <Link to={'/category/'+encodeURIComponent(c)} className="card category-card" key={c}><div className="row between"><span className="category-number">{String(i+1).padStart(2,'0')}</span><ArrowRight size={17}/></div><h3>{c}</h3><p>{categoryDescription[c]}</p><div className="row between"><small>{ps.length} problems</small><small>{done} complete</small></div><ProgressBar value={done/ps.length*100}/></Link>;})}</div></>;}
-export function Category({name}:{name:string}){const {state}=useStudy();const ls=lessons.filter(l=>l.category===name);if(!categories.includes(name))return <Empty title="Category not found"><Link to="/learn">Browse the curriculum</Link></Empty>;return <><Link to="/learn" className="back"><ChevronLeft size={16}/> All categories</Link><PageTitle eyebrow="CURRICULUM" title={name} description={categoryDescription[name]}/><div className="two-col"><div className="stack"><Card><h2>Start with the mental model</h2><p>{lessonById(primaryLesson[name])?.intuition}</p><div className="callout"><Lightbulb size={18}/><div><strong>Recognition clues</strong><p>{lessonById(primaryLesson[name])?.clues}</p></div></div></Card>{ls.map(l=><Link className="card lesson-row" to={'/lesson/'+l.id} key={l.id}><div><Tag tone={l.level.startsWith('Advanced')?'purple':'blue'}>{l.level}</Tag><h3>{l.title}</h3><p>{l.summary}</p></div>{state.topics[l.id]?.completed?<CheckCircle2 size={22}/>:<ArrowRight size={22}/>}</Link>)}</div><Card><h2>Related practice</h2><p className="muted">Completion is independent of confidence. Revisit a solved problem until you can explain why it works.</p>{problems.filter(p=>p.category===name).map(p=><Link key={p.id} to={'/problem/'+p.id} className="list-link"><span>{state.problems[p.id]?.completed?'✓ ':''}{p.name}</span><Tag tone={p.difficulty.toLowerCase()}>{p.difficulty}</Tag></Link>)}</Card></div></>;}
-export function LessonPage({id}:{id:string}){const l=lessonById(id);const [level,setLevel]=useState('Learn');const [mode,setMode]=useState('Quick Learn');const [simple,setSimple]=useState(false);const [step,setStep]=useState(0);const [choice,setChoice]=useState<number|null>(null);const [reveal,setReveal]=useState(false);const {log,state,setState}=useStudy();if(!l)return <Empty title="Lesson not found"><Link to="/learn">Browse lessons</Link></Empty>;
- return <><Link to={'/category/'+encodeURIComponent(l.category)} className="back"><ChevronLeft size={16}/>{l.category}</Link><PageTitle eyebrow={l.level.toUpperCase()} title={l.title} description={l.summary} action={<Link to={visualAlgorithms.some(x=>x[0]===l.id)?'/visualizer?algorithm='+l.id:'/visualizer'} className="button">{visualAlgorithms.some(x=>x[0]===l.id)?'Open visualizer':'Explore visualizers'}<ArrowRight size={16}/></Link>}/><div className="toolbar between"><div className="segmented">{['Quick Learn','Interactive Discovery'].map(x=><button key={x} className={mode===x?'selected':''} onClick={()=>setMode(x)}>{x}</button>)}</div><button className="button subtle" onClick={()=>setSimple(!simple)}><Lightbulb size={16}/>Explain more simply</button></div>{simple&&<div className="callout"><Lightbulb size={20}/><p>{l.simpler}</p></div>}
- <div className="lesson-layout"><div className="stack">{mode==='Quick Learn'?<><div className="tabs">{['Quick Review','Learn','Deep Dive'].map(x=><button key={x} onClick={()=>setLevel(x)} className={level===x?'active':''}>{x}</button>)}</div><Card><div className="eyebrow">01 · INTUITION</div><h2>A useful way to think about it</h2><p>{l.intuition}</p><h3>When to consider it</h3><p>{l.clues}</p></Card>{level!=='Quick Review'&&<Card><div className="eyebrow">02 · WORKED EXAMPLE</div><h2>Make the idea concrete</h2><ol className="steps">{l.example.map((x,i)=><li key={i}><span>{i+1}</span><p>{x}</p></li>)}</ol><div className="callout"><div><strong>State to track</strong><p>{l.state}</p></div></div></Card>}<Card><div className="eyebrow">03 · ALGORITHM → CODE</div><h2>The Python template</h2><p>{l.state}</p><Code code={l.code}/></Card><Card><div className="eyebrow">04 · CORRECTNESS → COMPLEXITY</div><h2>Why it works</h2><p>{l.invariant}</p><div className="complexity-grid"><div><small>TIME</small><p>{l.time}</p></div><div><small>SPACE</small><p>{l.space}</p></div></div><h3>Common mistakes</h3><p>{l.pitfalls}</p>{level!=='Quick Review'&&<><h3>Edge cases to test</h3><p>{l.edges}</p></>}</Card>{level==='Deep Dive'&&<Card><h2>Compare, justify, and explain</h2><h3>Start from brute force</h3><p>{l.brute}</p><h3>Explain it aloud</h3><p>{l.interview}</p><h3>Follow-up question</h3><p>{l.followup}</p><label>Teach it back in your own words<textarea rows={5} value={state.drafts['teach-'+id]??''} onChange={e=>setState(s=>({...s,drafts:{...s.drafts,['teach-'+id]:e.target.value}}))} placeholder="What is the invariant? Why is each move safe?"/></label></Card>}</>:<Card className="discovery"><Tag tone="purple">Discover it yourself</Tag><h2>{step<l.example.length?'Predict the next step':'Check your reasoning'}</h2><p>{l.intuition}</p><div className="trace-preview">{l.example.slice(0,step+1).map((x,i)=><p className={i===step?'current':''} key={i}>{x}</p>)}</div><label>What happens next, and why?<textarea rows={4} placeholder="Write your prediction before continuing…" value={state.drafts['discovery-'+id+'-'+step]??''} onChange={e=>setState(s=>({...s,drafts:{...s.drafts,['discovery-'+id+'-'+step]:e.target.value}}))}/></label><div className="row"><button className="button" onClick={()=>setStep(Math.max(0,step-1))} disabled={step===0}>Previous</button><button className="button primary" onClick={()=>{if(step<l.example.length-1)setStep(step+1);else setReveal(true);}}> {step<l.example.length-1?'Reveal next step':'Reveal invariant & code'}<ArrowRight size={16}/></button></div>{reveal&&<><p className="callout">{l.invariant}</p><Code code={l.code}/></>}</Card>}
- <Card><div className="eyebrow">05 · PRACTICE</div><h2>{l.quiz.question}</h2><div className="quiz-options">{l.quiz.options.map((x,i)=><button className={'quiz-option '+(choice===i?(i===l.quiz.answer?'correct':'incorrect'):'')} key={x} onClick={()=>{setChoice(i);log(`Practiced ${l.title}`,l.id);}}>{String.fromCharCode(65+i)}<span>{x}</span></button>)}</div>{choice!==null&&<div className="callout" role="status"><div><strong>{choice===l.quiz.answer?'That’s the key idea.':'Revisit the invariant.'}</strong><p>{l.quiz.explanation}</p></div></div>}<Link to="/practice" className="text-link">Apply the idea without a category hint<ArrowRight size={16}/></Link></Card></div>
- <aside className="stack"><Card className="sticky-card"><div className="row"><Bookmark size={18}/><h3>Your learning checkpoint</h3></div><ProgressControls kind="topics" id={id} label={l.title}/></Card><Card><h3>Put it into practice</h3>{problems.filter(p=>p.category===l.category).slice(0,6).map(p=><Link key={p.id} className="list-link" to={'/problem/'+p.id}>{p.name}<ArrowRight size={14}/></Link>)}</Card></aside></div></>;
+import { useState } from "react";
+import {
+  ArrowRight,
+  Bookmark,
+  ChevronLeft,
+  CheckCircle2,
+  Lightbulb,
+} from "lucide-react";
+import {
+  categories,
+  categoryDescription,
+  lessons,
+  lessonById,
+  primaryLesson,
+  problems,
+} from "../data";
+import { useStudy } from "../lib/store";
+import { visualAlgorithms } from "../lib/traces";
+import {
+  Card,
+  Code,
+  Empty,
+  Link,
+  PageTitle,
+  ProgressBar,
+  ProgressControls,
+  Tag,
+} from "../components/ui";
+export function Learn() {
+  const [query, setQuery] = useState("");
+  const { state } = useStudy();
+  return (
+    <>
+      <PageTitle
+        eyebrow="THE CURRICULUM"
+        title="Learn the idea behind the algorithm."
+        description="Intuition first. Then examples, code, and the reasoning that makes it work."
+      />
+      <div className="toolbar">
+        <input
+          aria-label="Search curriculum"
+          placeholder="Search topics, patterns, or lessons…"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        <Tag tone="neutral">{lessons.length} original lessons</Tag>
+      </div>
+      <div className="category-grid">
+        {categories
+          .filter((c) =>
+            (
+              c +
+              " " +
+              lessons
+                .filter((l) => l.category === c)
+                .map((l) => l.title + " " + l.clues)
+                .join(" ")
+            )
+              .toLowerCase()
+              .includes(query.toLowerCase()),
+          )
+          .map((c, i) => {
+            const ps = problems.filter((p) => p.category === c);
+            const done = ps.filter(
+              (p) => state.problems[p.id]?.completed,
+            ).length;
+            return (
+              <Link
+                to={"/category/" + encodeURIComponent(c)}
+                className="card category-card"
+                key={c}
+              >
+                <div className="row between">
+                  <span className="category-number">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <ArrowRight size={17} />
+                </div>
+                <h3>{c}</h3>
+                <p>{categoryDescription[c]}</p>
+                <div className="row between">
+                  <small>{ps.length} problems</small>
+                  <small>{done} complete</small>
+                </div>
+                <ProgressBar value={(done / ps.length) * 100} />
+              </Link>
+            );
+          })}
+      </div>
+    </>
+  );
+}
+export function Category({ name }: { name: string }) {
+  const { state } = useStudy();
+  const ls = lessons.filter((l) => l.category === name);
+  if (!categories.includes(name))
+    return (
+      <Empty title="Category not found">
+        <Link to="/learn">Browse the curriculum</Link>
+      </Empty>
+    );
+  return (
+    <>
+      <Link to="/learn" className="back">
+        <ChevronLeft size={16} /> All categories
+      </Link>
+      <PageTitle
+        eyebrow="CURRICULUM"
+        title={name}
+        description={categoryDescription[name]}
+      />
+      <div className="two-col">
+        <div className="stack">
+          <Card>
+            <h2>Start with the mental model</h2>
+            <p>{lessonById(primaryLesson[name])?.intuition}</p>
+            <div className="callout">
+              <Lightbulb size={18} />
+              <div>
+                <strong>Recognition clues</strong>
+                <p>{lessonById(primaryLesson[name])?.clues}</p>
+              </div>
+            </div>
+          </Card>
+          {ls.map((l) => (
+            <Link className="card lesson-row" to={"/lesson/" + l.id} key={l.id}>
+              <div>
+                <Tag tone={l.level.startsWith("Advanced") ? "purple" : "blue"}>
+                  {l.level}
+                </Tag>
+                <h3>{l.title}</h3>
+                <p>{l.summary}</p>
+              </div>
+              {state.topics[l.id]?.completed ? (
+                <CheckCircle2 size={22} />
+              ) : (
+                <ArrowRight size={22} />
+              )}
+            </Link>
+          ))}
+        </div>
+        <Card>
+          <h2>Related practice</h2>
+          <p className="muted">
+            Completion is independent of confidence. Revisit a solved problem
+            until you can explain why it works.
+          </p>
+          {problems
+            .filter((p) => p.category === name)
+            .map((p) => (
+              <Link key={p.id} to={"/problem/" + p.id} className="list-link">
+                <span>
+                  {state.problems[p.id]?.completed ? "✓ " : ""}
+                  {p.name}
+                </span>
+                <Tag tone={p.difficulty.toLowerCase()}>{p.difficulty}</Tag>
+              </Link>
+            ))}
+        </Card>
+      </div>
+    </>
+  );
+}
+export function LessonPage({ id }: { id: string }) {
+  const l = lessonById(id);
+  const [level, setLevel] = useState("Learn");
+  const [mode, setMode] = useState("Quick Learn");
+  const [simple, setSimple] = useState(false);
+  const [step, setStep] = useState(0);
+  const [choice, setChoice] = useState<number | null>(null);
+  const [reveal, setReveal] = useState(false);
+  const { log, state, setState } = useStudy();
+  if (!l)
+    return (
+      <Empty title="Lesson not found">
+        <Link to="/learn">Browse lessons</Link>
+      </Empty>
+    );
+  return (
+    <>
+      <Link to={"/category/" + encodeURIComponent(l.category)} className="back">
+        <ChevronLeft size={16} />
+        {l.category}
+      </Link>
+      <PageTitle
+        eyebrow={l.level.toUpperCase()}
+        title={l.title}
+        description={l.summary}
+        action={
+          <Link
+            to={
+              visualAlgorithms.some((x) => x[0] === l.id)
+                ? "/visualizer?algorithm=" + l.id
+                : "/visualizer"
+            }
+            className="button"
+          >
+            {visualAlgorithms.some((x) => x[0] === l.id)
+              ? "Open visualizer"
+              : "Explore visualizers"}
+            <ArrowRight size={16} />
+          </Link>
+        }
+      />
+      <div className="toolbar between">
+        <div className="segmented">
+          {["Quick Learn", "Interactive Discovery"].map((x) => (
+            <button
+              key={x}
+              className={mode === x ? "selected" : ""}
+              onClick={() => setMode(x)}
+            >
+              {x}
+            </button>
+          ))}
+        </div>
+        <button className="button subtle" onClick={() => setSimple(!simple)}>
+          <Lightbulb size={16} />
+          Explain more simply
+        </button>
+      </div>
+      {simple && (
+        <div className="callout">
+          <Lightbulb size={20} />
+          <p>{l.simpler}</p>
+        </div>
+      )}
+      <div className="lesson-layout">
+        <div className="stack">
+          {mode === "Quick Learn" ? (
+            <>
+              <div className="tabs">
+                {["Quick Review", "Learn", "Deep Dive"].map((x) => (
+                  <button
+                    key={x}
+                    onClick={() => setLevel(x)}
+                    className={level === x ? "active" : ""}
+                  >
+                    {x}
+                  </button>
+                ))}
+              </div>
+              <Card>
+                <div className="eyebrow">01 · INTUITION</div>
+                <h2>A useful way to think about it</h2>
+                <p>{l.intuition}</p>
+                <h3>When to consider it</h3>
+                <p>{l.clues}</p>
+              </Card>
+              {level !== "Quick Review" && (
+                <Card>
+                  <div className="eyebrow">02 · WORKED EXAMPLE</div>
+                  <h2>Make the idea concrete</h2>
+                  <ol className="steps">
+                    {l.example.map((x, i) => (
+                      <li key={i}>
+                        <span>{i + 1}</span>
+                        <p>{x}</p>
+                      </li>
+                    ))}
+                  </ol>
+                  <div className="callout">
+                    <div>
+                      <strong>State to track</strong>
+                      <p>{l.state}</p>
+                    </div>
+                  </div>
+                </Card>
+              )}
+              <Card>
+                <div className="eyebrow">03 · ALGORITHM → CODE</div>
+                <h2>The Python template</h2>
+                <p>{l.state}</p>
+                <Code code={l.code} />
+              </Card>
+              <Card>
+                <div className="eyebrow">04 · CORRECTNESS → COMPLEXITY</div>
+                <h2>Why it works</h2>
+                <p>{l.invariant}</p>
+                <div className="complexity-grid">
+                  <div>
+                    <small>TIME</small>
+                    <p>{l.time}</p>
+                  </div>
+                  <div>
+                    <small>SPACE</small>
+                    <p>{l.space}</p>
+                  </div>
+                </div>
+                <h3>Common mistakes</h3>
+                <p>{l.pitfalls}</p>
+                {level !== "Quick Review" && (
+                  <>
+                    <h3>Edge cases to test</h3>
+                    <p>{l.edges}</p>
+                  </>
+                )}
+              </Card>
+              {level === "Deep Dive" && (
+                <Card>
+                  <h2>Compare, justify, and explain</h2>
+                  <h3>Start from brute force</h3>
+                  <p>{l.brute}</p>
+                  <h3>Explain it aloud</h3>
+                  <p>{l.interview}</p>
+                  <h3>Follow-up question</h3>
+                  <p>{l.followup}</p>
+                  <label>
+                    Teach it back in your own words
+                    <textarea
+                      rows={5}
+                      value={state.drafts["teach-" + id] ?? ""}
+                      onChange={(e) =>
+                        setState((s) => ({
+                          ...s,
+                          drafts: {
+                            ...s.drafts,
+                            ["teach-" + id]: e.target.value,
+                          },
+                        }))
+                      }
+                      placeholder="What is the invariant? Why is each move safe?"
+                    />
+                  </label>
+                </Card>
+              )}
+            </>
+          ) : (
+            <Card className="discovery">
+              <Tag tone="purple">Discover it yourself</Tag>
+              <h2>
+                {step < l.example.length
+                  ? "Predict the next step"
+                  : "Check your reasoning"}
+              </h2>
+              <p>{l.intuition}</p>
+              <div className="trace-preview">
+                {l.example.slice(0, step + 1).map((x, i) => (
+                  <p className={i === step ? "current" : ""} key={i}>
+                    {x}
+                  </p>
+                ))}
+              </div>
+              <label>
+                What happens next, and why?
+                <textarea
+                  rows={4}
+                  placeholder="Write your prediction before continuing…"
+                  value={state.drafts["discovery-" + id + "-" + step] ?? ""}
+                  onChange={(e) =>
+                    setState((s) => ({
+                      ...s,
+                      drafts: {
+                        ...s.drafts,
+                        ["discovery-" + id + "-" + step]: e.target.value,
+                      },
+                    }))
+                  }
+                />
+              </label>
+              <div className="row">
+                <button
+                  className="button"
+                  onClick={() => setStep(Math.max(0, step - 1))}
+                  disabled={step === 0}
+                >
+                  Previous
+                </button>
+                <button
+                  className="button primary"
+                  onClick={() => {
+                    if (step < l.example.length - 1) setStep(step + 1);
+                    else setReveal(true);
+                  }}
+                >
+                  {" "}
+                  {step < l.example.length - 1
+                    ? "Reveal next step"
+                    : "Reveal invariant & code"}
+                  <ArrowRight size={16} />
+                </button>
+              </div>
+              {reveal && (
+                <>
+                  <p className="callout">{l.invariant}</p>
+                  <Code code={l.code} />
+                </>
+              )}
+            </Card>
+          )}
+          <Card>
+            <div className="eyebrow">05 · PRACTICE</div>
+            <h2>{l.quiz.question}</h2>
+            <div className="quiz-options">
+              {l.quiz.options.map((x, i) => (
+                <button
+                  className={
+                    "quiz-option " +
+                    (choice === i
+                      ? i === l.quiz.answer
+                        ? "correct"
+                        : "incorrect"
+                      : "")
+                  }
+                  key={x}
+                  onClick={() => {
+                    setChoice(i);
+                    log(`Practiced ${l.title}`, l.id);
+                  }}
+                >
+                  {String.fromCharCode(65 + i)}
+                  <span>{x}</span>
+                </button>
+              ))}
+            </div>
+            {choice !== null && (
+              <div className="callout" role="status">
+                <div>
+                  <strong>
+                    {choice === l.quiz.answer
+                      ? "That’s the key idea."
+                      : "Revisit the invariant."}
+                  </strong>
+                  <p>{l.quiz.explanation}</p>
+                </div>
+              </div>
+            )}
+            <Link to="/practice" className="text-link">
+              Apply the idea without a category hint
+              <ArrowRight size={16} />
+            </Link>
+          </Card>
+        </div>
+        <aside className="stack">
+          <Card className="sticky-card">
+            <div className="row">
+              <Bookmark size={18} />
+              <h3>Your learning checkpoint</h3>
+            </div>
+            <ProgressControls kind="topics" id={id} label={l.title} />
+          </Card>
+          <Card>
+            <h3>Put it into practice</h3>
+            {problems
+              .filter((p) => p.category === l.category)
+              .slice(0, 6)
+              .map((p) => (
+                <Link key={p.id} className="list-link" to={"/problem/" + p.id}>
+                  {p.name}
+                  <ArrowRight size={14} />
+                </Link>
+              ))}
+          </Card>
+        </aside>
+      </div>
+    </>
+  );
 }

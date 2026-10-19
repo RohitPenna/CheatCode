@@ -1,26 +1,459 @@
-import { Component, useEffect, useRef, useState, type ErrorInfo, type ReactNode } from 'react';
-import { ArrowRight, BookOpen, Brain, CalendarDays, ChevronRight, Code2, FlaskConical, Home, Layers3, ListChecks, Menu, Moon, PlaySquare, Search, Settings as SettingsIcon, Shuffle, Sparkles, StickyNote, Sun, Target, Timer, X } from 'lucide-react';
-import { StudyProvider, useStudy } from './lib/store';
-import { lessons, problems, categories } from './data';
-import { toolkit } from './data/toolkit';
-import { go, Link } from './components/ui';
-import Dashboard from './pages/Dashboard';
-import { Category, Learn, LessonPage } from './pages/Learn';
-import { Problems, ProblemPage } from './pages/Problems';
-import Lab from './pages/Lab';
-import Practice from './pages/Practice';
-import Recall from './pages/Recall';
-import Visualizer from './pages/Visualizer';
-import Mock from './pages/Mock';
-import Journal from './pages/Journal';
-import { Sheets, Toolkit } from './pages/Reference';
-import { InterviewPrep, Planner } from './pages/Planner';
-import Settings from './pages/Settings';
-const nav=[['Dashboard','/','Overview',Home],['Learn','/learn','Learn & understand',BookOpen],['NeetCode 150','/problems','',ListChecks],['Problem-Solving Lab','/lab','',FlaskConical],['Algorithm Visualizer','/visualizer','',PlaySquare],['Pattern Recall','/recall','Practice & retain',Brain],['Practice Arena','/practice','',Target],['Python Toolkit','/toolkit','',Code2],['Interview Prep','/interview','Prepare & reflect',Layers3],['Mock Interviews','/mock','',Timer],['My Mistakes','/journal','',StickyNote],['Cheat Sheets','/sheets','',BookOpen],['Study Planner','/cram','',CalendarDays]] as const;
-function SearchOverlay({close}:{close:()=>void}){const [query,setQuery]=useState('');const ref=useRef<HTMLInputElement>(null);useEffect(()=>{ref.current?.focus();const key=(e:KeyboardEvent)=>{if(e.key==='Escape')close();if(e.key==='Tab'){const dialog=ref.current?.closest('[role="dialog"]');const controls=Array.from(dialog?.querySelectorAll<HTMLElement>('input,button,a')??[]);const first=controls[0],last=controls.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}}};window.addEventListener('keydown',key);return()=>window.removeEventListener('keydown',key);},[close]);const entries=[...lessons.map(l=>({title:l.title,detail:l.category+' · Lesson',keywords:l.clues+' '+l.code,to:'/lesson/'+l.id})),...problems.map(p=>({title:p.name,detail:p.category+' · Problem',keywords:p.category,to:'/problem/'+p.id})),...categories.map(c=>({title:c,detail:'Curriculum',keywords:c,to:'/category/'+encodeURIComponent(c)})),...toolkit.map(t=>({title:t.title,detail:'Python reference',keywords:t.code+' '+t.description,to:'/toolkit'})),{title:'Algorithm decision cheat sheets',detail:'Quick reference',keywords:'complexity templates invariants',to:'/sheets'}].filter(x=>(x.title+' '+x.keywords).toLowerCase().includes(query.toLowerCase())).slice(0,12);return <div className="search-backdrop" onClick={close}><div className="search-dialog" role="dialog" aria-modal="true" aria-label="Global search" onClick={e=>e.stopPropagation()}><div className="search-input"><Search size={21}/><input ref={ref} placeholder="Search problems, patterns, Python…" aria-label="Global search query" value={query} onChange={e=>setQuery(e.target.value)}/><button className="icon-button" onClick={close} aria-label="Close search"><X size={18}/></button></div><div className="search-results">{entries.map((x,i)=><Link to={x.to} className="search-result" key={x.to+i} onClick={close}><div><strong>{x.title}</strong><small>{x.detail}</small></div><ChevronRight size={16}/></Link>)}{!entries.length&&<p>No results. Try a pattern name or Python function.</p>}</div><small className="search-help">Tab to navigate · Enter to open · Esc to close</small></div></div>;}
-function Shell(){const {state,setState,error}=useStudy();const [hash,setHash]=useState(window.location.hash.slice(1)||'/');const [mobile,setMobile]=useState(false);const [search,setSearch]=useState(false);const searchButton=useRef<HTMLButtonElement>(null);const closeSearch=()=>{setSearch(false);searchButton.current?.focus();};useEffect(()=>{const change=()=>{setHash(window.location.hash.slice(1)||'/');setMobile(false);window.scrollTo(0,0);};window.addEventListener('hashchange',change);const key=(e:KeyboardEvent)=>{if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();setSearch(s=>!s);}if(e.key==='Escape')setMobile(false);};window.addEventListener('keydown',key);return()=>{window.removeEventListener('hashchange',change);window.removeEventListener('keydown',key);};},[]);const [path,query]=hash.split('?');const parts=path.split('/');let page:ReactNode;
- if(path==='/')page=<Dashboard/>;else if(path==='/learn')page=<Learn/>;else if(parts[1]==='category'){let name='';try{name=decodeURIComponent(parts.slice(2).join('/'));}catch{/* Invalid URL renders category not found. */}page=<Category name={name}/>;}else if(parts[1]==='lesson')page=<LessonPage key={parts[2]} id={parts[2]}/>;else if(path==='/problems')page=<Problems/>;else if(parts[1]==='problem')page=<ProblemPage key={parts[2]} id={parts[2]}/>;else if(path==='/lab')page=<Lab/>;else if(path==='/practice')page=<Practice/>;else if(path==='/recall')page=<Recall/>;else if(path==='/visualizer')page=<Visualizer key={query} initial={new URLSearchParams(query).get('algorithm')??undefined}/>;else if(path==='/mock')page=<Mock/>;else if(path==='/journal')page=<Journal/>;else if(path==='/toolkit')page=<Toolkit/>;else if(path==='/sheets')page=<Sheets/>;else if(path==='/cram')page=<Planner/>;else if(path==='/interview')page=<InterviewPrep/>;else if(path==='/settings')page=<Settings/>;else page=<div className="empty"><h1>Page not found</h1><Link to="/">Return to your dashboard</Link></div>;
- const activeLabel=nav.find(x=>x[1]===path)?.[0]??(parts[1]==='lesson'?'Learn':parts[1]==='problem'?'NeetCode 150':path==='/settings'?'Settings':'Curriculum');return <div className="app"><a href="#main" className="skip-link" onClick={e=>{e.preventDefault();document.getElementById('main')?.focus();}}>Skip to content</a>{mobile&&<button className="mobile-backdrop" aria-label="Close navigation" onClick={()=>setMobile(false)}/>}<aside className={'sidebar '+(mobile?'open':'')}><Link to="/" className="brand"><span><Code2 size={25}/></span>CheatCode<span className="brand-dot">.</span></Link><div className="workspace-chip"><span className="avatar">RP</span><div><strong>Rohit’s workspace</strong><small>Think. Solve. Grow.</small></div><ChevronRight size={15}/></div><nav aria-label="Main navigation">{nav.map(([label,to,group,Icon])=><div key={to}>{group&&<div className="nav-group">{group}</div>}<Link to={to} className={'nav-link '+(path===to||(to==='/learn'&&['lesson','category'].includes(parts[1]))||(to==='/problems'&&parts[1]==='problem')?'active':'')} aria-current={path===to?'page':undefined}><Icon size={18}/><span>{label}</span>{label==='NeetCode 150'&&<small>150</small>}{label==='Problem-Solving Lab'&&<i className="nav-dot"/>}</Link></div>)}</nav><div className="sidebar-bottom"><Link to="/cram" className="sidebar-promo"><Sparkles size={17}/><strong>A little better, every day.</strong><span>Make time for your next “aha”.</span></Link><Link to="/settings" className={'nav-link '+(path==='/settings'?'active':'')}><SettingsIcon size={18}/>Settings & backup</Link><div className="local-label"><i/> Local-first. Always yours.</div></div></aside><div className="main-shell"><header className="topbar"><div className="row"><button className="icon-button mobile-menu" aria-label="Open navigation" onClick={()=>setMobile(true)}><Menu size={21}/></button><span className="breadcrumb">Workspace<ChevronRight size={14}/><strong>{activeLabel}</strong></span></div><div className="topbar-actions"><button aria-label="Search anything" ref={searchButton} className="search-trigger" onClick={()=>setSearch(true)}><Search size={16}/><span>Search anything…</span><kbd>⌘ K</kbd></button><button className="icon-button" aria-label={state.preferences.theme==='light'?'Switch to dark theme':'Switch to light theme'} onClick={()=>setState(s=>({...s,preferences:{...s.preferences,theme:s.preferences.theme==='light'?'dark':'light'}}))}>{state.preferences.theme==='light'?<Moon size={19}/>:<Sun size={19}/>}</button><button className="icon-button surprise" aria-label="Surprise me with a lesson" onClick={()=>go('/lesson/'+lessons[Math.floor(Math.random()*lessons.length)].id)}><Shuffle size={18}/></button><span className="avatar top-avatar">RP</span></div></header>{error&&<div className="storage-banner" role="alert">{error} <Link to="/settings">Open recovery settings<ArrowRight size={14}/></Link></div>}<main id="main" tabIndex={-1} key={path}>{page}</main></div>{search&&<SearchOverlay close={closeSearch}/>}</div>;
+import {
+  Component,
+  useEffect,
+  useRef,
+  useState,
+  type ErrorInfo,
+  type ReactNode,
+} from "react";
+import {
+  ArrowRight,
+  BookOpen,
+  Brain,
+  CalendarDays,
+  ChevronRight,
+  Code2,
+  FlaskConical,
+  Home,
+  Layers3,
+  ListChecks,
+  Menu,
+  Moon,
+  PlaySquare,
+  Search,
+  Settings as SettingsIcon,
+  Shuffle,
+  Sparkles,
+  StickyNote,
+  Sun,
+  Target,
+  Timer,
+  X,
+} from "lucide-react";
+import { StudyProvider, useStudy } from "./lib/store";
+import { lessons, problems, categories } from "./data";
+import { toolkit } from "./data/toolkit";
+import { go, Link } from "./components/ui";
+import Dashboard from "./pages/Dashboard";
+import { Category, Learn, LessonPage } from "./pages/Learn";
+import { Problems, ProblemPage } from "./pages/Problems";
+import Lab from "./pages/Lab";
+import Practice from "./pages/Practice";
+import Recall from "./pages/Recall";
+import Visualizer from "./pages/Visualizer";
+import Mock from "./pages/Mock";
+import Journal from "./pages/Journal";
+import { Sheets, Toolkit } from "./pages/Reference";
+import { InterviewPrep, Planner } from "./pages/Planner";
+import Settings from "./pages/Settings";
+const nav = [
+  ["Dashboard", "/", "Overview", Home],
+  ["Learn", "/learn", "Learn & understand", BookOpen],
+  ["NeetCode 150", "/problems", "", ListChecks],
+  ["Problem-Solving Lab", "/lab", "", FlaskConical],
+  ["Algorithm Visualizer", "/visualizer", "", PlaySquare],
+  ["Pattern Recall", "/recall", "Practice & retain", Brain],
+  ["Practice Arena", "/practice", "", Target],
+  ["Python Toolkit", "/toolkit", "", Code2],
+  ["Interview Prep", "/interview", "Prepare & reflect", Layers3],
+  ["Mock Interviews", "/mock", "", Timer],
+  ["My Mistakes", "/journal", "", StickyNote],
+  ["Cheat Sheets", "/sheets", "", BookOpen],
+  ["Study Planner", "/cram", "", CalendarDays],
+] as const;
+function SearchOverlay({ close }: { close: () => void }) {
+  const [query, setQuery] = useState("");
+  const ref = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    ref.current?.focus();
+    const key = (e: KeyboardEvent) => {
+      if (e.key === "Escape") close();
+      if (e.key === "Tab") {
+        const dialog = ref.current?.closest('[role="dialog"]');
+        const controls = Array.from(
+          dialog?.querySelectorAll<HTMLElement>("input,button,a") ?? [],
+        );
+        const first = controls[0],
+          last = controls.at(-1);
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last?.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first?.focus();
+        }
+      }
+    };
+    window.addEventListener("keydown", key);
+    return () => window.removeEventListener("keydown", key);
+  }, [close]);
+  const entries = [
+    ...lessons.map((l) => ({
+      title: l.title,
+      detail: l.category + " · Lesson",
+      keywords: l.clues + " " + l.code,
+      to: "/lesson/" + l.id,
+    })),
+    ...problems.map((p) => ({
+      title: p.name,
+      detail: p.category + " · Problem",
+      keywords: p.category,
+      to: "/problem/" + p.id,
+    })),
+    ...categories.map((c) => ({
+      title: c,
+      detail: "Curriculum",
+      keywords: c,
+      to: "/category/" + encodeURIComponent(c),
+    })),
+    ...toolkit.map((t) => ({
+      title: t.title,
+      detail: "Python reference",
+      keywords: t.code + " " + t.description,
+      to: "/toolkit",
+    })),
+    {
+      title: "Algorithm decision cheat sheets",
+      detail: "Quick reference",
+      keywords: "complexity templates invariants",
+      to: "/sheets",
+    },
+  ]
+    .filter((x) =>
+      (x.title + " " + x.keywords).toLowerCase().includes(query.toLowerCase()),
+    )
+    .slice(0, 12);
+  return (
+    <div className="search-backdrop" onClick={close}>
+      <div
+        className="search-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Global search"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="search-input">
+          <Search size={21} />
+          <input
+            ref={ref}
+            placeholder="Search problems, patterns, Python…"
+            aria-label="Global search query"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+          <button
+            className="icon-button"
+            onClick={close}
+            aria-label="Close search"
+          >
+            <X size={18} />
+          </button>
+        </div>
+        <div className="search-results">
+          {entries.map((x, i) => (
+            <Link
+              to={x.to}
+              className="search-result"
+              key={x.to + i}
+              onClick={close}
+            >
+              <div>
+                <strong>{x.title}</strong>
+                <small>{x.detail}</small>
+              </div>
+              <ChevronRight size={16} />
+            </Link>
+          ))}
+          {!entries.length && (
+            <p>No results. Try a pattern name or Python function.</p>
+          )}
+        </div>
+        <small className="search-help">
+          Tab to navigate · Enter to open · Esc to close
+        </small>
+      </div>
+    </div>
+  );
 }
-class ErrorBoundary extends Component<{children:ReactNode},{error:boolean}>{state={error:false};static getDerivedStateFromError(){return {error:true};}componentDidCatch(error:Error,info:ErrorInfo){console.error('CheatCode render error',error,info.componentStack);}render(){if(this.state.error)return <main><h1>Something interrupted this page.</h1><p>Your local progress is still stored. Reload the dashboard to recover.</p><button onClick={()=>{window.location.hash='/';window.location.reload();}}>Reload dashboard</button></main>;return this.props.children;}}
-export default function App(){return <ErrorBoundary><StudyProvider><Shell/></StudyProvider></ErrorBoundary>;}
+function Shell() {
+  const { state, setState, error } = useStudy();
+  const [hash, setHash] = useState(window.location.hash.slice(1) || "/");
+  const [mobile, setMobile] = useState(false);
+  const [search, setSearch] = useState(false);
+  const searchButton = useRef<HTMLButtonElement>(null);
+  const closeSearch = () => {
+    setSearch(false);
+    searchButton.current?.focus();
+  };
+  useEffect(() => {
+    const change = () => {
+      setHash(window.location.hash.slice(1) || "/");
+      setMobile(false);
+      window.scrollTo(0, 0);
+    };
+    window.addEventListener("hashchange", change);
+    const key = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setSearch((s) => !s);
+      }
+      if (e.key === "Escape") setMobile(false);
+    };
+    window.addEventListener("keydown", key);
+    return () => {
+      window.removeEventListener("hashchange", change);
+      window.removeEventListener("keydown", key);
+    };
+  }, []);
+  const [path, query] = hash.split("?");
+  const parts = path.split("/");
+  let page: ReactNode;
+  if (path === "/") page = <Dashboard />;
+  else if (path === "/learn") page = <Learn />;
+  else if (parts[1] === "category") {
+    let name = "";
+    try {
+      name = decodeURIComponent(parts.slice(2).join("/"));
+    } catch {
+      /* Invalid URL renders category not found. */
+    }
+    page = <Category name={name} />;
+  } else if (parts[1] === "lesson")
+    page = <LessonPage key={parts[2]} id={parts[2]} />;
+  else if (path === "/problems") page = <Problems />;
+  else if (parts[1] === "problem")
+    page = <ProblemPage key={parts[2]} id={parts[2]} />;
+  else if (path === "/lab") page = <Lab />;
+  else if (path === "/practice") page = <Practice />;
+  else if (path === "/recall") page = <Recall />;
+  else if (path === "/visualizer")
+    page = (
+      <Visualizer
+        key={query}
+        initial={new URLSearchParams(query).get("algorithm") ?? undefined}
+      />
+    );
+  else if (path === "/mock") page = <Mock />;
+  else if (path === "/journal") page = <Journal />;
+  else if (path === "/toolkit") page = <Toolkit />;
+  else if (path === "/sheets") page = <Sheets />;
+  else if (path === "/cram") page = <Planner />;
+  else if (path === "/interview") page = <InterviewPrep />;
+  else if (path === "/settings") page = <Settings />;
+  else
+    page = (
+      <div className="empty">
+        <h1>Page not found</h1>
+        <Link to="/">Return to your dashboard</Link>
+      </div>
+    );
+  const activeLabel =
+    nav.find((x) => x[1] === path)?.[0] ??
+    (parts[1] === "lesson"
+      ? "Learn"
+      : parts[1] === "problem"
+        ? "NeetCode 150"
+        : path === "/settings"
+          ? "Settings"
+          : "Curriculum");
+  return (
+    <div className="app">
+      <a
+        href="#main"
+        className="skip-link"
+        onClick={(e) => {
+          e.preventDefault();
+          document.getElementById("main")?.focus();
+        }}
+      >
+        Skip to content
+      </a>
+      {mobile && (
+        <button
+          className="mobile-backdrop"
+          aria-label="Close navigation"
+          onClick={() => setMobile(false)}
+        />
+      )}
+      <aside className={"sidebar " + (mobile ? "open" : "")}>
+        <Link to="/" className="brand">
+          <span>
+            <Code2 size={25} />
+          </span>
+          CheatCode<span className="brand-dot">.</span>
+        </Link>
+        <div className="workspace-chip">
+          <span className="avatar">RP</span>
+          <div>
+            <strong>Rohit’s workspace</strong>
+            <small>Think. Solve. Grow.</small>
+          </div>
+          <ChevronRight size={15} />
+        </div>
+        <nav aria-label="Main navigation">
+          {nav.map(([label, to, group, Icon]) => (
+            <div key={to}>
+              {group && <div className="nav-group">{group}</div>}
+              <Link
+                to={to}
+                className={
+                  "nav-link " +
+                  (path === to ||
+                  (to === "/learn" &&
+                    ["lesson", "category"].includes(parts[1])) ||
+                  (to === "/problems" && parts[1] === "problem")
+                    ? "active"
+                    : "")
+                }
+                aria-current={path === to ? "page" : undefined}
+              >
+                <Icon size={18} />
+                <span>{label}</span>
+                {label === "NeetCode 150" && <small>150</small>}
+                {label === "Problem-Solving Lab" && <i className="nav-dot" />}
+              </Link>
+            </div>
+          ))}
+        </nav>
+        <div className="sidebar-bottom">
+          <Link to="/cram" className="sidebar-promo">
+            <Sparkles size={17} />
+            <strong>A little better, every day.</strong>
+            <span>Make time for your next “aha”.</span>
+          </Link>
+          <Link
+            to="/settings"
+            className={"nav-link " + (path === "/settings" ? "active" : "")}
+          >
+            <SettingsIcon size={18} />
+            Settings & backup
+          </Link>
+          <div className="local-label">
+            <i /> Local-first. Always yours.
+          </div>
+        </div>
+      </aside>
+      <div className="main-shell">
+        <header className="topbar">
+          <div className="row">
+            <button
+              className="icon-button mobile-menu"
+              aria-label="Open navigation"
+              onClick={() => setMobile(true)}
+            >
+              <Menu size={21} />
+            </button>
+            <span className="breadcrumb">
+              Workspace
+              <ChevronRight size={14} />
+              <strong>{activeLabel}</strong>
+            </span>
+          </div>
+          <div className="topbar-actions">
+            <button
+              aria-label="Search anything"
+              ref={searchButton}
+              className="search-trigger"
+              onClick={() => setSearch(true)}
+            >
+              <Search size={16} />
+              <span>Search anything…</span>
+              <kbd>⌘ K</kbd>
+            </button>
+            <button
+              className="icon-button"
+              aria-label={
+                state.preferences.theme === "light"
+                  ? "Switch to dark theme"
+                  : "Switch to light theme"
+              }
+              onClick={() =>
+                setState((s) => ({
+                  ...s,
+                  preferences: {
+                    ...s.preferences,
+                    theme: s.preferences.theme === "light" ? "dark" : "light",
+                  },
+                }))
+              }
+            >
+              {state.preferences.theme === "light" ? (
+                <Moon size={19} />
+              ) : (
+                <Sun size={19} />
+              )}
+            </button>
+            <button
+              className="icon-button surprise"
+              aria-label="Surprise me with a lesson"
+              onClick={() =>
+                go(
+                  "/lesson/" +
+                    lessons[Math.floor(Math.random() * lessons.length)].id,
+                )
+              }
+            >
+              <Shuffle size={18} />
+            </button>
+            <span className="avatar top-avatar">RP</span>
+          </div>
+        </header>
+        {error && (
+          <div className="storage-banner" role="alert">
+            {error}{" "}
+            <Link to="/settings">
+              Open recovery settings
+              <ArrowRight size={14} />
+            </Link>
+          </div>
+        )}
+        <main id="main" tabIndex={-1} key={path}>
+          {page}
+        </main>
+      </div>
+      {search && <SearchOverlay close={closeSearch} />}
+    </div>
+  );
+}
+class ErrorBoundary extends Component<
+  { children: ReactNode },
+  { error: boolean }
+> {
+  state = { error: false };
+  static getDerivedStateFromError() {
+    return { error: true };
+  }
+  componentDidCatch(error: Error, info: ErrorInfo) {
+    console.error("CheatCode render error", error, info.componentStack);
+  }
+  render() {
+    if (this.state.error)
+      return (
+        <main>
+          <h1>Something interrupted this page.</h1>
+          <p>
+            Your local progress is still stored. Reload the dashboard to
+            recover.
+          </p>
+          <button
+            onClick={() => {
+              window.location.hash = "/";
+              window.location.reload();
+            }}
+          >
+            Reload dashboard
+          </button>
+        </main>
+      );
+    return this.props.children;
+  }
+}
+export default function App() {
+  return (
+    <ErrorBoundary>
+      <StudyProvider>
+        <Shell />
+      </StudyProvider>
+    </ErrorBoundary>
+  );
+}
